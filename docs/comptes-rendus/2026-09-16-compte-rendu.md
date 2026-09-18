@@ -43,7 +43,7 @@
  
 - Un **POC en webapp** pourrait être une bonne option pour valider rapidement les choix (webapp ou Flutter).
 - Sécuriser un **back-end propre avec une API REST** serait utile pour faciliter la reprise par une future équipe de développeurs.
-- Base de données actuelle : **PostgreSQL**. Piste envisagée pour la suite : **MariaDB**, jugée préférable.
+- Base de données actuelle : **PostgreSQL**. Piste envisagée pour la suite : **MySQL**, jugée préférable.
 - Réflexion sur **Flutter** pour le développement mobile :
   - **Avantages** : structure du framework, facilité de déploiement.
   - **Inconvénients** : compétence moins répandue, ce qui pourrait compliquer la reprise du projet par une future équipe.
