@@ -1,0 +1,124 @@
+{% extends 'base/app_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block page_name %}{% trans "Contests" %}{% endblock %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'contest/css/participant_detail/participant_detail.css' %}">
+{% endblock %}
+
+{% block template-content %}
+<div class="container py-4">
+    <h2 class="h5 text-center mb-4">
+        {% trans "Résultats de" %}
+        <strong>
+            {# On détecte une équipe via participant.members #}
+            {% if participant.members %}
+                {{ participant.name }}
+            {% else %}
+                {{ participant.username }}
+            {% endif %}
+        </strong><br>
+        <small class="text-muted">{{ contest.name }}</small>
+    </h2>
+
+    {# Bloc membres uniquement si c’est une équipe #}
+    {% if participant.members %}
+        <div class="text-center mb-4">
+            <p class="mb-1 text-muted small">
+                {% trans "Membres de l’équipe :" %}
+            </p>
+            <div class="d-flex flex-wrap justify-content-center gap-2">
+                {% for member in participant.members.all %}
+                    <span class="badge bg-secondary">{{ member.username }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    {# ============================= #}
+    {# SCORES (total + initial)     #}
+    {# ============================= #}
+    <div class="text-center mb-4 d-flex flex-column gap-2 align-items-center">
+        <span class="badge bg-success fs-6 px-3 py-2 me-2 w-75" style="max-width: 250px;">
+            {% trans "Score total :" %} {{ total_score }}
+            {% if contest.format == "1000_points" %}
+                {% trans "pts" %}
+            {% endif %}
+        </span>
+
+        {% if not is_team and contest.initial_contest %}
+            <span class="badge bg-secondary px-3 py-2" style="font-size: 0.8rem; width: 60%; max-width: 200px">
+                {% trans "Points de départ :" %} {{ score_initial }}
+                {% if contest.format == "1000_points" %}
+                    {% trans "pts" %}
+                {% endif %}
+            </span>
+        {% endif %}
+    </div>
+
+    {% if resultats %}
+        <ul class="list-group">
+            {% for item in resultats %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <!-- Partie gauche -->
+                    <div class="text-truncate w-50">
+                        <strong>
+                            {% if item.ouverture.nom %}
+                                {{ item.ouverture.nom }}
+                            {% else %}
+                                {% if item.ouverture.bloc %}
+                                    {% blocktrans trimmed %}S{{ item.ouverture.relais }} • {{ item.ouverture.couleur }}{% endblocktrans %}
+                                {% else %}
+                                    {% blocktrans trimmed %}R{{ item.ouverture.relais }} • {{ item.ouverture.couleur }}{% endblocktrans %}
+                                {% endif %}
+                            {% endif %}
+                        </strong><br>
+                        <small class="text-muted">
+                            {{ item.ouverture.niveau }}
+                            {% if item.ouverture.profil %}
+                                – {{ item.ouverture.profil }}
+                            {% endif %}
+                        </small>
+                    </div>
+
+                    <!-- Partie droite -->
+                    <div class="d-flex align-items-center flex-wrap justify-content-end">
+                        {% if item.has_top %}
+                            {% if contest.format == "1000_points" %}
+                                <span class="badge bg-primary rounded-pill me-2">
+                                    {% blocktrans trimmed with pts=item.points %}
+                                        {{ pts }} pts
+                                    {% endblocktrans %}
+                                </span>
+                            {% endif %}
+                            <span class="badge me-1" style="background-color: #198754;">
+                                {% trans "Top" %}
+                            </span>
+                        {% else %}
+                            {% if item.has_zone %}
+                                <span class="badge bg-primary me-1">
+                                    {% trans "Zone" %}
+                                </span>
+                            {% endif %}
+                            {% if item.degaines_reached %}
+                                <span class="badge bg-warning text-dark me-1">
+                                    {% blocktrans trimmed with n=item.degaines_reached %}
+                                        {{ n }} dégaines
+                                    {% endblocktrans %}
+                                </span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted text-center">
+            {% trans "Aucune réussite pour ce contest." %}
+        </p>
+    {% endif %}
+</div>
+{% endblock %}

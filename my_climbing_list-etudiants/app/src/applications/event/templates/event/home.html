@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Événements</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'event/css/event.css' %}">
+</head>
+<body>
+    <main class="event-page">
+        <header class="event-header">
+            <img class="event-logo" src="{% static 'event/media/big_air.png' %}" alt="Big Air">
+        </header>
+
+        {% if event_rows %}
+            <section class="route-list">
+                {% for row in event_rows %}
+                    <article class="route-card">
+                        <div class="route-card-header">
+                            <h2 class="route-title">{{ row.event.name }}</h2>
+                        </div>
+
+                        <div class="event-meta">
+                            <p class="event-meta-item">
+                                <strong>Date :</strong><br>
+                                {{ row.event.date|date:"d F Y" }}
+                            </p>
+
+                            <p class="event-meta-item">
+                                <strong>Capacité :</strong><br>
+                                {{ row.remaining_places }} place(s) disponible(s) sur {{ row.total_capacity }}
+                            </p>
+                        </div>
+
+                        <div class="event-actions" style="margin-top: 16px;">
+                            <a
+                                class="event-button event-button-primary"
+                                href="{% url 'event:register' slug=row.event.slug %}"
+                            >
+                                S’inscrire
+                            </a>
+                        
+                            <a
+                                class="event-link-button"
+                                href="{% url 'event:public_ranking' slug=row.event.slug %}"
+                            >
+                                Classement
+                            </a>
+                        </div>
+                    </article>
+                {% endfor %}
+            </section>
+        {% else %}
+            <section class="event-card empty-state">
+                <h2 class="event-card-title">Aucun événement</h2>
+                <p>Aucun événement n’est disponible actuellement.</p>
+            </section>
+        {% endif %}
+    </main>
+</body>
+</html>

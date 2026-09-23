@@ -1,0 +1,39 @@
+{% extends "base/dir_admin_base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">
+        {% blocktrans %}Participants – {{ contest.name }}{% endblocktrans %}
+    </h1>
+
+    <a href="{% url 'dir_admin:dashboard' %}" class="btn btn-secondary mb-3">
+        {% trans "Retour au tableau de bord" %}
+    </a>
+
+    {% if inscriptions %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{% trans "Nom d’utilisateur" %}</th>
+                    <th>{% trans "Email" %}</th>
+                    <th>{% trans "Date d'inscription" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inscription in inscriptions %}
+                    <tr>
+                        <td>{{ inscription.user.username }}</td>
+                        <td>{{ inscription.user.email }}</td>
+                        <td>{{ inscription.date_inscription|date:"d/m/Y H:i" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="text-muted">
+            {% trans "Aucun participant pour ce contest." %}
+        </p>
+    {% endif %}
+</div>
+{% endblock %}

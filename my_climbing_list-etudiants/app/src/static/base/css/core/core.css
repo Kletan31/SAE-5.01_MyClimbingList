@@ -1,0 +1,144 @@
+/* ## Utilisation de l'unité "dvh" au lieu de "vh" pour s'adapter au mieux aux encoches [Android & iOS] ## */
+:root {
+    --template-height: calc((100dvh - (var(--top-bar-height) + var(--bottom-bar-height)))/100);
+}
+
+/* ## Désactiver le défilement par défaut ## */
+body {
+    overflow: hidden;
+}
+
+/* ####### */
+/* Top Bar */
+/* ####### */
+
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--top-bar-height);
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.top-bar .back-container,
+.top-bar .profile-container {
+    position: absolute;
+    font-size: 1.05rem;
+}
+
+.top-bar .back-container {
+    left: 15px;
+}
+
+.top-bar .profile-container {
+    right: 15px;
+}
+
+.top-bar .profile-link {
+    font-size: 1.4rem;
+}
+
+.top-bar p {
+    margin: 0;
+    background-color: var(--primary-color);
+    font-size: 1.15rem;
+    padding: 0 5px;
+    color: white;
+    font-weight: bold;
+    transform: skewX(-15deg) rotate(-3deg);
+    text-align: center;
+    line-height: 1.25;
+}
+
+/* ############ */
+/* Main Content */
+/* ############ */
+
+#main-content {
+    position: fixed;
+    top: var(--top-bar-height);
+    bottom: var(--bottom-bar-height);
+    width: 100vw;
+}
+
+#template-container {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ########## */
+/* Bottom Bar */
+/* ########## */
+
+.bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--bottom-bar-height);
+    padding-top: 10px;
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.icon-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.625rem;
+}
+
+.icon-text i {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.add-button i {
+    font-size: 3.125rem;
+}
+
+.fa-solid.fa-circle-plus {
+    display: none;
+}
+
+/* ############### */
+/* Pull-To-Refresh */
+/* ############### */
+
+#pull-indicator {
+    position: fixed;
+    top: -50px; /* caché au départ */
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #444;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    z-index: 9999;
+}
+#pull-indicator.active {
+    opacity: 1!important;
+}

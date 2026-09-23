@@ -1,0 +1,49 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <!-- En-tête classique -->
+    <meta charset="UTF-8">
+
+    <!-- Viewport (IMPORTANT : même sur desktop) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My Climbing List</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'base/media/fav/fav.svg' %}">
+
+    <!-- CSS de base -->
+    <link rel="stylesheet" href="{% static 'base/css/main/reset.css' %}">
+
+    <!-- Bootstrap v5 -->
+    <link rel="stylesheet" href="{% static 'base/css/bootstrap/bootstrap.min.css' %}">
+    <script src="{% static 'base/js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Font Awesome Pro v6.1.2 -->
+    <link rel="stylesheet" href="{% static 'base/icon_fa/css/all.css' %}" />
+
+    <!-- Harmonisation du texte mobile / desktop -->
+    <style>
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+    </style>
+
+    <!-- Ajouts spécifiques -->
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+
+    <!-- Contenu principal -->
+    {% block content %}
+    {% endblock %}
+
+    <!-- Scripts additionnels -->
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>

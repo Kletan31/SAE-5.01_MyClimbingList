@@ -1,0 +1,324 @@
+{% extends 'base/app_base.html' %}
+{% load static %}
+{% load i18n %}
+{% load core_extras %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'core/css/graph/graph.css' %}">
+    
+    <!-- Balises <meta> pour stocker les données -->
+    <!-- Progression -->
+    <meta id="localStorageLevelRoute" data-value="{{ level_voie }}">
+    <meta id="localStorageLevelRouteColor" data-value="{{ level_voie_color }}">
+    <meta id="localStorageLevelBoulder" data-value="{{ level_bloc }}">
+    <meta id="localStorageLevelBoulderColor" data-value="{{ level_bloc_color }}">
+
+    <!-- Realisation Voie -->
+    <meta id="localStorageTotalRoute" data-value="{{ total_moulinette_voie }}">
+    <meta id="localStorageTotalRouteFlash" data-value="{{ total_moulinette_voie_flash }}">
+    <meta id="localStorageTotalRouteLead" data-value="{{ total_lead_voie }}">
+    <meta id="localStorageTotalRouteLeadFlash" data-value="{{ total_lead_voie_flash }}">
+    
+    <!-- Realisation Bloc -->
+    <meta id="localStorageTotalBoulders" data-value="{{ total_bloc }}">
+    <meta id="localStorageTotalBoulderFlash" data-value="{{ total_bloc_flash }}">
+    
+    <!-- Profil -->
+    <meta id="localStoragePreferredRouteProfile" data-value="{{ profil_preferred_voie }}">
+    <meta id="localStoragePreferredBoulderProfile" data-value="{{ profil_preferred_bloc }}">
+
+    <!-- Style -->
+    <meta id="localStoragePreferredRouteStyle" data-value="{{ style_preferred_voie }}">
+    <meta id="localStoragePreferredRouteStyleColor" data-value="{{ style_preferred_voie|slugify }}">
+    <meta id="localStoragePreferredBoulderStyle" data-value="{{ style_preferred_bloc }}">
+    <meta id="localStoragePreferredBoulderStyleColor" data-value="{{ style_preferred_bloc|slugify }}">
+{% endblock %}
+
+{% block page_name %}{% trans "Stats" %}{% endblock %}
+
+{% block template-content %}
+<!-- Menu pour l'affichage des données graphiques -->
+<div class="menu-bar-graph row g-0">
+    <div class="menu-item col-3 selected" data-category="progression" style="border-right: 1px solid #ee7f00;">{% trans "Progression" %}</div>
+    <div class="menu-item col-3" data-category="ascension" style="border-right: 1px solid #ee7f00;">{% trans "Ascensions" %}</div>
+    <div class="menu-item col-3" data-category="profil" style="border-right: 1px solid #ee7f00;">{% trans "Profils" %}</div>
+    <div class="menu-item col-3" data-category="style">{% trans "Styles" %}</div>
+</div>
+
+<!-- Graphiques -->
+<div class="chart-container">
+    <!-- ## PROGRESSION ## -->
+    <div id="progression-voie" class="flex-column h-100" style="justify-content: space-around;">
+        <div id="progression-voie-graph-container">
+            <div id="progression-voie-graph"></div>
+            <script type="application/json" id="progression-voie-graph-data">{{ graph_progression_voie|safe }}</script>
+        </div>
+
+        <div class="progression-note text-center">
+            <small class="text-muted" style="font-size: .75rem;">
+                {% trans "Les séances du jour sont prises en compte une fois la journée terminée." %}
+            </small>
+        </div>
+
+        <div id="progression-voie-data-container" class="d-flex flex-column align-items-center justify-content-center">
+            {% if level_voie != "-" %}
+            <span id="userLevelVoie" class="circle-cotation" style="border-color: {{ level_voie_color }};">{{ level_voie }}</span>
+            {% else %}
+            <i
+                data-bs-toggle="tooltip"
+                title="{% trans 'Vous devez réussir douze voies différentes pour voir votre progression' %}"
+                class="fa-regular fa-circle-info">
+            </i>
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="progression-bloc" class="flex-column h-100" style="justify-content: space-around;">
+        <div id="progression-bloc-graph-container">
+            <div id="progression-bloc-graph"></div>
+            <script type="application/json" id="progression-bloc-graph-data">{{ graph_progression_bloc|safe }}</script>
+        </div>
+
+        <div id="progression-bloc-data-container" class="d-flex align-items-center justify-content-center">
+            {% if level_bloc != "-" %}
+            <span id="userLevelVoie" class="circle-cotation" style="border-color: {{ level_bloc_color }};">{{ level_bloc }}</span>
+            {% else %}
+            <i
+                data-bs-toggle="tooltip"
+                title="{% trans 'Vous devez réussir douze blocs différents pour voir votre progression' %}"
+                class="fa-regular fa-circle-info">
+            </i>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ## RÉALISATION ## -->
+    <div id="ascension-voie" class="flex-column h-100" style="justify-content: space-around;">
+        <div id="ascension-voie-graph-container">
+            <div id="ascension-voie-graph"></div>
+            <script type="application/json" id="ascension-voie-graph-data">{{ graph_ascension_voie|safe }}</script>
+        </div>
+
+        <div id="ascension-voie-data-container" class="d-flex flex-column align-items-center justify-content-center">
+            <div class="row w-50 text-center">
+                <div class="total col-5 d-flex flex-column justify-content-center align-items-center">
+                    <span class="fw-bold mb-2" style="width: calc(0.5rem + 0.9 * {{ total_moulinette_voie|stringformat:"s"|length }}rem);">{{ total_moulinette_voie }}</span>
+                    <p style="font-size: .9rem; white-space: nowrap;">{% trans "Moulinette" %}</p>
+                </div>
+                <div class="col-2 d-flex justify-content-center">
+                    <div class="vertical-bar"></div>
+                </div>
+                <div class="total-lead col-5 d-flex flex-column justify-content-center align-items-center">
+                    <span class="fw-bold mb-2" style="width: calc(0.5rem + 0.9 * {{ total_lead_voie|stringformat:"s"|length }}rem);">{{ total_lead_voie }}</span>
+                    <p style="font-size: .9rem; white-space: nowrap;">{% trans "Tête" %}</p>
+                </div>
+            </div>
+
+            <div class="row w-100 text-center">
+                <i class="fa-solid fa-circle-bolt fs-1"></i>
+            </div>
+        </div>
+    </div>
+
+    <div id="ascension-voie-flash" class="flex-column h-100" style="justify-content: space-around;">
+        <div id="ascension-voie-flash-graph-container">
+            <div id="ascension-voie-flash-graph"></div>
+            <script type="application/json" id="ascension-voie-flash-graph-data">{{ graph_ascension_voie_flash|safe }}</script>
+        </div>
+
+        <div id="ascension-voie-flash-data-container" class="d-flex flex-column align-items-center justify-content-center">
+            <div class="row w-50 text-center">
+                <div class="total col-5 d-flex flex-column justify-content-center align-items-center">
+                    <span class="fw-bold mb-2">{{ total_moulinette_voie_flash }}</span>
+                    <p style="font-size: .9rem">{% trans "Moulinette" %}</p>
+                </div>
+                <div class="col-2 d-flex justify-content-center">
+                    <div class="vertical-bar"></div>
+                </div>
+                <div class="total-lead col-5 d-flex flex-column justify-content-center align-items-center">
+                    <span class="fw-bold mb-2">{{ total_lead_voie_flash }}</span>
+                    <p style="font-size: .9rem">{% trans "Tête" %}</p>
+                </div>
+            </div>
+
+            <div class="row w-100 text-center">
+                <i class="fa-solid fa-circle-bolt fs-1"></i>
+            </div>
+        </div>
+    </div>
+
+    <div id="ascension-bloc" class="flex-column h-100" style="justify-content: space-around;">
+        <div id="ascension-bloc-graph-container">
+            <div id="ascension-bloc-graph"></div>
+            <script type="application/json" id="ascension-bloc-graph-data">{{ graph_ascension_bloc|safe }}</script>
+        </div>
+
+        <div id="ascension-bloc-data-container" class="d-flex flex-column align-items-center justify-content-center">
+            <div class="total-bloc w-50 d-flex flex-column justify-content-center align-items-center">
+                <span class="fw-bold mb-2">{{ total_bloc }}</span>
+                <p style="font-size: .9rem;">{% trans "Total" %}</p>
+            </div>
+            <div class="row w-100 text-center">
+                <i class="fa-solid fa-circle-bolt fs-1"></i>
+            </div>
+        </div>
+    </div>
+
+    <div id="ascension-bloc-flash" class="flex-column h-100" style="justify-content: space-around;">
+        <div id="ascension-bloc-flash-graph-container">
+            <div id="ascension-bloc-flash-graph"></div>
+            <script type="application/json" id="ascension-bloc-flash-graph-data">{{ graph_ascension_bloc_flash|safe }}</script>
+        </div>
+
+        <div id="ascension-bloc-flash-data-container" class="d-flex flex-column align-items-center justify-content-center">
+            <div class="total-bloc w-50 d-flex flex-column justify-content-center align-items-center">
+                <span class="fw-bold mb-2">{{ total_bloc_flash }}</span>
+                <p style="font-size: .9rem;">{% trans "Total" %}</p>
+            </div>
+            <div class="row w-100 text-center">
+                <i class="fa-solid fa-circle-bolt fs-1"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- ## PROFIL VOIE ## -->
+    <div id="profil-voie" class="flex-column h-100" style="justify-content: space-around;">
+        <div id="profil-voie-graph-container">
+            <div id="profil-voie-graph"></div>
+            <script type="application/json" id="profil-voie-graph-data">
+                {{ graph_profil_voie|safe }}
+            </script>
+        </div>
+
+        <div id="profil-voie-data-container" class="d-flex align-items-center justify-content-center">
+            <div class="d-flex w-100 text-center">
+                <div class="margin-col p-0 m-0"></div>
+
+                {% for profil in "dalle,dièdre,vertical,dévers,toit"|split:"," %}
+                    <div class="col flex-grow-1 style-profil-container">
+                        <span class="style-profil fw-bold" style="background-color: #333;">
+                            {% trans profil %}
+                        </span>
+                        <span class="mt-1" style="font-size: .6rem;">
+                            {{ profil_percentage_voie|get_item:profil }}%
+                        </span>
+                    </div>
+                {% endfor %}
+
+                <div class="margin-col p-0 m-0"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ## PROFIL BLOC ## -->
+    <div id="profil-bloc" class="flex-column h-100" style="justify-content: space-around;">
+        <div id="profil-bloc-graph-container">
+            <div id="profil-bloc-graph"></div>
+            <script type="application/json" id="profil-bloc-graph-data">
+                {{ graph_profil_bloc|safe }}
+            </script>
+        </div>
+
+        <div id="profil-bloc-data-container" class="d-flex align-items-center justify-content-center">
+            <div class="d-flex w-100 text-center">
+                <div class="margin-col p-0 m-0"></div>
+
+                {% for profil in "dalle,dièdre,vertical,dévers,toit"|split:"," %}
+                    <div class="col flex-grow-1 style-profil-container">
+                        <span class="style-profil fw-bold" style="background-color: #333;">
+                            {% trans profil %}
+                        </span>
+                        <span class="mt-1" style="font-size: .6rem;">
+                            {{ profil_percentage_bloc|get_item:profil }}%
+                        </span>
+                    </div>
+                {% endfor %}
+
+                <div class="margin-col p-0 m-0"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ## STYLE VOIE ## -->
+    <div id="style-voie" class="flex-column h-100" style="justify-content: space-around;">
+        <div id="style-voie-graph-container">
+            <div id="style-voie-graph"></div>
+            <script type="application/json" id="style-voie-graph-data">
+                {{ graph_style_voie|safe }}
+            </script>
+        </div>
+
+        <div id="style-voie-data-container" class="d-flex align-items-center justify-content-center">
+            <div class="d-flex w-75 text-center g-2">
+
+                {% for pair in "conti:Niveau de difficulté homogène,rési:Plusieurs sections soutenues séparées par des repos modérés,bloc:Une ou deux sections très exigeantes entrecoupées de bon repos"|split:"," %}
+                    {% with pair|split_pair as parts %}
+                        {% with key=parts.0 desc=parts.1 %}
+                            <div class="flex-grow-1 style-profil-container">
+                                <span class="style-profil fst-italic style-{{ key|slugify }}"
+                                      data-bs-toggle="tooltip"
+                                      title="{% trans desc %}">
+                                    {% trans key %}
+                                </span>
+                                <span class="mt-1" style="font-size: .6rem;">
+                                    {{ style_percentage_voie|get_item:key }}%
+                                </span>
+                            </div>
+                        {% endwith %}
+                    {% endwith %}
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ## STYLE BLOC ## -->
+    <div id="style-bloc" class="flex-column h-100" style="justify-content: space-around;">
+        <div id="style-bloc-graph-container">
+            <div id="style-bloc-graph"></div>
+            <script type="application/json" id="style-bloc-graph-data">
+                {{ graph_style_bloc|safe }}
+            </script>
+        </div>
+
+        <div id="style-bloc-data-container" class="d-flex align-items-center justify-content-center">
+            <div class="d-flex w-100 text-center">
+                <div class="margin-col p-0 m-0"></div>
+
+                {% for pair in "classic:Mouvements classiques et lignes intuitives,technic:Équilibre et/ou placements,physic:Puissance et intensité,coordo:Mouvements dynamiques et timing précis,tricky:Séquences complexes nécessitant une lecture minutieuse"|split:"," %}
+                    {% with pair|split_pair as parts %}
+                        {% with key=parts.0 desc=parts.1 %}
+                            <div class="col flex-grow-1 style-profil-container">
+                                <span class="style-profil fst-italic style-{{ key|slugify }}"
+                                      data-bs-toggle="tooltip"
+                                      title="{% trans desc %}">
+                                    {% trans key %}
+                                </span>
+                                <span class="mt-1" style="font-size: .6rem;">
+                                    {{ style_percentage_bloc|get_item:key }}%
+                                </span>
+                            </div>
+                        {% endwith %}
+                    {% endwith %}
+                {% endfor %}
+
+                <div class="margin-col p-0 m-0"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Menu Voie/Bloc -->
+<div class="menu-bar row g-0">
+    <div class="menu-item col-6 selected" data-category="voie">{% trans "Voie" %}</div>
+    <div class="menu-item col-6" data-category="bloc">{% trans "Bloc" %}</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% include 'core/graph/script.html' %}
+{% endblock %}

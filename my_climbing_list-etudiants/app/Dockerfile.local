@@ -1,0 +1,10 @@
+FROM python:3.10-slim-bookworm
+ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1
+WORKDIR /app/src
+COPY src/requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+RUN useradd --create-home --uid 1000 mcl
+COPY --chown=mcl:mcl src/ ./
+USER mcl
+# Pas de cron, d'entrypoint historique ni de commande métier au démarrage.
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

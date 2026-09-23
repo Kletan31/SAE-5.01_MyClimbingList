@@ -1,0 +1,485 @@
+{% extends "base/app_base.html" %}
+{% load static %}
+{% load i18n %}
+{% load contest_extras %}
+
+{% block page_name %}{% trans "Contests" %}{% endblock %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'contest/css/classement_topo/classement_topo.css' %}">
+{% endblock %}
+
+{% block template-content %}
+<div class="container d-flex flex-column py-3 h-100">
+    <!-- Onglets principaux -->
+    <div class="text-center pb-2 sticky-top">
+        <div class="btn-group w-75 row g-0" role="group">
+            <button class="col-6 btn btn-outline-primary tab-button main-tab active" data-target="classement-section">
+                {% trans "Classement" %}
+            </button>
+            <button class="col-6 btn btn-outline-primary tab-button main-tab" data-target="topo-section">
+                {% trans "Topo" %}
+            </button>
+        </div>
+    </div>
+
+    <!-- Sous-menu -->
+    <div class="btn-group py-2 w-100" role="group" id="classement-switcher">
+
+        {% if contest.is_team_contest %}
+        <button type="button"
+                class="btn btn-outline-success tab-button classement-tab
+                       {% if active_classement == 'teams' %}active{% endif %}"
+                data-classement="teams">
+            {% trans "Équipes" %}
+        </button>
+        {% endif %}
+
+        <button type="button"
+                class="btn btn-outline-success tab-button classement-tab
+                       {% if active_classement == 'general' %}active{% endif %}"
+                data-classement="general">
+            {% trans "Général" %}
+        </button>
+
+        <button type="button"
+                class="btn btn-outline-success tab-button classement-tab
+                       {% if active_classement == 'femme' %}active{% endif %}"
+                data-classement="femme">
+            {% trans "Femmes" %}
+        </button>
+
+        <button type="button"
+                class="btn btn-outline-success tab-button classement-tab
+                       {% if active_classement == 'homme' %}active{% endif %}"
+                data-classement="homme">
+            {% trans "Hommes" %}
+        </button>
+    </div>
+
+    <!-- Contenu scrollable -->
+    <div class="flex-grow-1 overflow-auto" style="border: 2px solid #dee2e6; border-radius: 0.375rem;">
+
+        <!-- Section Classement -->
+        <div id="classement-section">
+            {% if classement_general %}
+
+                {% if contest.is_team_contest %}
+                <!-- Classement par équipe -->
+                <ul class="list-group classement-list{% if active_classement != 'teams' %} d-none{% endif %}" id="classement-teams">
+                    {% for team in classement_teams %}
+                        <a href="{% url 'contest:participant_detail_team' contest.id team.id %}?classement=teams"
+                           class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ team.rank }}.</strong>
+                                {% if team.is_current_user_team %}
+                                    <strong>{{ team.team_name }}</strong>
+                                {% else %}
+                                    {{ team.team_name }}
+                                {% endif %}
+                            </div>
+                            <span class="badge bg-primary rounded-pill">{{ team.score }}</span>
+                        </a>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <!-- Classement général individuel (scratch) -->
+                <ul class="list-group classement-list{% if active_classement != 'general' %} d-none{% endif %}" id="classement-general">
+                    {% for user in classement_general %}
+                        <a href="{% url 'contest:participant_detail' contest.id user.user_id %}?classement=general"
+                           class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ user.rank }}.</strong>
+                                {% if user.user_id == request.user.id %}
+                                    <strong>{{ user.username }}</strong>
+                                {% else %}
+                                    {{ user.username }}
+                                {% endif %}
+                            </div>
+                            <span class="badge bg-primary rounded-pill">{{ user.score }}</span>
+                        </a>
+                    {% endfor %}
+                </ul>
+
+                <!-- Classement femmes -->
+                <ul class="list-group classement-list{% if active_classement != 'femme' %} d-none{% endif %}" id="classement-femme">
+                    {% for user in classement_femme %}
+                        <a href="{% url 'contest:participant_detail' contest.id user.user_id %}?classement=femme"
+                           class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ user.rank }}.</strong>
+                                {% if user.user_id == request.user.id %}
+                                    <strong>{{ user.username }}</strong>
+                                {% else %}
+                                    {{ user.username }}
+                                {% endif %}
+                            </div>
+                            <span class="badge bg-primary rounded-pill">{{ user.score }}</span>
+                        </a>
+                    {% endfor %}
+                </ul>
+
+                <!-- Classement hommes -->
+                <ul class="list-group classement-list{% if active_classement != 'homme' %} d-none{% endif %}" id="classement-homme">
+                    {% for user in classement_homme %}
+                        <a href="{% url 'contest:participant_detail' contest.id user.user_id %}?classement=homme"
+                           class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ user.rank }}.</strong>
+                                {% if user.user_id == request.user.id %}
+                                    <strong>{{ user.username }}</strong>
+                                {% else %}
+                                    {{ user.username }}
+                                {% endif %}
+                            </div>
+                            <span class="badge bg-primary rounded-pill">{{ user.score }}</span>
+                        </a>
+                    {% endfor %}
+                </ul>
+
+            {% else %}
+                <p class="text-muted text-center" style="font-size: .85rem;">
+                    {% trans "Aucun participant pour le moment." %}
+                </p>
+            {% endif %}
+        </div>
+
+        <!-- Section Topo -->
+        <div id="topo-section" style="display: none;">
+            {% if topo %}
+                <ul class="list-group">
+                    {% for item in topo %}
+                        {% with user_result=user_results_map|get_item:item.ouverture.id %}
+                            <li class="list-group-item d-flex flex-column align-items-start">
+                                <div class="w-100 d-flex justify-content-between align-items-center mb-1">
+                                    <div class="text-truncate w-50 pb-1">
+                                        <strong>
+                                            {% if item.ouverture.nom %}
+                                                {{ item.ouverture.nom }}
+                                            {% else %}
+                                                {% if item.ouverture.bloc %}
+                                                    {% blocktrans trimmed with rel=item.ouverture.relais coul=item.ouverture.couleur %}
+                                                        S{{ rel }} • {{ coul }}
+                                                    {% endblocktrans %}
+                                                {% else %}
+                                                    {% blocktrans trimmed with rel=item.ouverture.relais coul=item.ouverture.couleur %}
+                                                        R{{ rel }} • {{ coul }}
+                                                    {% endblocktrans %}
+                                                {% endif %}
+                                            {% endif %}
+                                        </strong><br>
+
+                                        <small>
+                                            {% if item.ouverture.nom %}
+                                                {% if item.ouverture.bloc %}
+                                                    {% blocktrans trimmed with rel=item.ouverture.relais %}
+                                                        S{{ rel }} -
+                                                    {% endblocktrans %}
+                                                {% else %}
+                                                    {% blocktrans trimmed with rel=item.ouverture.relais %}
+                                                        R{{ rel }} -
+                                                    {% endblocktrans %}
+                                                {% endif %}
+                                            {% endif %}
+
+                                            {% if not contest.hide_cotation %}
+                                                {{ item.ouverture.niveau }} –
+                                            {% endif %}
+
+                                            {{ item.ouverture.couleur }}
+                                        </small>
+                                    </div>
+                                    <span class="badge rounded-pill {% if item.ouverture.id in done_ids %}badge-done{% else %}bg-secondary{% endif %}">
+                                        {{ item.info }}
+                                    </span>
+                                </div>
+
+                                {% if not contest.is_permanent %}
+                                    <div class="row w-100 m-auto" style="height: 50px;">
+                                        <!-- Checkbox Top -->
+                                        <div class="col d-flex flex-column align-items-center">
+                                            <input
+                                                class="form-check-input checkbox-top mb-1"
+                                                type="checkbox"
+                                                id="top-{{ item.ouverture.id }}"
+                                                data-ouverture-id="{{ item.ouverture.id }}"
+                                                {% if user_result and user_result.has_top %}checked{% endif %}
+                                            >
+                                            <label class="form-check-label small" for="top-{{ item.ouverture.id }}">
+                                                {% trans "Top" %}
+                                            </label>
+                                        </div>
+
+                                        {% if contest.has_zone and item.ouverture.bloc %}
+                                        <!-- Checkbox Zone (seulement pour les blocs) -->
+                                        <div class="col d-flex flex-column align-items-center">
+                                            <input
+                                                class="form-check-input checkbox-zone mb-1"
+                                                type="checkbox"
+                                                id="zone-{{ item.ouverture.id }}"
+                                                data-ouverture-id="{{ item.ouverture.id }}"
+                                                {% if user_result and user_result.has_zone %}checked{% endif %}
+                                            >
+                                            <label class="form-check-label small" for="zone-{{ item.ouverture.id }}">
+                                                {% trans "Zone" %}
+                                            </label>
+                                        </div>
+                                        {% endif %}
+
+                                        {% if contest.has_degaine and not item.ouverture.bloc and item.ouverture.relais in relais_en_tete %}
+                                        <!-- Sélecteur Dégaines -->
+                                        <div class="col d-flex flex-column align-items-center">
+                                            <select class="form-select form-select-sm w-auto degaine-select mb-1"
+                                                    data-ouverture-id="{{ item.ouverture.id }}">
+                                                {% for i in "0123456789012345678" %}
+                                                    <option value="{{ forloop.counter0 }}"
+                                                    {% if user_result and user_result.degaines_reached == forloop.counter0 %}selected{% endif %}
+                                                    >{{ forloop.counter0 }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <label class="form-check-label small">
+                                                {% trans "Dégaines" %}
+                                            </label>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            </li>
+                        {% endwith %}
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted text-center py-3">
+                    {% trans "Aucune ouverture associée à ce contest." %}
+                </p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Boutons du bas : fixés -->
+    <div class="py-2 sticky-bottom w-100 d-flex justify-content-center{% if not contest.is_running %} d-none{% endif %}">
+        <div class="w-50 d-flex flex-column">
+            {% if not contest.is_permanent %}
+                <button id="save-changes" class="btn btn-success w-100 mb-2">
+                    {% trans "Enregistrer" %}
+                </button>
+            {% endif %}
+            <button id="refresh-contests" class="btn btn-secondary w-100 mb-2">
+                {% trans "Actualiser" %}
+            </button>
+            <a href="{% url 'contest:unsubscribe' contest.id %}"
+               class="text-muted text-center text-decoration-underline"
+               style="font-size: .75rem;">
+                {% trans "Ne plus participer" %}
+            </a>
+        </div>
+
+        <!-- Toast de confirmation -->
+        <div class="position-fixed p-2" style="z-index: 11; top: var(--top-bar-height);">
+            <div class="toast align-items-center text-bg-warning border-0 w-100" id="save-toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <!-- Message dynamique injecté via JS -->
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                            data-bs-dismiss="toast" aria-label="{% trans 'Fermer' %}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{# Script Classement #}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Onglets principaux : Classement / Topo
+    const mainTabButtons = document.querySelectorAll(".main-tab");
+    const sections = {
+        "classement-section": document.getElementById("classement-section"),
+        "topo-section": document.getElementById("topo-section"),
+    };
+
+    const refreshBtn = document.getElementById("refresh-contests");
+    const saveBtn = document.getElementById("save-changes");
+    const subMenu = document.getElementById("classement-switcher"); // ← sous-menu
+
+    function updateButtonsForTab(target) {
+        // Boutons bas
+        if (target === "classement-section") {
+            if (refreshBtn) refreshBtn.style.display = "block";
+            if (saveBtn) saveBtn.style.display = "none";
+            if (subMenu) subMenu.classList.remove("invisible");        // ← montrer sous-menu
+        } else if (target === "topo-section") {
+            if (refreshBtn) refreshBtn.style.display = "none";
+            if (saveBtn) saveBtn.style.display = "block";
+            if (subMenu) subMenu.classList.add("invisible");           // ← cacher sous-menu
+        }
+    }
+
+    mainTabButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            mainTabButtons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            for (const id in sections) {
+                sections[id].style.display = (id === btn.dataset.target) ? "block" : "none";
+            }
+            updateButtonsForTab(btn.dataset.target);
+        });
+    });
+
+    // Sous-onglets Classement : Général / Femme / Homme
+    document.querySelectorAll("#classement-switcher .classement-tab").forEach(button => {
+        button.addEventListener("click", () => {
+            document.querySelectorAll("#classement-switcher .classement-tab").forEach(b => b.classList.remove("active"));
+            button.classList.add("active");
+
+            const target = button.dataset.classement;
+            document.querySelectorAll(".classement-list").forEach(list => list.classList.add("d-none"));
+            const el = document.getElementById(`classement-${target}`);
+            if (el) {
+                el.classList.remove("d-none");
+            }
+        });
+    });
+
+    // Bouton actualiser
+    const refreshBtnEl = document.getElementById("refresh-contests");
+    if (refreshBtnEl) {
+        refreshBtnEl.addEventListener("click", function () {
+            if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({ action: "CLEAR_CONTESTS_CACHE" });
+            }
+            preloadView();
+            requestAnimationFrame(() => setTimeout(() => window.location.reload(), 50));
+        });
+    }
+
+    // Initialisation
+    const activeMainButton = document.querySelector(".main-tab.active");
+    if (activeMainButton) {
+        updateButtonsForTab(activeMainButton.dataset.target);
+    }
+});
+</script>
+{# Script Topo #}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const contestId = "{{ contest.id | safe }}";
+    const startDate = "{{ start_date|default:"null" | safe }}";
+    const endDate = "{{ end_date|default:"null" | safe }}";
+    const pendingChanges = [];
+
+    function addChange(ouvertureId, type, value) {
+        const index = pendingChanges.findIndex(c => c.ouverture_id === Number(ouvertureId) && c.type === type);
+        if (index !== -1) {
+            pendingChanges[index].value = value;
+        } else {
+            pendingChanges.push({ ouverture_id: ouvertureId, type: type, value: value });
+        }
+    }
+
+    function updateLinkedFields(checkbox) {
+        const ouvertureId = checkbox.dataset.ouvertureId;
+
+        const zoneCheckbox = document.getElementById(`zone-${ouvertureId}`);
+        if (zoneCheckbox) {
+            zoneCheckbox.checked = checkbox.checked;
+            zoneCheckbox.disabled = checkbox.checked;
+            addChange(ouvertureId, "zone", checkbox.checked ? 1 : 0);
+        }
+
+        const degaineSelect = document.querySelector(`select.degaine-select[data-ouverture-id="${ouvertureId}"]`);
+        if (degaineSelect) {
+            degaineSelect.value = checkbox.checked ? "18" : "0";
+            degaineSelect.disabled = checkbox.checked;
+            addChange(ouvertureId, "degaine", checkbox.checked ? 18 : 0);
+        }
+    }
+
+    document.querySelectorAll(".checkbox-top").forEach(checkbox => {
+        checkbox.addEventListener("change", () => {
+            const ouvertureId = checkbox.dataset.ouvertureId;
+            const newValue = checkbox.checked ? 1 : 0;
+            addChange(ouvertureId, "top", newValue);
+            updateLinkedFields(checkbox);
+        });
+
+        if (checkbox.checked) {
+            updateLinkedFields(checkbox);
+        }
+    });
+
+    document.querySelectorAll(".checkbox-zone").forEach(checkbox => {
+        checkbox.addEventListener("change", () => {
+            const ouvertureId = checkbox.dataset.ouvertureId;
+            const newValue = checkbox.checked ? 1 : 0;
+            addChange(ouvertureId, "zone", newValue);
+        });
+    });
+
+    document.querySelectorAll(".degaine-select").forEach(select => {
+        select.addEventListener("change", () => {
+            const ouvertureId = select.dataset.ouvertureId;
+            const value = select.value;
+            addChange(ouvertureId, "degaine", value);
+        });
+    });
+
+    const saveBtn = document.getElementById("save-changes");
+    if (saveBtn) {
+        saveBtn.addEventListener("click", () => {
+            if (pendingChanges.length === 0) {
+                return;
+            }
+
+            const now = new Date();
+
+            if (startDate && now < new Date(startDate)) {
+                showToast("Le contest n'a pas encore commencé.");
+                return;
+            }
+            if (endDate && now > new Date(endDate)) {
+                showToast("Le contest est terminé.");
+                return;
+            }
+
+            // Sinon, on envoie normalement
+            const langCode = window.location.pathname.split("/")[1];
+            const fetchUrl = `/${langCode}/contest/${contestId}/submit_all/`;
+
+            fetch(fetchUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie('csrftoken')
+                },
+                body: JSON.stringify({ changes: pendingChanges })
+            })
+            .then(response => {
+                if (response.ok) {
+                    pendingChanges.length = 0;
+                    showToast("Modifications enregistrées !");
+                } else {
+                    alert("Erreur lors de l'enregistrement.");
+                }
+            })
+            .catch(() => {
+                alert("Erreur réseau.");
+            });
+        });
+    }
+
+    function showToast(message) {
+        const toastEl = document.getElementById('save-toast');
+        toastEl.querySelector('.toast-body').textContent = message;
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    }
+});
+</script>
+{% endblock %}

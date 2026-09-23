@@ -1,0 +1,21 @@
+{% load static %}
+<script type="module">
+import { initializeIncrementDecrementButtons } from "{% static 'core/js/confirm_session/sessionIncrementDecrementButtons.js' %}";
+import { initializeIcons } from "{% static 'core/js/confirm_session/iconLogic.js' %}";
+import { initializeTryValidation } from "{% static 'core/js/confirm_session/tryInputLogic.js' %}";
+import { initializeSessionState } from "{% static 'core/js/confirm_session/sessionDataPersistence.js' %}";
+import { initializeDeleteButtons } from "{% static 'core/js/confirm_session/routeDeletionHandler.js' %}";
+import { updateHiddenInputFromSession } from "{% static 'core/js/confirm_session/formDataSync.js' %}";
+import { displayFlashIconEdit } from "{% static 'core/js/confirm_session/displayFlashIconEdit.js' %}";
+
+document.addEventListener('DOMContentLoaded', () => {
+    initTooltips();
+    initializeIncrementDecrementButtons();
+    initializeIcons();
+    initializeTryValidation();
+    initializeSessionState();
+    initializeDeleteButtons();
+    updateHiddenInputFromSession();
+    displayFlashIconEdit();
+});
+</script>

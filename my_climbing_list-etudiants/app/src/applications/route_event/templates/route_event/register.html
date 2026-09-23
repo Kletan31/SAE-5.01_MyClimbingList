@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - {{ event.name }}</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'route_event/css/route_event.css' %}">
+</head>
+<body>
+    <main class="event-page">
+        <header class="event-header">
+            <img class="event-logo" src="{% static 'route_event/media/logo_20.svg' %}" alt="Contest voie">
+        </header>
+
+        <section class="event-card">
+            <h2 class="event-card-title">Créneaux disponibles</h2>
+
+            <div class="event-meta">
+                {% for item in phases_with_availability %}
+                    <p class="event-meta-item">
+                        <strong>{{ item.phase.name }}</strong><br>
+                        {{ item.remaining_places }} place(s) disponible(s) sur {{ item.phase.capacity }}
+                    </p>
+                {% endfor %}
+            </div>
+        </section>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="event-message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        {% if form.non_field_errors %}
+            <div class="event-alert">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <section class="event-card">
+            <h2 class="event-card-title">Votre inscription</h2>
+
+            <form method="post" class="event-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <button class="event-button event-button-primary" type="submit">
+                    Valider l’inscription
+                </button>
+            </form>
+        </section>
+
+        <div class="event-actions">
+            <a class="event-link-button" href="{% url 'route_event:home' %}">Retour</a>
+        </div>
+    </main>
+</body>
+</html>

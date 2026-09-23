@@ -1,0 +1,19 @@
+{% load i18n %}
+
+<div id="updatePopup" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered m-3">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header justify-content-center">
+                <h5 class="modal-title">{{ popup_to_show.title }}</h5>
+            </div>
+            <div class="modal-body">
+                <div class="text-body" style="line-height: 1.25;">
+                    {{ popup_to_show.content|safe }}
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button id="popup-confirm" class="btn btn-primary">{% trans "C'est parti !" %}</button>
+            </div>
+        </div>
+    </div>
+</div>

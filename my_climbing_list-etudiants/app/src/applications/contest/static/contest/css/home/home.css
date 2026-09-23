@@ -1,0 +1,65 @@
+.contests-select {
+    color: #EE7f00;
+}
+.salle-card {
+  position: relative;
+  border-radius: 16px;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  overflow: hidden;
+  height: 100%;
+  box-shadow: 0 8px 24px rgb(2 6 23 / 10%);
+  border-color: #e2e8f0;
+}
+.salle-icon-wrap {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: radial-gradient(120% 120% at 20% 20%, #ebf1ff 0%, #dfe7ff 40%, #f8fafc 100%);
+  border: 1px solid #e5e7eb;
+  margin: 0 auto 10px;
+  box-shadow: 0 8px 24px rgb(58 82 158 / 20%);
+}
+.salle-icon-wrap i {
+  font-size: 1.25rem;
+  color: #39529E;
+}
+
+.salle-hero-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  height: 100%;
+  box-shadow: 0 8px 24px rgb(149 27 149 / 20%);
+  border-color: #e2e8f0;
+}
+.salle-hero-icon-wrap {
+  width: 100px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: radial-gradient(120% 120% at 20% 20%, #ebf1ff 0%, #dfe7ff 40%, #f8fafc 100%);
+  border: 1px solid #e5e7eb;
+  margin: 0 auto 10px;
+  box-shadow: 0 8px 24px rgb(58 82 158 / 40%);
+}
+.salle-hero-icon-wrap i {
+  font-size: 1.5rem;
+  color: #39529E;
+}
+
+.badge-slot {
+  min-height: 22px; /* réserve la place du badge même s'il est absent */
+}
+
+@media (min-width: 768px) { .grid-col { width: 33.333%; } }
+@media (min-width: 992px) { .grid-col { width: 25%; } }
+
+/* Popup */
+.icon-selected {
+  color: #39529E !important;
+  transform: scale(1.3);
+  transition: transform 0.2s ease, color 0.2s ease;
+}

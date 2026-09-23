@@ -1,0 +1,26 @@
+{% extends "base/staff_admin_base.html" %}
+{% load i18n %}
+
+{% block backLink %}
+    {% url 'staff_admin:contest_list' %}?tab={{ request.GET.tab|default:'evenement' }}
+{% endblock %}
+
+{% block content %}
+    <div class="container py-4">
+        <h1>{% trans "Supprimer le contest" %}</h1>
+
+        <p>
+            {% blocktrans %}Êtes-vous sûr de vouloir supprimer <strong>{{ contest.name }}</strong> ?{% endblocktrans %}
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">
+                {% trans "Confirmer la suppression" %}
+            </button>
+            <a href="{% url 'staff_admin:contest_list' %}?tab={{ request.GET.tab|default:'evenement' }}" class="btn btn-secondary">
+                {% trans "Annuler" %}
+            </a>
+        </form>
+    </div>
+{% endblock %}

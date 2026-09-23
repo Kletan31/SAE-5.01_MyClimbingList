@@ -1,0 +1,1456 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-27 07:36+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Contests"
+msgstr "Concursos"
+
+msgid "Classement"
+msgstr "Classificação"
+
+msgid "Topo"
+msgstr "Topo"
+
+msgid "Équipes"
+msgstr "Equipas"
+
+msgid "Général"
+msgstr "Geral"
+
+msgid "Femmes"
+msgstr "Mulheres"
+
+msgid "Hommes"
+msgstr "Homens"
+
+msgid "Aucun participant pour le moment."
+msgstr "Nenhum participante no momento."
+
+msgid "S%(rel)s • %(coul)s"
+msgstr "S%(rel)s • %(coul)s"
+
+msgid "R%(rel)s • %(coul)s"
+msgstr "R%(rel)s • %(coul)s"
+
+msgid "S%(rel)s -"
+msgstr "S%(rel)s -"
+
+msgid "R%(rel)s -"
+msgstr "R%(rel)s -"
+
+msgid "Top"
+msgstr "Top"
+
+msgid "Zone"
+msgstr "Zona"
+
+msgid "Dégaines"
+msgstr "Expressos"
+
+msgid "Aucune ouverture associée à ce contest."
+msgstr "Nenhuma via associada a este concurso."
+
+msgid "Enregistrer"
+msgstr "Guardar"
+
+msgid "Actualiser"
+msgstr "Atualizar"
+
+msgid "Ne plus participer"
+msgstr "Deixar de participar"
+
+msgid "Fermer"
+msgstr "Fechar"
+
+msgid "Complet"
+msgstr "Lotado"
+
+msgid "%(acc)s/%(max)s"
+msgstr "%(acc)s/%(max)s"
+
+msgid "Aucune description"
+msgstr "Sem descrição"
+
+msgid "Discipline :"
+msgstr "Disciplina:"
+
+msgid "Toutes disciplines"
+msgstr "Todas as disciplinas"
+
+msgid "Format :"
+msgstr "Formato:"
+
+msgid "Dates :"
+msgstr "Datas:"
+
+msgid "du %(start)s au %(end)s"
+msgstr "de %(start)s a %(end)s"
+
+msgid "Votre inscription est en attente de validation par un membre du staff."
+msgstr "A sua inscrição está pendente de validação por um membro da equipa."
+
+msgid "Votre inscription a été refusée par un membre du staff."
+msgstr "A sua inscrição foi recusada por um membro da equipa."
+
+msgid "Accéder au contest"
+msgstr "Aceder ao concurso"
+
+msgid ""
+"Votre inscription est validée ! Le contest débute le %(start)s. Vous pourrez "
+"accéder au topo à partir de cette date."
+msgstr ""
+"A sua inscrição foi validada! O concurso começa em %(start)s. Poderá aceder "
+"ao topo a partir dessa data."
+
+msgid "Le contest a atteint le nombre maximum de participants."
+msgstr "O concurso atingiu o número máximo de participantes."
+
+msgid "Participer"
+msgstr "Participar"
+
+msgid "Votre inscription passera en attente de validation par le staff."
+msgstr "A sua inscrição ficará pendente de validação pela equipa."
+
+msgid "Le contest débute le <strong>%(start)s</strong>."
+msgstr "O concurso começa em <strong>%(start)s</strong>."
+
+msgid "Permanent"
+msgstr "Permanente"
+
+msgid "Événement"
+msgstr "Evento"
+
+msgid "Résultats"
+msgstr "Resultados de"
+
+msgid "Aucune description."
+msgstr "Sem descrição."
+
+msgid "Du %(start)s au %(end)s"
+msgstr "De %(start)s a %(end)s"
+
+msgid "Voir"
+msgstr "Ver"
+
+msgid "Aucun contest à afficher pour le moment."
+msgstr "Nenhum concurso para mostrar no momento."
+
+msgid "Alti Ligue"
+msgstr "Alti Liga"
+
+msgid "Classement global"
+msgstr "Classificação"
+
+msgid "%(n)s en cours"
+msgstr "%(n)s em curso"
+
+msgid "%(n)s à venir"
+msgstr "%(n)s futuros"
+
+msgid "Aucun en cours"
+msgstr "Nenhum em curso"
+
+msgid "Aucune salle disponible pour le moment."
+msgstr "Nenhum ginásio disponível no momento."
+
+msgid "Avant de continuer"
+msgstr "Antes de continuar"
+
+msgid ""
+"Merci d’indiquer vos <strong>Nom, Prénom</strong> ainsi que votre "
+"<strong>genre</strong> pour participer aux contests."
+msgstr ""
+"Por favor, indique o seu <strong>apelido e nome</strong>, bem como o seu "
+"<strong>género</strong>, para participar nos concursos."
+
+msgid "Genre"
+msgstr "Género"
+
+msgid "Retour"
+msgstr "Voltar"
+
+msgid "Résultats de"
+msgstr "Resultados de"
+
+msgid "Membres de l’équipe :"
+msgstr "Membros da equipa:"
+
+msgid "Score total :"
+msgstr "Pontuação total:"
+
+msgid "pts"
+msgstr "pts"
+
+msgid "Points de départ :"
+msgstr "Pontos iniciais:"
+
+msgid "S%(item.ouverture.relais)s • %(item.ouverture.couleur)s"
+msgstr "S%(item.ouverture.relais)s • %(item.ouverture.couleur)s"
+
+msgid "R%(item.ouverture.relais)s • %(item.ouverture.couleur)s"
+msgstr "R%(item.ouverture.relais)s • %(item.ouverture.couleur)s"
+
+msgid "%(pts)s pts"
+msgstr "%(pts)s pts"
+
+msgid "%(n)s dégaines"
+msgstr "%(n)s expressos"
+
+msgid "Aucune réussite pour ce contest."
+msgstr "Nenhuma conquista para este concurso."
+
+msgid "Classement du jour"
+msgstr "Classificação"
+
+msgid "Voie"
+msgstr "Via"
+
+msgctxt "label_single"
+msgid "Séance"
+msgstr "Sessão"
+
+msgid "Secteur:"
+msgstr "Sector:"
+
+msgid "Relais:"
+msgstr "Ancoragem:"
+
+msgid "Moulinette"
+msgstr "Top-rope"
+
+msgctxt "label_single"
+msgid "Montée"
+msgstr "Ascensão"
+
+msgid "Flash"
+msgstr "Flash"
+
+msgid "Tête"
+msgstr "À frente"
+
+msgid "Ajouter une ouverture"
+msgstr "Adicionar uma via"
+
+msgid "Modifier"
+msgstr "Editar"
+
+msgid "ma séance"
+msgstr "a minha sessão"
+
+msgid "Détails"
+msgstr "Detalhes"
+
+msgid "Style"
+msgstr "Estilo"
+
+msgid "Profil"
+msgstr "Perfil"
+
+msgid "Carnet"
+msgstr "Registo"
+
+msgid "Donnez votre avis"
+msgstr "Dê a sua opinião"
+
+msgid "Votre retour d'expérience est précieux."
+msgstr "O seu feedback é valioso."
+
+msgid "Merci pour votre retour ! Votre message a été envoyé avec succès."
+msgstr "Obrigado pelo seu feedback! A sua mensagem foi enviada com sucesso."
+
+msgid ""
+"Une erreur s’est produite. Merci de réessayer plus tard ou de contacter "
+"l'une de nos salles."
+msgstr ""
+"Ocorreu um erro. Por favor, tente novamente mais tarde ou contacte um dos "
+"nossos ginásios."
+
+msgid "Nom"
+msgstr "Apelido"
+
+msgid "Adresse e-mail"
+msgstr "Endereço de e-mail"
+
+msgid "Message"
+msgstr "Mensagem"
+
+msgid "Envoyer"
+msgstr "Enviar"
+
+msgid "Stats"
+msgstr "Estatísticas"
+
+msgid "Progression"
+msgstr "Progressão"
+
+msgid "Ascensions"
+msgstr "Ascensões"
+
+msgid "Profils"
+msgstr "Perfis"
+
+msgid "Styles"
+msgstr "Estilos"
+
+msgid "Vous devez réussir douze voies différentes pour voir votre progression"
+msgstr "É necessário completar doze vias diferentes para ver a sua progressão"
+
+msgid "Vous devez réussir douze blocs différents pour voir votre progression"
+msgstr ""
+"É necessário completar doze blocos diferentes para ver a sua progressão"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Propriétés"
+msgstr "Propriedades"
+
+msgid "Relais"
+msgstr "Ancoragem"
+
+msgid "Cotation"
+msgstr "Graduação"
+
+msgid "Couleur"
+msgstr "Cor"
+
+msgid "Secteur"
+msgstr "Sector"
+
+msgid "Projet"
+msgstr "Projeto"
+
+msgid "Réussie"
+msgstr "Concluída"
+
+msgid "Nouvelle"
+msgstr "Nova"
+
+msgid "Retirer"
+msgstr "Remover"
+
+msgid "Cotation masquée"
+msgstr "Graduação oculta"
+
+msgid "Nouveau"
+msgstr "Novo"
+
+msgid "Ajouter ma séance"
+msgstr "Adicionar a minha sessão"
+
+msgid "Blocs"
+msgstr "Blocos"
+
+msgid "Max"
+msgstr "Máx"
+
+msgid "Accueil"
+msgstr "Início"
+
+msgid "Aperçu de la semaine"
+msgstr "Visão geral da semana"
+
+msgid "Séance"
+msgid_plural "Séances"
+msgstr[0] "Sessão"
+msgstr[1] "Sessões"
+
+msgid "séance enregistrée"
+msgid_plural "séances enregistrées"
+msgstr[0] "sessão registada"
+msgstr[1] "sessões registadas"
+
+msgid "Aucune séance enregistrée"
+msgstr "Nenhuma sessão registada"
+
+msgid "C'est parti !"
+msgstr "Vamos a isso!"
+
+msgid "bloc réalisé"
+msgstr "bloco concluído"
+
+msgid "voie réalisée"
+msgstr "via concluída"
+
+msgid "blocs réalisés"
+msgstr "blocos concluídos"
+
+msgid "voies réalisées"
+msgstr "vias concluídas"
+
+msgid "Aucune"
+msgstr "Nenhuma"
+
+msgid "bloc ne correspond aux filtres sélectionnés."
+msgstr "Nenhum bloco corresponde aos filtros selecionados."
+
+msgid "voie ne correspond aux filtres sélectionnés."
+msgstr "Nenhuma via corresponde aos filtros selecionados."
+
+msgid "Vous n'avez pas encore réalisé de bloc"
+msgstr "Ainda não concluiu nenhum bloco"
+
+msgid "Vous n'avez pas encore réalisée de voie"
+msgstr "Ainda não concluiu nenhuma via"
+
+msgid "Oups !"
+msgstr "Ups!"
+
+msgid "Connexion perdue. Veuillez réessayer."
+msgstr "Ligação perdida. Por favor, tente novamente."
+
+msgid "Réessayer"
+msgstr "Tentar novamente"
+
+msgid "Choisissez votre langue"
+msgstr "Escolha o seu idioma"
+
+msgid "Français"
+msgstr "Francês"
+
+msgid "English"
+msgstr "Inglês"
+
+msgid "Spanish"
+msgstr "Espanhol"
+
+msgid "Portuguese"
+msgstr "Português"
+
+msgid "Voulez-vous vraiment vous déconnecter ?"
+msgstr "Tem a certeza de que quer terminar a sessão?"
+
+msgid "Oui"
+msgstr "Sim"
+
+msgid "Non"
+msgstr "Não"
+
+msgid "Salle préférée"
+msgstr "Ginásio favorito"
+
+msgid "Profil favori"
+msgstr "Perfil favorito"
+
+msgid "Style favori"
+msgstr "Estilo favorito"
+
+msgid "Niveau"
+msgstr "Grau"
+
+msgid "séances enregistrées"
+msgstr "sessões registadas"
+
+msgid "Mon Carnet"
+msgstr "O meu registo"
+
+msgid "Projets"
+msgstr "Projetos"
+
+msgid "Aucune voie en projet"
+msgstr "Nenhuma via em projeto"
+
+msgid "%(count)s voie en projet"
+msgid_plural "%(count)s voies en projet"
+msgstr[0] "%(count)s via em projeto"
+msgstr[1] "%(count)s vias em projeto"
+
+msgid "Aucun bloc en projet"
+msgstr "Nenhum bloco em projeto"
+
+msgid "%(count)s bloc en projet"
+msgid_plural "%(count)s blocs en projet"
+msgstr[0] "%(count)s bloco em projeto"
+msgstr[1] "%(count)s blocos em projeto"
+
+msgid "Ouvert le"
+msgstr "Aberto em"
+
+msgctxt "label_single"
+msgid "Dernière montée"
+msgstr "Última ascensão"
+
+msgid "Montée"
+msgid_plural "Montées"
+msgstr[0] "Ascensão"
+msgstr[1] "Ascensões"
+
+msgid "Les salles"
+msgstr "Ginásios"
+
+msgid "Image de la salle"
+msgstr "Imagem do ginásio"
+
+msgid "Définir comme salle favorite"
+msgstr "Definir como ginásio favorito"
+
+msgid "Confirmer la suppression de votre compte"
+msgstr "Confirmar eliminação da conta"
+
+msgid "Votre pseudo"
+msgstr "O seu nome de utilizador"
+
+msgid "Annuler"
+msgstr "Cancelar"
+
+msgid "Confirmer"
+msgstr "Confirmar"
+
+msgid "Paramètres"
+msgstr "Definições"
+
+msgid "Données Personnelles"
+msgstr "Dados pessoais"
+
+msgid "Membre depuis le"
+msgstr "Membro desde"
+
+msgid "Utilisée pour réinitialiser votre mot de passe"
+msgstr "Usado para redefinir a sua palavra-passe"
+
+msgid "Nom d'utilisateur"
+msgstr "Nome de utilizador"
+
+msgid "Le nom qui sera affiché lors des contests"
+msgstr "O nome que será exibido durante os concursos"
+
+msgid "Permet au staff de vous identifier lors des contests"
+msgstr "Permite que a equipa o identifique durante os concursos"
+
+msgid "Prénom"
+msgstr "Nome próprio"
+
+msgid "Permet un classement par genre lors des contests"
+msgstr "Permite classificação por género nos concursos"
+
+msgid "Données nécessaires à l'organisation des contests."
+msgstr "Dados necessários para a organização dos concursos."
+
+msgid "Aucune exploitation commerciale."
+msgstr "Nenhuma utilização comercial."
+
+msgid "Sauvegarder"
+msgstr "Guardar"
+
+msgid "Suppression du compte"
+msgstr "Eliminação da conta"
+
+msgid "Suivi"
+msgstr "Acompanhamento"
+
+msgid ""
+"Sélectionne les salles autorisées à consulter tes séances afin de te "
+"proposer un suivi d'entraînement personnalisé."
+msgstr ""
+"Seleciona os ginásios autorizados a consultar as tuas sessões para te propor "
+"um acompanhamento de treino personalizado."
+
+msgid "Enregistrer mes choix"
+msgstr "Guardar"
+
+msgid "My Climbing List"
+msgstr "My Climbing List"
+
+msgid "Mot de passe"
+msgstr "Palavra-passe"
+
+msgid "Connexion"
+msgstr "Iniciar sessão"
+
+msgid "Créer un compte"
+msgstr "Criar uma conta"
+
+msgid "Mot de passe oublié ?"
+msgstr "Esqueceu-se da palavra-passe?"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Confirmation"
+msgstr "Confirmação"
+
+msgid "Inscription"
+msgstr "Inscrição"
+
+msgid "Identifiez-vous"
+msgstr "Inicie sessão"
+
+msgid "Contacter le support"
+msgstr "Contactar o suporte"
+
+msgid "Contact"
+msgstr "Contacto"
+
+msgid "Nous vous répondrons dans les plus brefs délais."
+msgstr "Responderemos o mais rapidamente possível."
+
+msgid "En attente de réseau"
+msgstr "A aguardar ligação"
+
+msgid ""
+"Si vous pensez que le problème ne vient pas de votre appareil, veuillez "
+"contacter notre support technique."
+msgstr ""
+"Se acha que o problema não está relacionado com o seu dispositivo, por favor "
+"contacte o nosso suporte técnico."
+
+msgid "Le nom d'utilisateur contient des caractères invalides."
+msgstr "O nome de utilizador contém caracteres inválidos."
+
+msgid ""
+"Le nom d'utilisateur ne doit pas contenir de caractères de soulignement "
+"\"_\"."
+msgstr "O nome de utilizador não deve conter sublinhados \"_\"."
+
+msgid "Le nom d'utilisateur ne doit pas contenir de caractère \"@\"."
+msgstr "O nome de utilizador não deve conter o carácter \"@\"."
+
+msgid "Le nom d'utilisateur ne peut pas dépasser 12 caractères."
+msgstr "O nome de utilizador não pode exceder 12 caracteres."
+
+msgid "Tableau de bord – Contests"
+msgstr "Painel – Concursos"
+
+msgid "Événements"
+msgstr "Eventos"
+
+msgid "Permanents"
+msgstr "Permanentes"
+
+msgid "Passés"
+msgstr "Passados"
+
+msgid "Filtrer par salle :"
+msgstr "Filtrar por ginásio:"
+
+msgid "Toutes les salles"
+msgstr "Todos os ginásios"
+
+msgid "Aucun contest trouvé pour ce filtre."
+msgstr "Nenhum concurso encontrado para este filtro."
+
+msgid "Actif"
+msgstr "Ativo"
+
+msgid "Inactif"
+msgstr "Inativo"
+
+msgid "Salle :"
+msgstr "Ginásio:"
+
+msgid "Début :"
+msgstr "Início:"
+
+msgid "Fin :"
+msgstr "Fim:"
+
+msgid "Inscriptions :"
+msgstr "Inscrições:"
+
+msgid "Voir les participants"
+msgstr "Ver participantes"
+
+msgid "Aucun contest trouvé."
+msgstr "Nenhum concurso encontrado."
+
+msgid "Fréquentation de l'application"
+msgstr "Utilização da aplicação"
+
+msgid "Taux de rétention à 1 an"
+msgstr "Taxa de retenção a 1 ano"
+
+msgid ""
+"\n"
+"                    (%(retention_stats.retained)s pour "
+"%(retention_stats.total)s utilisateurs inscrits depuis plus d’un an)\n"
+"                    "
+msgstr ""
+"\n"
+"                    (%(retention_stats.retained)s de "
+"%(retention_stats.total)s utilizadores registados há mais de um ano)\n"
+"                    "
+
+msgid "Aucune donnée disponible pour le moment."
+msgstr "Nenhum dado disponível no momento."
+
+msgid "Fréquentation toutes salles confondues"
+msgstr "Frequência total (todos os ginásios)"
+
+msgid "Fréquentation par salle"
+msgstr "Frequência por ginásio"
+
+msgid "Connexion Direction"
+msgstr "Acesso da direção"
+
+msgid "Merci de patienter…"
+msgstr "Por favor, aguarde…"
+
+msgid "Calcul en cours."
+msgstr "Processamento em curso."
+
+msgid "Choisir la langue"
+msgstr "Escolher idioma"
+
+msgid "Se connecter"
+msgstr "Iniciar sessão"
+
+msgid "Participants – %(contest.name)s"
+msgstr "Participantes – %(contest.name)s"
+
+msgid "Retour au tableau de bord"
+msgstr "Voltar ao painel"
+
+msgid "Nom d’utilisateur"
+msgstr "Nome de utilizador"
+
+msgid "Date d'inscription"
+msgstr "Data de inscrição"
+
+msgid "Aucun participant pour ce contest."
+msgstr "Nenhum participante neste concurso."
+
+msgid "Aucun classement disponible aujourd’hui."
+msgstr "Nenhuma classificação disponível hoje."
+
+msgid "Grimpeur"
+msgstr "Escalador"
+
+msgid "Salle"
+msgstr "Ginásio:"
+
+msgid "Classement mis à jour quotidiennement."
+msgstr "Classificação atualizada diariamente."
+
+msgid "Défilement automatique"
+msgstr "Deslocamento automático"
+
+msgid "Taille du texte"
+msgstr "Tamanho do texto"
+
+msgid "Aucune équipe."
+msgstr "Nenhuma equipa."
+
+msgid "Aucun participant."
+msgstr "Nenhum participante."
+
+msgid "Aucune participante."
+msgstr "Nenhuma participante."
+
+msgid "Contests en cours"
+msgstr "Concursos em curso"
+
+msgid "Jusqu’au"
+msgstr "Até"
+
+msgid "Équipe"
+msgstr "Equipa"
+
+msgid "Individuel"
+msgstr "Individual"
+
+msgid "Aucun contest en cours."
+msgstr "Nenhum concurso em curso."
+
+msgid "Contests terminés"
+msgstr "Concursos terminados"
+
+msgid "Terminé le"
+msgstr "Terminado em"
+
+msgid "Aucun contest terminé récemment."
+msgstr "Nenhum concurso terminou recentemente."
+
+msgid "Mot de passe réinitialisé"
+msgstr "Palavra-passe redefinida"
+
+msgid "Votre mot de passe a bien été réinitialisé."
+msgstr "A sua palavra-passe foi redefinida com sucesso."
+
+msgid "Nouveau mot de passe"
+msgstr "Nova palavra-passe"
+
+msgid "Saisissez votre nouveau mot de passe."
+msgstr "Introduza a sua nova palavra-passe."
+
+msgid "Message envoyé"
+msgstr "Mensagem enviada"
+
+msgid ""
+"Si un compte est associé à cette adresse e-mail, vous avez reçu un message "
+"contenant les instructions pour réinitialiser votre mot de passe."
+msgstr ""
+"Se existir uma conta associada a este endereço de e-mail, recebeu uma "
+"mensagem com as instruções para redefinir a sua palavra-passe."
+
+msgid "Réinitialiser votre mot de passe"
+msgstr "Redefinir a sua palavra-passe"
+
+msgid "Saisissez votre adresse e-mail."
+msgstr "Introduza o seu endereço de e-mail."
+
+msgid "Guide d'installation"
+msgstr "Guia de instalação"
+
+msgid "En seulement deux étapes !"
+msgstr "Em apenas dois passos!"
+
+msgid "Appuie sur l’icône"
+msgstr "Toque no ícone"
+
+msgid "en bas de ton écran"
+msgstr "na parte inferior do seu ecrã"
+
+msgid "Fais défiler le menu et sélectionne"
+msgstr "Deslize o menu e selecione"
+
+msgid "Maintenance"
+msgstr "Manutenção"
+
+msgid ""
+"Nous travaillons activement pour rétablir l'accès le plus rapidement "
+"possible. Merci de votre patience et de votre compréhension."
+msgstr ""
+"Estamos a trabalhar ativamente para restaurar o acesso o mais rapidamente "
+"possível. Obrigado pela sua paciência e compreensão."
+
+msgid ""
+"Si vous avez des questions, n’hésitez pas à nous contacter à l’adresse "
+"suivante :"
+msgstr ""
+"Se tiver alguma questão, não hesite em contactar-nos através do seguinte "
+"endereço:"
+
+msgid "Grimpeurs actifs – 30 derniers jours"
+msgstr "Escaladores ativos – últimos 30 dias"
+
+msgid "⚠️ Cette liste est mise à jour une fois par jour."
+msgstr "⚠️ Esta lista é atualizada uma vez por dia."
+
+msgid "Pseudo"
+msgstr "Utilizador"
+
+msgid "Niveau actuel"
+msgstr "Nível atual"
+
+msgid "Dernier passage"
+msgstr "Última visita"
+
+msgid "Aucun grimpeur actif sur les 30 derniers jours."
+msgstr "Nenhum escalador ativo nos últimos 30 dias."
+
+msgid "Progression du niveau"
+msgstr "Progressão"
+
+msgid "Aucune donnée de progression disponible."
+msgstr "Nenhum dado disponível no momento."
+
+msgid "Connexion Staff"
+msgstr "Login da equipa"
+
+msgid "Mes contests"
+msgstr "Os meus concursos"
+
+msgid "Date de début"
+msgstr "Data de início"
+
+msgid "Date de fin"
+msgstr "Data de fim"
+
+msgid "Actions"
+msgstr "Ações"
+
+msgid "Inscriptions"
+msgstr "Inscrições"
+
+msgid "Supprimer"
+msgstr "Eliminar"
+
+msgid "Aucun contest créé pour l’instant."
+msgstr "Nenhum concurso criado até ao momento."
+
+msgid "Détail des ouvertures – %(contest.name)s"
+msgstr "Detalhes das vias – %(contest.name)s"
+
+msgid "Nombre total d'ouvertures : %(ouvertures_data|length)s"
+msgstr "Número total de vias: %(ouvertures_data|length)s"
+
+msgid "Ouverture"
+msgstr "Via"
+
+msgid "Réussites"
+msgstr "Sucessos"
+
+msgid "Points (prochaine)"
+msgstr "Pontos (próxima)"
+
+msgid "Aucune ouverture définie pour ce contest."
+msgstr "Nenhuma via definida para este concurso."
+
+msgid "Créer un contest"
+msgstr "Criar um concurso"
+
+msgid "Ouvertures disponibles"
+msgstr "Vias disponíveis"
+
+msgid "Ouvertures sélectionnées"
+msgstr "Vias selecionadas"
+
+msgid "Créer"
+msgstr "Criar"
+
+msgid "Espace staff"
+msgstr "Área da equipa"
+
+msgid ""
+"\n"
+"            Connecté en tant que <strong>%(username)s</strong>\n"
+"            "
+msgstr ""
+"\n"
+"                Ligado como <strong>%(username)s</strong>\n"
+"                "
+
+msgid "Créer un nouveau contest"
+msgstr "Criar um novo concurso"
+
+msgid ""
+"Lancez un contest dans votre salle pour animer l'activité et motiver les "
+"grimpeurs."
+msgstr ""
+"Lance um concurso na sua sala para dinamizar a atividade e motivar os "
+"escaladores."
+
+msgid "Voir mes contests"
+msgstr "Ver os meus concursos"
+
+msgid "Consultez, modifiez ou supprimez les contests que vous avez créés."
+msgstr "Consulte, edite ou elimine os concursos que criou."
+
+msgid "Accéder"
+msgstr "Aceder"
+
+msgid "Contests permanents"
+msgstr "Concursos permanentes"
+
+msgid ""
+"Activez ou désactivez les contests permanents (voie/bloc) dans votre salle."
+msgstr "Ative ou desative os concursos permanentes (vias/blocos) na sua sala."
+
+msgid "Suivi d'entraînement"
+msgstr "Acompanhamento de treino"
+
+msgid ""
+"Accédez aux grimpeurs qui ont autorisé votre salle à consulter leurs séances."
+msgstr ""
+"Acede aos escaladores que autorizaram o teu ginásio a consultar as suas "
+"sessões."
+
+msgid "Voir les grimpeurs"
+msgstr "Ver participantes"
+
+msgid "Fréquentation"
+msgstr "Frequência"
+
+msgid "Consultez la fréquentation de votre salle sur les dernières semaines."
+msgstr "Consulte a frequência da sua sala nas últimas semanas."
+
+msgid "Voir la fréquentation"
+msgstr "Frequência"
+
+msgid "Statistiques des ouvertures"
+msgstr "Estatísticas das vias"
+
+msgid ""
+"Analysez l’utilisation des voies et blocs : essais, réussites et ratios."
+msgstr "Analisa a utilização de vias e blocos: tentativas, sucessos e rácios."
+
+msgid "Voir les stats"
+msgstr "Ver estatísticas"
+
+msgid "Grimpeurs actifs"
+msgstr "Escaladores ativos"
+
+msgid "Identifiez les grimpeurs réellement actifs et leur niveau actuel."
+msgstr "Identifica os escaladores realmente ativos e o seu nível atual."
+
+msgid "Paramètres de la salle"
+msgstr "Definições da sala"
+
+msgid ""
+"Activez ou désactivez certaines options comme le masquage des cotations "
+"récentes."
+msgstr "Ative ou desative opções como ocultar graduações recentes."
+
+msgid "⚠️ Toute modification peut prendre jusqu'à"
+msgstr "⚠️ Qualquer alteração pode demorar até"
+
+msgid "pour être visible sur l'ensemble des appareils."
+msgstr "para ser visível em todos os dispositivos."
+
+msgid "Supprimer le contest"
+msgstr "Eliminar concurso"
+
+msgid "Êtes-vous sûr de vouloir supprimer <strong>%(contest.name)s</strong> ?"
+msgstr ""
+"Tem a certeza de que pretende eliminar <strong>%(contest.name)s</strong>?"
+
+msgid "Confirmer la suppression"
+msgstr "Confirmar eliminação"
+
+msgid "Modifier un contest"
+msgstr "Editar concurso"
+
+msgid "Enregistrer les modifications"
+msgstr "Guardar alterações"
+
+msgid "Inscriptions au contest : %(contest.name)s"
+msgstr "Inscrições no concurso: %(contest.name)s"
+
+msgid "Total :"
+msgstr "Total:"
+
+msgid "Validés :"
+msgstr "Validados:"
+
+msgid "En attente :"
+msgstr "Pendentes:"
+
+msgid "Refusés :"
+msgstr "Recusados:"
+
+msgid "Quota :"
+msgstr "Quota:"
+
+msgid "Places restantes : %(remaining_slots)s"
+msgstr "Vagas restantes: %(remaining_slots)s"
+
+msgid "illimité"
+msgstr "ilimitado"
+
+msgid "Tous"
+msgstr "Todos"
+
+msgid "Validés"
+msgstr "Validados"
+
+msgid "En attente"
+msgstr "Pendentes"
+
+msgid "Refusés"
+msgstr "Recusados"
+
+msgid "Utilisateur"
+msgstr "Utilizador"
+
+msgid "Statut"
+msgstr "Estado"
+
+msgid "Action"
+msgstr "Ação"
+
+msgid "Validé"
+msgstr "Validado"
+
+msgid "Refusé"
+msgstr "Recusado"
+
+msgid "Quota atteint"
+msgstr "Quota atingido"
+
+msgid "Valider"
+msgstr "Validar"
+
+msgid "Refuser"
+msgstr "Recusar"
+
+msgid "Aucune inscription enregistrée pour ce contest."
+msgstr "Nenhuma inscrição registada para este concurso."
+
+msgid "Gestion des équipes – %(contest.name)s"
+msgstr "Gestão de equipas – %(contest.name)s"
+
+msgid "Équipes existantes"
+msgstr "Equipas existentes"
+
+msgid "Supprimer cette équipe ?"
+msgstr "Eliminar esta equipa?"
+
+msgid "Aucune équipe créée pour le moment."
+msgstr "Nenhuma equipa criada até ao momento."
+
+msgid "Inscrits sans équipe"
+msgstr "Participantes sem equipa"
+
+msgid "Créer une nouvelle équipe"
+msgstr "Criar uma nova equipa"
+
+msgid "Nom de l’équipe"
+msgstr "Nome da equipa"
+
+msgid "Membres de l’équipe"
+msgstr "Membros da equipa"
+
+msgid "Grimpeurs – détail ouverture"
+msgstr "Escaladores – detalhe da via"
+
+msgid "Essais"
+msgstr "Tentativas"
+
+msgid "Aucun grimpeur n’a encore essayé cette ouverture."
+msgstr "Nenhum escalador completou esta via até ao momento."
+
+msgid "Ouvertures – statistiques d’utilisation"
+msgstr "Vias – estatísticas de utilização"
+
+msgid "Global"
+msgstr "Global"
+
+msgid "Aujourd’hui"
+msgstr "Hoje"
+
+msgid "Toutes"
+msgstr "Todas"
+
+msgid "Voies"
+msgstr "Via"
+
+msgid "Tous degrés"
+msgstr "Todos os graus"
+
+msgid "Type"
+msgstr "Tipo"
+
+msgid "Relais / Secteur"
+msgstr "Sector"
+
+msgid "Ratio"
+msgstr "Graduação"
+
+msgid "Contest :"
+msgstr "Concurso:"
+
+msgid ""
+"\n"
+"                %(count)s grimpeur a réussi cette ouverture.\n"
+"            "
+msgid_plural ""
+"\n"
+"                %(count)s grimpeurs ont réussi cette ouverture.\n"
+"            "
+msgstr[0] ""
+"\n"
+"                %(count)s escalador completou esta via.\n"
+"            "
+msgstr[1] ""
+"\n"
+"                %(count)s escaladores completaram esta via.\n"
+"            "
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Montées"
+msgstr "Subidas"
+
+msgid "Montées en tête"
+msgstr "Subidas em guia"
+
+msgid "Réussites en tête"
+msgstr "Encadenamentos em guia"
+
+msgid "Status"
+msgstr "Estado"
+
+msgid "%(seance.degaines_reached)s dégaines"
+msgstr "%(seance.degaines_reached)s costuras"
+
+msgid "Aucun grimpeur n’a encore réussi cette ouverture."
+msgstr "Nenhum escalador completou esta via até ao momento."
+
+msgid "Résultats de <strong>%(participant.username)s</strong>"
+msgstr "Resultados de <strong>%(participant.username)s</strong>"
+
+msgid "%(item.degaines_reached)s dégaines"
+msgstr "%(item.degaines_reached)s costuras"
+
+msgid "Aucune réussite pour ce participant."
+msgstr "Nenhuma tentativa bem-sucedida para este participante."
+
+msgid "Activez ou désactivez les contests permanents pour votre salle."
+msgstr "Ative ou desative os concursos permanentes da sua sala."
+
+msgid "Masquer les cotations des ouvertures de moins d'une semaine"
+msgstr "Ocultar as graduações das vias abertas há menos de uma semana"
+
+msgid ""
+"⚠️ Ce paramètre n'affecte que l'affichage côté client. Les cotations sont "
+"toujours enregistrées dans la base."
+msgstr ""
+"⚠️ Esta definição afeta apenas a visualização no lado do cliente. As "
+"graduações são sempre guardadas na base de dados."
+
+msgid "Position"
+msgstr "Posição"
+
+msgid "Score"
+msgstr "Pontuação"
+
+msgid "Mois précédent"
+msgstr "Mês anterior"
+
+msgid "Mois suivant"
+msgstr "Próximo mês"
+
+msgid "Voir les séances du jour"
+msgstr "Ver estatísticas"
+
+msgid "Aucune séance"
+msgstr "Nenhuma equipa."
+
+msgid "Séance enregistrée"
+msgstr "sessão registada"
+
+msgid "Détails de la séance du"
+msgstr "Detalhes da sessão de"
+
+msgid "essais"
+msgstr "Mensagem"
+
+msgid "tops"
+msgstr "tops"
+
+msgid "Aucune séance ce jour-là."
+msgstr "Nenhuma sessão registada"
+
+msgid "Aucun grimpeur n’a autorisé cette salle pour le suivi."
+msgstr "Nenhum escalador completou esta via até ao momento."
+
+msgid "Salle inconnue"
+msgstr "Iniciar sessão"
+
+msgid "L"
+msgstr "S"
+
+msgid "M"
+msgstr "T"
+
+msgid "J"
+msgstr "Q"
+
+msgid "V"
+msgstr "S"
+
+msgid "S"
+msgstr "S"
+
+msgid "D"
+msgstr "D"
+
+msgid "French"
+msgstr "Francês"
+
+msgid "Espace Direction"
+msgstr "Área de gestão"
+
+msgid "Déconnexion"
+msgstr "Terminar sessão"
+
+msgid "Un instant…"
+msgstr "Um instante…"
+
+msgid "My Climbing List – Staff"
+msgstr "My Climbing List – Staff"
+
+msgid "Toggle navigation"
+msgstr "Alternar navegação"
+
+msgid "Dashboard"
+msgstr "Painel"
+
+msgid "Améliorez votre expérience"
+msgstr "Melhore a sua experiência"
+
+msgid ""
+"Pour une utilisation optimale, nous vous recommandons d’installer cette "
+"application via votre navigateur."
+msgstr ""
+"Para uma utilização ideal, recomendamos instalar esta aplicação através do "
+"seu navegador."
+
+msgid "Pour cela :"
+msgstr "Para isso:"
+
+msgid ""
+"Ouvrez le menu du navigateur (souvent une icône à trois points en haut à "
+"droite)"
+msgstr ""
+"Abra o menu do navegador (normalmente um ícone de três pontos no canto "
+"superior direito)"
+
+msgid "Sélectionnez 'Installer l'application' ou 'Ajouter à l'écran d'accueil'"
+msgstr "Selecione “Instalar aplicação” ou “Adicionar ao ecrã inicial”"
+
+msgid ""
+"Si vous avez installé l'application via le Play Store, il est conseillé de "
+"la désinstaller et de la réinstaller via le navigateur afin de ne plus voir "
+"ce message."
+msgstr ""
+"Se instalou a aplicação através da Play Store, recomenda-se desinstalá-la e "
+"reinstalá-la através do navegador para deixar de ver esta mensagem."
+
+msgid "Les séances du jour sont prises en compte une fois la journée terminée."
+msgstr "As sessões do dia são consideradas depois de o dia terminar."
+
+msgid "dalle"
+msgstr "placa"
+
+msgid "vertical"
+msgstr "vertical"
+
+msgid "dévers"
+msgstr "desplome"
+
+msgid "dièdre"
+msgstr "diedro"
+
+msgid "toit"
+msgstr "teto"
+
+msgid "conti"
+msgstr "continuidade"
+
+msgid "rési"
+msgstr "resistência"
+
+msgid "bloc"
+msgstr "bloco"
+
+msgid "classic"
+msgstr "clássico"
+
+msgid "coordo"
+msgstr "coordenação"
+
+msgid "physic"
+msgstr "físico"
+
+msgid "technic"
+msgstr "técnico"
+
+msgid "tricky"
+msgstr "tricky"
+
+msgid "Blanc"
+msgstr "Branco"
+
+msgid "Bleu"
+msgstr "Azul"
+
+msgid "Bois"
+msgstr "Madeira"
+
+msgid "Gris"
+msgstr "Cinzento"
+
+msgid "Jaune"
+msgstr "Amarelo"
+
+msgid "Marron"
+msgstr "Castanho"
+
+msgid "Mauve"
+msgstr "Roxo"
+
+msgid "Noir"
+msgstr "Preto"
+
+msgid "Orange"
+msgstr "Laranja"
+
+msgid "Rose"
+msgstr "Rosa"
+
+msgid "Rouge"
+msgstr "Vermelho"
+
+msgid "Vert"
+msgstr "Verde"
+
+msgid "Jan"
+msgstr "Jan"
+
+msgid "Feb"
+msgstr "Fev"
+
+msgid "Mar"
+msgstr "Mar"
+
+msgid "Apr"
+msgstr "Abr"
+
+msgid "May"
+msgstr "Mai"
+
+msgid "Jun"
+msgstr "Jun"
+
+msgid "Jul"
+msgstr "Jul"
+
+msgid "Aug"
+msgstr "Ago"
+
+msgid "Sep"
+msgstr "Set"
+
+msgid "Oct"
+msgstr "Out"
+
+msgid "Nov"
+msgstr "Nov"
+
+msgid "Dec"
+msgstr "Dez"
+
+msgid "Niveau de difficulté homogène"
+msgstr "Nível de dificuldade homogéneo"
+
+msgid "Plusieurs sections soutenues séparées par des repos modérés"
+msgstr "Várias secções sustentadas separadas por descansos moderados"
+
+msgid "Une ou deux sections très exigeantes entrecoupées de bon repos"
+msgstr "Uma ou duas secções muito exigentes intercaladas com bons descansos"
+
+msgid "Mouvements classiques et lignes intuitives"
+msgstr "Movimentos clássicos e linhas intuitivas"
+
+msgid "Équilibre et/ou placements"
+msgstr "Equilíbrio e/ou posicionamentos precisos"
+
+msgid "Puissance et intensité"
+msgstr "Potência e intensidade"
+
+msgid "Mouvements dynamiques et timing précis"
+msgstr "Movimentos dinâmicos e sincronização precisa"
+
+msgid "Séquences complexes nécessitant une lecture minutieuse"
+msgstr "Sequências complexas que exigem uma leitura cuidadosa"
+
+msgid "<strong>Montée</strong> : un essai<br><strong>Top</strong> : essai sans chute<br><strong>Flash</strong> : premier essai sans chute"
+msgstr "<strong>Tentativa</strong>: uma tentativa<br><strong>Top</strong>: tentativa sem queda<br><strong>Flash</strong>: primeira tentativa sem queda"
+
+msgid "Voies essayées mais pas enchaînées<br><strong>Astuce</strong> : glissez vers la gauche pour supprimer un projet"
+msgstr "Vias tentadas mas não encadeadas<br><strong>Dica</strong>: deslize para a esquerda para remover um projeto"
+
+msgid "Blocs essayés mais pas enchaînés<br><strong>Astuce</strong> : glissez vers la gauche pour supprimer un projet"
+msgstr "Blocos tentados mas não encadeados<br><strong>Dica</strong>: deslize para a esquerda para remover um projeto"

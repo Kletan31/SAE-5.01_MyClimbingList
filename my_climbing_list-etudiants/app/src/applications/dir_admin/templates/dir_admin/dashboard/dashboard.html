@@ -1,0 +1,130 @@
+{% extends "base/dir_admin_base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">{% trans "Tableau de bord – Contests" %}</h1>
+
+    <!-- Boutons de filtre par type de contest -->
+    <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap">
+        <button class="btn btn-outline-primary filter-type active" data-type="evenement">
+            {% trans "Événements" %}
+        </button>
+        <button class="btn btn-outline-success filter-type" data-type="permanent">
+            {% trans "Permanents" %}
+        </button>
+        <button class="btn btn-outline-secondary filter-type" data-type="passe">
+            {% trans "Passés" %}
+        </button>
+    </div>
+
+    <!-- Sélecteur de salle -->
+    <div class="mb-4">
+        <label for="salle-filter" class="form-label">
+            {% trans "Filtrer par salle :" %}
+        </label>
+        <select id="salle-filter" class="form-select">
+            <option value="">{% trans "Toutes les salles" %}</option>
+            {% for salle in salles %}
+                <option value="{{ salle.id }}">{{ salle.nom }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div id="contest-list">
+        <p id="no-contest-message" class="text-muted text-center" style="display: none;">
+            {% trans "Aucun contest trouvé pour ce filtre." %}
+        </p>
+        {% if contests %}
+            {% for contest in contests %}
+                <div class="card mb-3 contest-item"
+                     data-type="{% if contest.end_date and contest.end_date < now %}passe{% elif contest.end_date %}evenement{% else %}permanent{% endif %}"
+                     data-salle="{{ contest.salle.id }}">
+                    <div class="card-body position-relative">
+                        {% if contest.is_permanent %}
+                            <span class="badge {% if contest.is_permanent_enabled %}bg-success{% else %}bg-secondary{% endif %} position-absolute top-0 end-0 m-2">
+                                {% if contest.is_permanent_enabled %}
+                                    {% trans "Actif" %}
+                                {% else %}
+                                    {% trans "Inactif" %}
+                                {% endif %}
+                            </span>
+                        {% endif %}
+
+                        <h5 class="card-title">{{ contest.name }}</h5>
+
+                        <div class="d-flex justify-content-between align-items-start flex-wrap">
+                            <p class="card-text mb-0" style="line-height: 1.5;">
+                                <strong>{% trans "Salle :" %}</strong> {{ contest.salle.nom }}<br>
+                                <strong>{% trans "Début :" %}</strong> {{ contest.start_date|date:"d/m/Y" }}<br>
+                                <strong>{% trans "Fin :" %}</strong>
+                                {% if contest.end_date %}
+                                    {{ contest.end_date|date:"d/m/Y" }}
+                                {% else %}
+                                    -
+                                {% endif %}<br>
+                                <strong>{% trans "Inscriptions :" %}</strong> {{ contest.nb_inscrits }}
+                            </p>
+
+                            <a href="{% url 'dir_admin:participants' contest.id %}" class="btn btn-outline-primary ms-auto mt-1">
+                                {% trans "Voir les participants" %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted text-center">
+                {% trans "Aucun contest trouvé." %}
+            </p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const typeButtons = document.querySelectorAll(".filter-type");
+    const salleFilter = document.getElementById("salle-filter");
+    const contestItems = document.querySelectorAll(".contest-item");
+
+    let currentType = "evenement";
+    let currentSalle = "";
+
+    function updateDisplay() {
+        let visibleCount = 0;
+        contestItems.forEach(item => {
+            const type = item.dataset.type;
+            const salle = item.dataset.salle;
+            const typeMatch = (type === currentType);
+            const salleMatch = (!currentSalle || salle === currentSalle);
+
+            const isVisible = typeMatch && salleMatch;
+            item.style.display = isVisible ? "block" : "none";
+
+            if (isVisible) visibleCount++;
+        });
+
+        const noContestMessage = document.getElementById("no-contest-message");
+        noContestMessage.style.display = (visibleCount === 0) ? "block" : "none";
+    }
+
+    typeButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            typeButtons.forEach(b => b.classList.remove("active"));
+            this.classList.add("active");
+            currentType = this.dataset.type;
+            updateDisplay();
+        });
+    });
+
+    salleFilter.addEventListener("change", function () {
+        currentSalle = this.value;
+        updateDisplay();
+    });
+
+    updateDisplay();  // Initialisation
+});
+</script>
+{% endblock %}

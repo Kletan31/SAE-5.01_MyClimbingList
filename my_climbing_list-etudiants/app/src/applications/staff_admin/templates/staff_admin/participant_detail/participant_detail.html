@@ -1,0 +1,77 @@
+{% extends "base/staff_admin_base.html" %}
+{% load i18n %}
+
+{% block backLink %}{% url 'staff_admin:inscriptions' contest.id %}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="h4 mb-4">
+        {% blocktrans %}Résultats de <strong>{{ participant.username }}</strong>{% endblocktrans %}
+        <span style="font-size: 1rem; font-style: italic;">
+            ({{ participant.first_name }} {{ participant.last_name }})
+        </span><br>
+        <small class="text-muted">{{ contest.name }}</small>
+    </h1>
+
+    <div class="mb-4">
+        <span class="badge bg-success fs-6">
+            {% trans "Score total :" %} {{ total_score }}
+            {% if contest.format == "1000_points" %}{% trans "pts" %}{% endif %}
+        </span>
+    </div>
+
+    {% if resultats %}
+        <ul class="list-group">
+            {% for item in resultats %}
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <div>
+                        <strong>
+                            {% if item.ouverture.nom %}
+                                {{ item.ouverture.nom }}
+                            {% else %}
+                                {% if item.ouverture.bloc %}
+                                    S{{ item.ouverture.relais }} • {{ item.ouverture.couleur }}
+                                {% else %}
+                                    R{{ item.ouverture.relais }} • {{ item.ouverture.couleur }}
+                                {% endif %}
+                            {% endif %}
+                        </strong><br>
+                        <small class="text-muted">
+                            {{ item.ouverture.niveau }}
+                            {% if item.ouverture.profil %}– {{ item.ouverture.profil }}{% endif %}
+                        </small>
+                    </div>
+
+                    <div class="d-flex align-items-center flex-wrap justify-content-end">
+                        {% if item.has_top %}
+                            {% if contest.format == "1000_points" %}
+                                <span class="badge bg-primary rounded-pill me-2">
+                                    {{ item.points }} {% trans "pts" %}
+                                </span>
+                            {% endif %}
+                            <span class="badge me-1" style="background-color: #198754;">
+                                {% trans "Top" %}
+                            </span>
+                        {% else %}
+                            {% if item.has_zone %}
+                                <span class="badge bg-primary me-1">
+                                    {% trans "Zone" %}
+                                </span>
+                            {% endif %}
+                            {% if item.degaines_reached %}
+                                <span class="badge bg-warning text-dark me-1">
+                                    {% blocktrans %}{{ item.degaines_reached }} dégaines{% endblocktrans %}
+                                </span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">
+            {% trans "Aucune réussite pour ce participant." %}
+        </p>
+    {% endif %}
+</div>
+{% endblock %}

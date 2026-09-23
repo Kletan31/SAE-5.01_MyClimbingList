@@ -1,0 +1,70 @@
+{% extends 'base/app_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'core/css/guidebook/main.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/guidebook/list.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/guidebook/map.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/guidebook/svg.css' %}">
+
+    <!-- Données relatives au plan -->
+    <meta name="salle_id" content="{{ salle_id }}">
+{% endblock %}
+
+{% block page_name %}{{ salle }}{% endblock %}
+
+{% block template-content %}
+<!-- Menu Voie/Bloc -->
+{% if voies_ouvertures|length != 0  and blocs_ouvertures|length != 0 %}
+<div class="menu-bar row">
+    <div class="menu-item col-6{% if not bloc %} selected{% endif %}" id="voie-tab">{% trans "Voie" %}</div>
+    <div class="menu-item col-6{% if bloc %} selected{% endif %}" id="bloc-tab">{% trans "Bloc" %}</div>
+</div>
+{% elif voies_ouvertures|length != 0 %}
+<div class="menu-bar row w-25">
+    <div class="menu-item col-12 selected" id="voie-tab">{% trans "Voie" %}</div>
+</div>
+{% elif blocs_ouvertures|length != 0 %}
+<div class="menu-bar row w-25">
+    <div class="menu-item col-12 selected" id="bloc-tab">{% trans "Bloc" %}</div>
+</div>
+{% endif %}
+
+<!-- Icône map/list -->
+<span id="guidebook-type-link">
+    <i class="fa-regular fa-map{% if map_display %} d-none{% endif %}"></i>
+    <i class="fa-solid fa-list-ul{% if not map_display %} d-none{% endif %}"></i>
+</span>
+
+<!-- SOUS-PAGES (deux types de topo) -->
+
+<!-- Plan -->
+<div id="map-guidebook" class="{% if not map_display %}d-none{% endif %}">
+    {% include 'core/guidebook/map.html' %}
+</div>
+
+<!-- Liste -->
+<div id="list-guidebook" class="{% if map_display %}map-display{% endif %}">
+    {% include 'core/guidebook/list.html' %}
+</div>
+
+<!-- Bouton "Ajouter la séance" -->
+<div id="add-button-container">
+    <button class="btn btn-secondary d-none">{% trans "Ajouter ma séance" %}</button>
+</div>
+
+<!-- Formulaire d'ajout de séance -->
+<form method="post" action="{% url 'core:guidebook' %}" id="guidebook-form">
+{% csrf_token %}
+    <input type="hidden" name="routes_order" id="routesOrder">
+    <input type="hidden" name="salle_id" value="{{ salle_id }}">
+    <input type="hidden" name="bloc" id="bloc-input" value="{{ bloc }}">
+    <input type="hidden" name="map_display" id="map-input" value="{{ map_display }}">
+</form>
+{% endblock %}
+
+{% block scripts %}
+{% include 'core/guidebook/script.html' %}
+{% endblock %}

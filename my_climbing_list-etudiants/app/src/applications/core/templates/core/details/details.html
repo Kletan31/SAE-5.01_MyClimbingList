@@ -1,0 +1,163 @@
+{% extends 'base/app_base.html' %}
+{% load ouverture_translate %}
+{% load static %}
+{% load i18n %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'core/css/core/logList.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/details/details.css' %}">
+{% endblock %}
+
+{% block page_name %}{% trans "Détails" %}{% endblock %}
+
+{% block template-content %}
+<div class="row w-100 pt-2">
+    <div class="col-2"></div>
+    <!-- Menu pour l'affichage des données graphiques -->
+    <div class="col-8 session-info">
+        <span class="fw-bold" style="font-size: .75rem">
+            {{ salle }}
+        </span>
+        <span class="fst-italic" style="font-size: .65rem">
+            {{ date_seance|date:"d M Y" }}
+        </span>
+    </div>
+    <!-- Édition de la séance -->
+    <div id="editLink" class="col-2 d-flex justify-content-end align-items-center" style="font-size: 1.25rem">
+        <i class="fa-regular fa-pen fa-sm"></i>
+    </div>
+</div>
+
+<!-- Graphiques -->
+<div class="chart-container w-100">
+    <!-- ## ASCENSION ## -->
+    <div id="ascension" class="flex-column h-100" style="justify-content: space-around;">
+        <!-- Graphiques de ascension -->
+        <div id="ascension-graph-container">
+            <div id="ascension-graph"></div>
+            <script type="application/json" id="ascension-graph-data">{{ graph_ascension|safe }}</script>
+        </div>
+    </div>
+
+    <!-- Données pour requête POST -->
+    <form id="details-form" action="{% url 'core:details' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="routes_order">
+        <input type="hidden" name="salle_id" value="{{ salle_id }}">
+        <input type="hidden" name="bloc" value="{{ bloc }}">
+        <input type="hidden" name="date_seance" value="{{ date_seance|date:"Y-m-d" }}">
+    </form>
+</div>
+
+<!-- Liste -->
+<div class="scrollable-container w-100">
+    <div class="list-container w-100">
+    {% for route in seances %}
+        <!-- Données sur les ouvertures -->
+        <meta name="route-{{ route.ouverture.id }}"
+              content='{
+                  "nb_try": {{ route.nb_try }},
+                  "nb_top": {{ route.nb_top }},
+                  "flash": {{ route.flash|lower }},
+                  "flash_available": {{ route.flash_available|lower }}
+                  {% if route.nb_try_lead %},
+                  "nb_try_lead": {{ route.nb_try_lead }},
+                  "nb_top_lead": {{ route.nb_top_lead }},
+                  "flash_lead": {{ route.flash_lead|lower }}
+                  {% endif %}
+              }'>
+
+        <!-- Conteneur pour chaque ouverture -->
+        <div class="main-row row g-0 w-100 p-2">
+            <div class="col-8 d-flex flex-column" style="font-size: .8rem; justify-content: space-around;">
+                <div class="w-100">
+                    <p class="m-0 fst-italic">{% if route.ouverture.bloc %}{% trans "Secteur:" %}{% else %}{% trans "Relais:" %}{% endif %} {{ route.ouverture.relais }}</p>
+                </div>
+                <div class="w-100">
+                    <p class="m-0 nom-ouverture fw-bold">
+                        {% if route.ouverture.nom %}
+                            {{ route.ouverture.nom|capfirst }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Icône tête -->
+            <div class="col-1 gap-1 d-flex justify-content-center align-items-center">
+            {% if route.leaded %}
+                <i class="fa-solid fa-arrow-up-long" style="color: #b0d54b; font-size: 1.15rem;"></i>
+            {% endif %}
+            </div>
+
+            <!-- Icône flash -->
+            <div class="col-1 gap-1 d-flex justify-content-center align-items-center">
+            {% if route.flashed %}
+                <i class="fa-solid fa-bolt flash-icon" style="color: #ffb512;"></i>
+            {% endif %}
+            </div>
+
+            <!-- Cotation -->
+            <div class="col-2 d-flex justify-content-center align-items-center">
+                <span id="levelRoute" class="circle-cotation" style="border-color: {{ route.ouverture.niveau_couleur }};">
+                    {{ route.ouverture.niveau }}
+                </span>
+            </div>
+        </div>
+
+        <div class="details-row w-100">
+            <div class="row w-100 mx-0 mt-1">
+                <div class="col-3 text-center">
+                    <p class="m-0">{% trans "Style" %}</p>
+                </div>
+                <div class="col-3 text-center">
+                    <p class="m-0">{% trans "Profil" %}</p>
+                </div>
+                <div class="col-3 text-center">
+                    <p class="m-0">{% trans "Montée" context "label_single" %}</p>
+                </div>
+                <div class="col-3 text-center">
+                    <p class="m-0">{% trans "Top" %}</p>
+                </div>
+            </div>
+            <div class="row w-100 mx-0 my-1">
+                <div class="col-3 d-flex justify-content-center align-items-center">
+                    {% if route.ouverture.style %}
+                    <span class="style-profil style-{{ route.ouverture.style|slugify }} fst-italic">
+                        {{ route.ouverture.style|ouverture_style }}
+                    </span>
+                    {% endif %}
+                </div>
+                <div class="col-3 d-flex justify-content-center align-items-center">
+                    {% if route.ouverture.profil %}
+                    <span class="style-profil fw-bold" style="background-color: #333;">
+                        {{ route.ouverture.profil|ouverture_profile }}
+                    </span>
+                    {% endif %}
+                </div>
+                <div class="col-3 d-flex justify-content-center align-items-center">
+                    <p class="m-0 fw-bold">
+                        {% if route.nb_try %}{{ route.nb_try }}{% endif %}
+                        {% if route.nb_try and route.nb_try_lead %} | {% endif %}
+                        {% if route.nb_try_lead %}{{ route.nb_try_lead }}{% endif %}
+                    </p>
+                </div>
+                <div class="col-3 d-flex justify-content-center align-items-center">
+                    <p class="m-0 fw-bold">
+                        {% if route.nb_try %}{{ route.nb_top }}{% endif %}
+                        {% if route.nb_try and route.nb_try_lead %} | {% endif %}
+                        {% if route.nb_try_lead %}{{ route.nb_top_lead }}{% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% include 'core/details/script.html' %}
+{% endblock %}

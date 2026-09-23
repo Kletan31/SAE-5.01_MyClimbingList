@@ -1,0 +1,15 @@
+{% load static %}
+<!-- Gestion des appareils non-mobile -->
+{% if not MCL_LOCAL %}
+<script src="{% static 'base/js/init/mobileDetection.js' %}"></script>
+{% endif %}
+
+<!-- Popup d'avertissement android -->
+<script src="{% static 'base/js/init/warningAndroid.js' %}"></script>
+
+<!-- Initialisation de la fonction preloadView -->
+<script src="{% static 'base/js/utils/preloadView.js' %}"></script>
+
+<!-- Utilitaires pour la gestion des mises à jour du cache [SW] -->
+<script src="{% static 'base/js/utils/checkCacheLifeTime.js' %}"></script>
+<script src="{% static 'base/js/utils/checkServiceWorkerVersion.js' %}"></script>

@@ -1,0 +1,202 @@
+{% extends 'base/app_base.html' %}
+{% load static %}
+{% load ouverture_translate %}
+{% load i18n %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'core/css/confirm_session/confirm_session.css' %}">
+{% endblock %}
+
+{% block page_name %}{% trans "Séance" context "label_single" %}{% endblock %}
+
+{% block template-content %}
+<form method="post" action="{% url 'core:confirm_session' %}" id="confirmSessionForm" class="w-100">
+    {% csrf_token %}
+    <!-- Champ caché pour routes_order -->
+    <input type="hidden" name="routes_order" id="routesOrder">
+
+    <!-- Conteneur pour la date de la séance -->
+    <div class="text-center" style="border-bottom: 2px solid #E6E6E6;">
+        <input type="date" name="date_seance" value="{{ today }}" class="form-control d-inline-block w-auto" required max="{{ today }}">
+    </div>
+
+    {% for route in routes %}
+    <!-- Conteneur principal pour chaque ouverture sélectionnée -->
+    <div class="route-item" data-route-id="{{ route.id }}">
+
+        <!-- Section contenant les informations générales de l'ouverture, le bouton de suppression et les inputs -->
+        <div class="d-flex align-items-center mb-2">
+            <div class="w-50">
+                <!-- Affichage des informations concernant l'ouverture -->
+                <p class="m-0 route-info">
+                    {% if route.bloc %}
+                        {% trans "Secteur:" %}
+                    {% else %}
+                        {% trans "Relais:" %}
+                    {% endif %}
+                    {{ route.relais }} –
+                    {% if route.id in ouvertures_recentes_ids and hide_cotation %}
+                        ?
+                    {% else %}
+                        {{ route.niveau }}
+                    {% endif %}
+                    <span class="couleur-ouverture">[{{ route.couleur|ouverture_color }}]</span>
+                </p>
+
+                {% if route.nom %}
+                <!-- Nom de l'ouverture -->
+                <p class="nom-ouverture">{{ route.nom|capfirst }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Actions projet -->
+            <div class="d-flex align-items-center ms-auto project-actions">
+                <i  data-bs-toggle="tooltip"
+                    data-bs-html="true"
+                    data-bs-custom-class="tooltip-left"
+                    title="{% trans '<strong>Montée</strong> : un essai<br><strong>Top</strong> : essai sans chute<br><strong>Flash</strong> : premier essai sans chute' %}"
+                    class="fa-regular fa-circle-info me-2 help-text">
+                </i>
+
+                <button name="delete" value="{{ route.id }}" class="delete-button">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- MOULINETTE / BLOC -->
+        <div class="mb-1">
+            <div class="d-flex align-items-center">
+                {% if not route.bloc %}
+                <div class="me-1 type-route">
+                    <span>{% trans "Moulinette" %}</span>
+                </div>
+                {% endif %}
+                <div class="past-try d-flex align-items-center">
+                    <span>{{ route.past_try }}</span>
+                    <div class="d-flex justify-content-center align-items-end">
+                        <span class="vertical-bar"></span>
+                    </div>
+                    <span>{{ route.past_top }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section pour les interactions de l'ouverture : nombre de montées, réussites, flash -->
+        <div class="row">
+            <div class="col-4 d-flex flex-column align-items-center">
+                <div class="d-flex number-input-container">
+                    <i class="fa-solid fa-minus align-self-center decrement-button" style="font-size:14px;"></i>
+                    <input type="number" name="nb_try_{{ route.id }}" value="0" class="form-control number-input" readonly>
+                    <i class="fa-solid fa-plus align-self-center increment-button" style="font-size:14px;"></i>
+                </div>
+                <span class="text-label mt-1">{% trans "Montée" context "label_single" %}</span>
+            </div>
+
+            <div class="col-4 d-flex flex-column align-items-center">
+                <div class="d-flex number-input-container">
+                    <i class="fa-solid fa-minus align-self-center decrement-button" style="font-size:14px;"></i>
+                    <input type="number" name="nb_top_{{ route.id }}" value="0" class="form-control number-input" readonly>
+                    <i class="fa-solid fa-plus align-self-center increment-button" style="font-size:14px;"></i>
+                </div>
+                <span class="text-label mt-1">{% trans "Top" %}</span>
+            </div>
+
+            <div class="col-2 flashContainer">
+                <div class="d-flex flex-column align-items-center">
+                    <div class="icon-container">
+                        <i class="fa-solid fa-bolt flash-icon"></i>
+                    </div>
+                    <span class="text-label mt-1">{% trans "Flash" %}</span>
+                </div>
+                <input type="hidden" name="flash_{{ route.id }}" id="flash_{{ route.id }}">
+            </div>
+            {% if route.id in already_try and not edit %}
+            <input type="hidden" name="flash_available_{{ route.id }}" id="flash_available_{{ route.id }}" value="False">
+            {% endif %}
+        </div>
+
+        {% if route.leadable %}
+        <!-- TÊTE -->
+        <div class="mb-1" style="margin-top: .75rem;">
+            <div class="d-flex align-items-center">
+                {% if not route.bloc %}
+                <div class="me-1 type-route">
+                    <span>{% trans "Tête" %}</span>
+                </div>
+                {% endif %}
+                <div class="past-try d-flex align-items-center">
+                    <span>{{ route.past_try_lead }}</span>
+                    <div class="d-flex justify-content-center align-items-end">
+                        <span class="vertical-bar"></span>
+                    </div>
+                    <span>{{ route.past_top_lead }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4 d-flex flex-column align-items-center">
+                <div class="d-flex number-input-container">
+                    <i class="fa-solid fa-minus align-self-center decrement-button" style="font-size:14px;"></i>
+                    <input type="number" name="nb_try_{{ route.id }}_lead" value="0" class="form-control number-input" readonly>
+                    <i class="fa-solid fa-plus align-self-center increment-button" style="font-size:14px;"></i>
+                </div>
+                <span class="text-label mt-1">{% trans "Montée" context "label_single" %}</span>
+            </div>
+
+            <div class="col-4 d-flex flex-column align-items-center">
+                <div class="d-flex number-input-container">
+                    <i class="fa-solid fa-minus align-self-center decrement-button" style="font-size:14px;"></i>
+                    <input type="number" name="nb_top_{{ route.id }}_lead" value="0" class="form-control number-input" readonly>
+                    <i class="fa-solid fa-plus align-self-center increment-button" style="font-size:14px;"></i>
+                </div>
+                <span class="text-label mt-1">{% trans "Top" %}</span>
+            </div>
+
+            <div class="col-2 flashContainer">
+                <div class="d-flex flex-column align-items-center">
+                    <div class="icon-container">
+                        <i class="fa-solid fa-bolt flash-icon" data-flash-type="lead"></i>
+                    </div>
+                    <span class="text-label mt-1">{% trans "Flash" %}</span>
+                </div>
+                <input type="hidden" name="flash_{{ route.id }}_lead" id="flash_{{ route.id }}_lead">
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    <input type="hidden" name="edit" value="{{ edit }}">
+</form>
+
+<div class="w-100 d-flex justify-content-center align-items-center py-4 mb-5">
+    <a href="{% url 'core:guidebook' %}?&salle_id={{ salle_id }}&bloc={{ bloc }}&add_button={{ add_button }}&edit={{ edit }}&map_display={{ map_display }}" class="gap-2 d-flex justify-content-center align-items-center">
+        <div>
+            <i class="fa-solid fa-circle-plus" style="color: #EE7f00; font-size: 1.25rem;"></i>
+        </div>
+        <div class="d-flex">
+            <span style="font-size: .85rem; font-weight: 500;">
+                {% trans "Ajouter une ouverture" %}
+            </span>
+        </div>
+    </a>
+</div>
+
+<!-- Bouton "Enregistrer la séance" -->
+<div id="save-button-container">
+    <button class="btn btn-secondary">
+        {% if edit %}
+            {% trans "Modifier" %}
+        {% else %}
+            {% trans "Enregistrer" %}
+        {% endif %}
+        {% trans "ma séance" %}
+    </button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% include 'core/confirm_session/script.html' %}
+{% endblock %}

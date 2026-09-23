@@ -1,0 +1,53 @@
+{% load i18n %}
+
+<div class="popup-overlay" id="language-popup-overlay">
+    <div class="profile-popup-container" id="language-popup-container">
+        <span class="profile-popup-title">
+            {% trans "Choisissez votre langue" %}
+        </span>
+
+        <div class="mb-2 profile-popup-buttons-container d-flex flex-column align-items-center gap-2">
+
+            <!-- 🇫🇷 Français -->
+            <form method="post" action="{% url 'set_language' %}" style="width: 110px;">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <input type="hidden" name="language" value="fr">
+                <button type="submit" class="profile-popup-button w-100" style="white-space: nowrap;">
+                    🇫🇷 {% trans "Français" %}
+                </button>
+            </form>
+
+            <!-- 🇬🇧 English -->
+            <form method="post" action="{% url 'set_language' %}" style="width: 110px;">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <input type="hidden" name="language" value="en">
+                <button type="submit" class="profile-popup-button w-100" style="white-space: nowrap;">
+                    🇬🇧 {% trans "English" %}
+                </button>
+            </form>
+
+            <!-- 🇪🇸 Español -->
+            <form method="post" action="{% url 'set_language' %}" style="width: 110px;">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <input type="hidden" name="language" value="es">
+                <button type="submit" class="profile-popup-button w-100" style="white-space: nowrap;">
+                    🇪🇸 {% trans "Spanish" %}
+                </button>
+            </form>
+
+            <!-- 🇵🇹 Português -->
+            <form method="post" action="{% url 'set_language' %}" style="width: 110px;">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <input type="hidden" name="language" value="pt">
+                <button type="submit" class="profile-popup-button w-100" style="white-space: nowrap;">
+                    🇵🇹 {% trans "Portuguese" %}
+                </button>
+            </form>
+
+        </div>
+    </div>
+</div>

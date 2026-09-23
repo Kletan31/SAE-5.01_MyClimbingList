@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="200" viewBox="0 0 1100 200"><rect width="1100" height="200" fill="white"/>
+<rect x="5" y="25" width="280" height="110" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="145.0" y="62" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Visite vécue</text>
+<text x="145.0" y="93" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Plusieurs ouvertures</text>
+<rect x="385" y="25" width="320" height="110" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="545.0" y="62" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Lignes Seance</text>
+<text x="545.0" y="93" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Une ligne par ouverture</text>
+<text x="545.0" y="120" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">et date</text>
+<rect x="805" y="25" width="280" height="110" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="945.0" y="62" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Séance affichée</text>
+<text x="945.0" y="93" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Lignes regroupées</text>
+<line x1="285" y1="80" x2="385" y2="80" stroke="#2F6B9A" stroke-width="2"/><polygon points="385,80 375.0950818741206,84.78462087522354 375.0950818741206,75.21537912477646" fill="#2F6B9A"/>
+<line x1="705" y1="80" x2="805" y2="80" stroke="#2F6B9A" stroke-width="2"/><polygon points="805,80 795.0950818741205,84.78462087522354 795.0950818741205,75.21537912477646" fill="#2F6B9A"/>
+<text x="550" y="180" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Les anciens compteurs ne restituent pas un ordre individuel des essais.</text>
+</svg>

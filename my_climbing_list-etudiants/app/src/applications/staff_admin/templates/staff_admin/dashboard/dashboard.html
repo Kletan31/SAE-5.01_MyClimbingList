@@ -1,0 +1,146 @@
+{% extends "base/staff_admin_base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">{% trans "Espace staff" %}</h1>
+
+    <div class="mb-4">
+        <p class="text-muted">
+            {% blocktrans with username=request.user.username %}
+            Connecté en tant que <strong>{{ username }}</strong>
+            {% endblocktrans %}
+        </p>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Créer contest -->
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <h5 class="card-title">{% trans "Créer un nouveau contest" %}</h5>
+                    <p class="card-text">
+                        {% trans "Lancez un contest dans votre salle pour animer l'activité et motiver les grimpeurs." %}
+                    </p>
+                    <a href="{% url 'staff_admin:create_contest' %}" class="btn btn-primary mt-auto">
+                        {% trans "Créer" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mes contests -->
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <h5 class="card-title">{% trans "Voir mes contests" %}</h5>
+                    <p class="card-text">
+                        {% trans "Consultez, modifiez ou supprimez les contests que vous avez créés." %}
+                    </p>
+                    <a href="{% url 'staff_admin:contest_list' %}" class="btn btn-outline-primary mt-auto">
+                        {% trans "Accéder" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Permanents -->
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <h5 class="card-title">{% trans "Contests permanents" %}</h5>
+                    <p class="card-text">
+                        {% trans "Activez ou désactivez les contests permanents (voie/bloc) dans votre salle." %}
+                    </p>
+                    <a href="{% url 'staff_admin:toggle_permanents' %}" class="btn btn-outline-primary mt-auto">
+                        {% trans "Accéder" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Suivi d'entraînement -->
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm border-success">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <h5 class="card-title">{% trans "Suivi d'entraînement" %}</h5>
+                    <p class="card-text">
+                        {% trans "Accédez aux grimpeurs qui ont autorisé votre salle à consulter leurs séances." %}
+                    </p>
+                    <a href="{% url 'staff_admin:training_list' %}" class="btn btn-outline-success mt-auto">
+                        {% trans "Voir les grimpeurs" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fréquentation -->
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <h5 class="card-title">{% trans "Fréquentation" %}</h5>
+                    <p class="card-text">
+                        {% trans "Consultez la fréquentation de votre salle sur les dernières semaines." %}
+                    </p>
+                    <a href="{% url 'staff_admin:frequentation' %}" class="btn btn-outline-info mt-auto">
+                        {% trans "Voir la fréquentation" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats ouvertures -->
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm border-primary">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <h5 class="card-title">{% trans "Statistiques des ouvertures" %}</h5>
+                    <p class="card-text">
+                        {% trans "Analysez l’utilisation des voies et blocs : essais, réussites et ratios." %}
+                    </p>
+                    <a href="{% url 'staff_admin:openings_stats' %}" class="btn btn-outline-primary mt-auto">
+                        {% trans "Voir les stats" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grimpeurs actifs -->
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm border-success">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <h5 class="card-title">{% trans "Grimpeurs actifs" %}</h5>
+                    <p class="card-text">
+                        {% trans "Identifiez les grimpeurs réellement actifs et leur niveau actuel." %}
+                    </p>
+                    <a href="{% url 'staff_admin:active_climbers' %}" class="btn btn-outline-success mt-auto">
+                        {% trans "Voir les grimpeurs" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paramètres -->
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <h5 class="card-title">{% trans "Paramètres de la salle" %}</h5>
+                    <p class="card-text">
+                        {% trans "Activez ou désactivez certaines options comme le masquage des cotations récentes." %}
+                    </p>
+                    <a href="{% url 'staff_admin:settings' %}" class="btn btn-outline-secondary mt-auto">
+                        {% trans "Paramètres" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <p class="text-muted text-center mt-5" style="font-size: 0.9rem;">
+        {% trans "⚠️ Toute modification peut prendre jusqu'à" %}
+        <strong>15 minutes</strong>
+        {% trans "pour être visible sur l'ensemble des appareils." %}
+    </p>
+</div>
+{% endblock %}

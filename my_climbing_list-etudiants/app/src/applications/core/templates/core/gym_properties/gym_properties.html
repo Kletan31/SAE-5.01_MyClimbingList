@@ -1,0 +1,134 @@
+{% extends 'base/app_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'core/css/gym_properties/gym_properties.css' %}">
+{% endblock %}
+
+{% block page_name %}{{ salle }}{% endblock %}
+
+{% block template-content %}
+<!-- Menu Voie/Bloc -->
+<div class="menu-bar row">
+    <div class="menu-item col-6 selected" data-category="voie">{% trans "Voie" %}</div>
+    <div class="menu-item col-6" data-category="bloc">{% trans "Bloc" %}</div>
+</div>
+
+<!-- Histogrammes -->
+<div class="chart-container">
+    <div id="graph-container">
+        <div id="graph"></div>
+    </div>
+</div>
+
+<!-- Totaux -->
+<div id="data-container" class="d-flex flex-column align-items-center justify-content-center mb-3 w-100">
+    <div class="row w-50 text-center">
+        <div class="total col-6 d-flex flex-column justify-content-center align-items-center">
+            <span class="fw-bold mb-1" style="font-size: 1.35rem;"></span>
+            <p class="m-0" id="moulinetteText" style="font-size: .7rem">{% trans "Moulinette" %}</p>
+            <p class="m-0 d-none" id="blocText" style="font-size: .7rem">{% trans "Blocs" %}</p>
+        </div>
+        <div class="total-lead col-6 d-flex flex-column justify-content-center align-items-center">
+            <span class="fw-bold mb-1" style="font-size: 1.35rem;"></span>
+            <p class="m-0" style="font-size: .7rem">{% trans "Tête" %}</p>
+        </div>
+    </div>
+</div>
+
+<!-- Profil -->
+<div id="profil-data-container" class="d-flex align-items-center justify-content-center mb-3 w-100">
+    <div class="d-flex w-100 text-center" id="profilRow">
+        <div class="margin-col p-0 m-0"></div>
+
+        <div class="col flex-grow-1 style-profil-container">
+            <span class="style-profil fw-bold" data-key="dalle">{% trans "dalle" %}</span>
+            <span class="fw-bold" style="font-size: .5rem; margin-top: 2px;"></span>
+        </div>
+
+        <div class="col flex-grow-1 style-profil-container">
+            <span class="style-profil fw-bold" data-key="dièdre">{% trans "dièdre" %}</span>
+            <span class="fw-bold" style="font-size: .5rem; margin-top: 2px;"></span>
+        </div>
+
+        <div class="col flex-grow-1 style-profil-container">
+            <span class="style-profil fw-bold" data-key="vertical">{% trans "vertical" %}</span>
+            <span class="fw-bold" style="font-size: .5rem; margin-top: 2px;"></span>
+        </div>
+
+        <div class="col flex-grow-1 style-profil-container">
+            <span class="style-profil fw-bold" data-key="dévers">{% trans "dévers" %}</span>
+            <span class="fw-bold" style="font-size: .5rem; margin-top: 2px;"></span>
+        </div>
+
+        <div class="col flex-grow-1 style-profil-container">
+            <span class="style-profil fw-bold" data-key="toit">{% trans "toit" %}</span>
+            <span class="fw-bold" style="font-size: .5rem; margin-top: 2px;"></span>
+        </div>
+
+        <div class="margin-col p-0 m-0"></div>
+    </div>
+</div>
+
+<!-- Style -->
+<div id="style-data-container" class="d-flex align-items-center justify-content-center w-100">
+    <!-- Style Voie -->
+    <div class="d-flex w-75 text-center">
+        <div class="col-4 style-profil-container">
+            <span class="style-profil fst-italic style-conti" data-key="conti">{% trans "conti" %}</span>
+            <span class="fw-bold" style="font-size: .5rem; margin-top: 2px;"></span>
+        </div>
+        <div class="col-4 style-profil-container">
+            <span class="style-profil fst-italic style-resi" data-key="rési">{% trans "rési" %}</span>
+            <span class="fw-bold" style="font-size: .5rem; margin-top: 2px;"></span>
+        </div>
+        <div class="col-4 style-profil-container">
+            <span class="style-profil fst-italic style-bloc" data-key="bloc">{% trans "bloc" %}</span>
+            <span class="fw-bold" style="font-size: .5rem; margin-top: 2px;"></span>
+        </div>
+    </div>
+
+    <!-- Style Bloc -->
+    <div class="d-flex w-100 text-center d-none">
+        <div class="margin-col"></div>
+
+        <div class="col flex-grow-1 style-profil-container">
+            <span class="style-profil fst-italic style-classic" data-key="classic">{% trans "classic" %}</span>
+            <span class="fw-bold" style="font-size: .5rem; margin-top: 2px;"></span>
+        </div>
+
+        <div class="col flex-grow-1 style-profil-container">
+            <span class="style-profil fst-italic style-technic" data-key="technic">{% trans "technic" %}</span>
+            <span class="fw-bold" style="font-size: .5rem; margin-top: 2px;"></span>
+        </div>
+
+        <div class="col flex-grow-1 style-profil-container">
+            <span class="style-profil fst-italic style-physic" data-key="physic">{% trans "physic" %}</span>
+            <span class="fw-bold" style="font-size: .5rem; margin-top: 2px;"></span>
+        </div>
+
+        <div class="col flex-grow-1 style-profil-container">
+            <span class="style-profil fst-italic style-coordo" data-key="coordo">{% trans "coordo" %}</span>
+            <span class="fw-bold" style="font-size: .5rem; margin-top: 2px;"></span>
+        </div>
+
+        <div class="col flex-grow-1 style-profil-container">
+            <span class="style-profil fst-italic style-tricky" data-key="tricky">{% trans "tricky" %}</span>
+            <span class="fw-bold" style="font-size: .5rem; margin-top: 2px;"></span>
+        </div>
+
+        <div class="margin-col"></div>
+    </div>
+</div>
+
+<!-- Nombre d'ouvertures disponibles -->
+<div class="bottom-info">
+    <p class="m-0 voie-info" id="totalOuverture"></p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% include 'core/gym_properties/script.html' %}
+{% endblock %}

@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Staff - {{ event.name }}</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'event/css/staff_team_list.css' %}">
+    <script src="{% static 'event/js/staff_team_list.js' %}" defer></script>
+</head>
+<body>
+    <h1>Staff — {{ event.name }}</h1>
+
+    <p class="staff-nav">
+        <a href="{% url 'event:staff_home' %}">Retour à l’espace staff</a> |
+        <a href="{% url 'event:staff_route_list' slug=event.slug %}">Gérer le topo</a> |
+        <a href="{% url 'event:staff_ranking' slug=event.slug %}">Classement</a> |
+        <a href="{% url 'event:staff_logout' %}">Se déconnecter</a>
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Créneau</th>
+                <th>Duo</th>
+                <th>Type</th>
+                <th>Paiement</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for team in teams %}
+                <tr data-team-row>
+                    <td>{{ team.phase.name }}</td>
+
+                    <td>
+                        <div class="team-member">
+                            <strong>{{ team.participant_1 }}</strong>
+                            <span class="team-email">
+                                {{ team.participant_1.email }}
+                            </span>
+                        </div>
+
+                        <div class="team-member">
+                            <strong>{{ team.participant_2 }}</strong>
+                            <span class="team-email">
+                                {{ team.participant_2.email }}
+                            </span>
+                        </div>
+                    </td>
+
+                    <td>{{ team.get_team_type_display }}</td>
+
+                    <td data-payment-cell>
+                        {% if team.is_payment_validated %}
+                            <span class="payment-valid">
+                                Validé
+                            </span>
+                        {% else %}
+                            <span class="payment-pending">
+                                En attente
+                            </span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <div class="actions">
+                            {% if team.is_payment_validated %}
+                                <form
+                                    class="staff-row-action-form payment-toggle-form"
+                                    method="post"
+                                    action="{% url 'event:staff_unvalidate_team' team_id=team.id %}"
+                                >
+                                    {% csrf_token %}
+                                    <button type="submit">
+                                        Mettre en attente
+                                    </button>
+                                </form>
+                            {% else %}
+                                <form
+                                    class="staff-row-action-form payment-toggle-form"
+                                    method="post"
+                                    action="{% url 'event:staff_validate_team' team_id=team.id %}"
+                                >
+                                    {% csrf_token %}
+                                    <button type="submit">
+                                        Valider
+                                    </button>
+                                </form>
+                            {% endif %}
+
+                            <form
+                                class="staff-row-action-form resend-link-form"
+                                method="post"
+                                action="{% url 'event:staff_resend_team_link' team_id=team.id %}"
+                            >
+                                {% csrf_token %}
+                                <button type="submit">
+                                    Renvoyer le lien
+                                </button>
+                            </form>
+
+                            <a
+                                class="action-link"
+                                href="{% url 'event:staff_team_update' team_id=team.id %}"
+                            >
+                                Modifier
+                            </a>
+
+                            <form
+                                class="staff-row-action-form delete-team-form"
+                                method="post"
+                                action="{% url 'event:staff_delete_team' team_id=team.id %}"
+                            >
+                                {% csrf_token %}
+                                <button
+                                    class="danger-button"
+                                    type="submit"
+                                >
+                                    Supprimer
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">
+                        Aucune équipe.
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

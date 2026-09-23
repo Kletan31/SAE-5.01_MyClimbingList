@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion staff event</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+</head>
+<body>
+    <h1>Connexion staff</h1>
+
+    {% if form.non_field_errors %}
+        <div>
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" name="next" value="{{ next }}">
+        <button type="submit">Se connecter</button>
+    </form>
+</body>
+</html>

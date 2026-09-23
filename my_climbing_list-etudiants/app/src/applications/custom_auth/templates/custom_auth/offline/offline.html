@@ -1,0 +1,36 @@
+{% extends 'base/custom_auth_base.html' %}
+{% load static %}
+{% load i18n %}
+{% block auth_content %}
+<h4 class="fw-bold mb-3">{% trans "En attente de réseau" %}</h4>
+
+<p style="font-size: .9rem; line-height: 1.25;">
+    {% blocktrans trimmed %}
+    Si vous pensez que le problème ne vient pas de votre appareil, veuillez contacter notre support technique.
+    {% endblocktrans %}
+</p>
+
+<p style="font-weight: 500;">contact@example.test</p>
+
+<span id="retryButton" class="btn btn-primary mt-2" style="color: white!important;">{% trans "Réessayer" %}</span>
+<i id="loadingSpinner" class="d-none fa-solid fa-spinner-third fa-spin fast-spin" style="font-size: 2rem;"></i>
+{{ block.super }}
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const retryButton = document.getElementById("retryButton");
+    const loadingSpinner = document.getElementById("loadingSpinner");
+
+    retryButton.addEventListener("click", function () {
+        retryButton.classList.add("d-none");
+        loadingSpinner.classList.remove("d-none");
+
+        setTimeout(function () {
+            window.location.href = "{% url 'custom_auth:login' %}"; // Redirection après 1s
+        }, 1000);
+    });
+});
+</script>
+{% endblock %}

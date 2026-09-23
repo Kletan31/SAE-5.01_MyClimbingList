@@ -1,0 +1,162 @@
+{% extends 'base/app_base.html' %}
+{% load ouverture_translate %}
+{% load static %}
+{% load i18n %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'core/css/core/logList.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/logbook/logbook.css' %}">
+    
+    <!-- Paramètres d'affichage -->
+    <meta id="bloc" data-value="{{ bloc }}">
+{% endblock %}
+
+{% block page_name %}{% trans "Carnet" %}{% endblock %}
+
+{% block template-content %}
+<div class="menu w-100">
+    {% if bloc %}
+        <div class="d-flex justify-content-center align-items-center mt-3">
+            <i id="flash-icon"
+               class="fa-solid fa-circle-bolt fs-1 {% if flashed %}selected{% endif %}"></i>
+        </div>
+    {% else %}
+        <div class="row g-0 mt-3 m-auto" style="width: 40%;">
+            <div class="col-6 d-flex justify-content-center align-items-center">
+                <i id="flash-icon"
+                   class="fa-solid fa-circle-bolt fs-1 {% if flashed %}selected{% endif %}"></i>
+            </div>
+            <div class="col-6 d-flex justify-content-center align-items-center">
+                <i id="lead-icon"
+                   class="fa-solid fa-circle-arrow-up fs-1 {% if leaded %}selected{% endif %}"></i>
+            </div>
+        </div>
+    {% endif %}
+
+    <p id="routeCount"
+       class="m-0 p-3"
+       data-label-singular="{% if bloc %}{% trans 'bloc réalisé' %}{% else %}{% trans 'voie réalisée' %}{% endif %}"
+       data-label-plural="{% if bloc %}{% trans 'blocs réalisés' %}{% else %}{% trans 'voies réalisées' %}{% endif %}">
+    </p>
+</div>
+
+<div id="logbookContainer">
+{% if logbook|length %}
+<div id="no-matching-routes" class="text-center fw-bold mt-4" style="display: none; font-size: .75rem;">
+    <p>
+        {% trans "Aucune" %}
+        {% if bloc %}
+            {% trans "bloc ne correspond aux filtres sélectionnés." %}
+        {% else %}
+            {% trans "voie ne correspond aux filtres sélectionnés." %}
+        {% endif %}
+    </p>
+</div>
+
+<div class="scrollable-container w-100">
+    <div class="list-container w-100">
+    {% for croix in logbook %}
+        <!-- Conteneur pour chaque ouverture -->
+        <div class="main-row row g-0 w-100 p-2"
+             data-flashed="{{ croix.flashed|yesno:'true,false' }}"
+             data-leaded="{{ croix.leaded|yesno:'true,false' }}">
+            <!-- Nom de la salle et date -->
+            <div class="col-6">
+                <p class="fw-bold m-0">{{ croix.first_top_date|date:"d M Y" }}</p>
+                <p class="fst-italic m-0" style="font-size: .9rem">{{ croix.ouverture__salle__nom }}</p>
+            </div>
+
+            <!-- Icône tête -->
+            <div class="col-1 gap-1 d-flex justify-content-center align-items-center">
+            {% if croix.leaded %}
+                <i class="fa-solid fa-arrow-up-long" style="color: #b0d54b; font-size: 1.15rem;"></i>
+            {% endif %}
+            </div>
+
+            <!-- Icône flash -->
+            <div class="col-1 gap-1 d-flex justify-content-center align-items-center">
+            {% if croix.flashed %}
+                <i class="fa-solid fa-bolt flash-icon" style="color: #ffb512;"></i>
+            {% endif %}
+            </div>
+
+            <!-- Style / Profil -->
+            <div class="col-2 d-flex flex-column justify-content-center align-items-center">
+                {% if croix.ouverture__style %}
+                <span class="style-profil style-{{ croix.ouverture__style|slugify }} fst-italic">
+                    {{ croix.ouverture__style|ouverture_style }}
+                </span>
+                {% endif %}
+                {% if croix.ouverture__profil %}
+                <span class="style-profil fw-bold" style="background-color: #333;">
+                    {{ croix.ouverture__profil|ouverture_profile }}
+                </span>
+                {% endif %}
+            </div>
+
+            <!-- Cotation -->
+            <div class="col-2 d-flex justify-content-center align-items-center">
+                <span id="levelRoute" class="circle-cotation" style="border-color: {{ croix.ouverture__niveau_couleur }};">
+                    {{ croix.ouverture__niveau }}
+                </span>
+            </div>
+        </div>
+
+        <div class="details-row w-100 px-2">
+            <!-- Contenu détaillé -->
+            <div class="row w-100 g-0 mx-0 mt-1">
+                <div class="col-8 fst-italic">
+                    <p class="m-0">
+                        {% trans "Relais" %}: {{ croix.ouverture__relais }} - {{ croix.ouverture__couleur|ouverture_color }}
+                    </p>
+                </div>
+                <div class="col-2 text-center">
+                    <p class="m-0">{% trans "Montée" context "label_single" %}</p>
+                </div>
+                <div class="col-2 text-center">
+                    <p class="m-0">{% trans "Top" %}</p>
+                </div>
+            </div>
+            <div class="row w-100 g-0 mx-0 my-1">
+                <div class="col-8 fw-bold">
+                    <p class="m-0 nom-ouverture">
+                        {% if croix.ouverture__nom %}
+                            {{ croix.ouverture__nom|capfirst }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="col-2 text-center">
+                    <p class="m-0 fw-bold">
+                        {{ croix.total_try }}{% if croix.leadable %} | {{ croix.total_try_lead }}{% endif %}
+                    </p>
+                </div>
+                <div class="col-2 text-center">
+                    <p class="m-0 fw-bold">
+                        {{ croix.total_top }}{% if croix.leadable %} | {{ croix.total_top_lead }}{% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% else %}
+<div class="msg-no-tick w-100">
+    <p class="mt-3">
+        {% if bloc %}
+            {% trans "Vous n'avez pas encore réalisé de bloc" %}
+        {% else %}
+            {% trans "Vous n'avez pas encore réalisée de voie" %}
+        {% endif %}
+    </p>
+</div>
+{% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% include 'core/logbook/script.html' %}
+{% endblock %}

@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classement écran - {{ event.name }}</title>
+
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'route_event/css/route_event.css' %}">
+    <script src="{% static 'route_event/js/ranking_display.js' %}" defer></script>
+</head>
+
+<body>
+    <main class="event-display-page">
+        <header class="event-display-header">
+            <img
+                class="event-display-logo"
+                src="{% static 'route_event/media/logo_20.svg' %}"
+                alt="Contest voie"
+            >
+
+            <div class="event-display-title-block">
+                <h1>{{ event.name }}</h1>
+
+                <div class="event-display-subheader">
+                    <p>
+                        {% if selected_phase %}
+                            {{ selected_phase.name }} — mise à jour automatique
+                        {% else %}
+                            Classement global — mise à jour automatique
+                        {% endif %}
+                    </p>
+
+                    <button
+                        type="button"
+                        id="toggle-scroll"
+                        class="event-display-toggle"
+                    >
+                        Pause défilement
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <nav class="event-display-filters">
+            <a
+                href="?"
+                {% if not selected_phase %}class="active"{% endif %}
+            >
+                Global
+            </a>
+
+            {% for phase in phases %}
+                <a
+                    href="?phase={{ phase.id }}"
+                    {% if selected_phase and selected_phase.id == phase.id %}class="active"{% endif %}
+                >
+                    {{ phase.name }}
+                </a>
+            {% endfor %}
+        </nav>
+
+        <section class="event-display-ranking">
+            {% for row in ranking_rows %}
+                <article
+                    class="event-display-row
+                        {% if row.participant.gender == 'F' %}display-female{% endif %}
+                        {% if row.participant.gender == 'M' %}display-male{% endif %}
+                    "
+                >
+                    <div class="display-rank">
+                        #{{ row.rank }}
+                    </div>
+
+                    <div class="display-team">
+                        <strong>
+                            {{ row.participant }}
+                        </strong>
+
+                        <span>
+                            {{ row.participant.get_gender_display }}
+                            {% if not selected_phase %}
+                                · {{ row.participant.phase.name }}
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="display-score">
+                        <strong>
+                            {{ row.qualification_points }}
+                        </strong>
+
+                        <span>
+                            {{ row.routes_done }} voie(s)
+                        </span>
+                    </div>
+                </article>
+            {% empty %}
+                <section class="event-card empty-state">
+                    <p>Aucun participant validé pour le moment.</p>
+                </section>
+            {% endfor %}
+        </section>
+    </main>
+</body>
+</html>

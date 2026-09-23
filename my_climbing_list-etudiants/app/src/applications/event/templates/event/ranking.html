@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classement - {{ event.name }}</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'event/css/event.css' %}">
+</head>
+<body>
+    <main class="event-page">
+        <header class="event-header">
+            <img class="event-logo" src="{% static 'event/media/big_air.png' %}" alt="Big Air">
+        </header>
+
+        <div class="event-actions">
+            {% if is_staff_view %}
+                <a class="event-link-button" href="{% url 'event:staff_home' %}">
+                    Staff
+                </a>
+
+                <a class="event-link-button" href="{% url 'event:staff_team_list' slug=event.slug %}">
+                    Équipes
+                </a>
+        
+            {% elif is_public_view %}
+                <a class="event-link-button" href="{% url 'event:home' %}">
+                    Événements
+                </a>
+
+            {% else %}
+                <a class="event-link-button" href="{% url 'event:team_access' token=team.access_token %}">
+                    Retour topo
+                </a>
+            {% endif %}
+
+            <button class="event-button" type="button" onclick="window.location.reload()">
+                Actualiser
+            </button>
+        </div>
+
+        <nav class="event-card">
+            <h2 class="event-card-title">Filtrer</h2>
+
+            <div class="event-actions">
+                <a class="event-link-button" href="?">
+                    Global
+                </a>
+
+                {% for phase in phases %}
+                    <a class="event-link-button" href="?phase={{ phase.id }}">
+                        {{ phase.name }}
+                    </a>
+                {% endfor %}
+
+                <a class="event-link-button" href="?finalists=1">
+                    Finalistes
+                </a>
+            </div>
+        </nav>
+
+        <section class="route-list">
+            {% for row in ranking_rows %}
+                    <article
+                        class="route-card ranking-card
+                            {% if row.team.team_type == 'X' %}ranking-mixed{% endif %}
+                            {% if row.team.team_type == 'F' %}ranking-female{% endif %}
+                            {% if row.team.team_type == 'M' %}ranking-male{% endif %}
+                            {% if show_finalist_badge and row.is_mixed_qualified %}ranking-qualified{% endif %}
+                        "
+                    >
+                    <div class="route-card-header">
+                        <div>
+                            <h2 class="route-title">
+                                #{{ row.rank }} — {{ row.team.participant_1 }} / {{ row.team.participant_2 }}
+                            </h2>
+
+                            <p class="route-details">
+                                {{ row.team.get_team_type_display }}
+
+                                {% if not selected_phase %}
+                                    · {{ row.team.phase.name }}
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+
+                    {% if show_finalist_badge and row.is_mixed_qualified %}
+                        <p>
+                            <span class="event-badge">Sélection finale</span>
+                        </p>
+                    {% endif %}
+
+                    <div class="event-meta">
+                        <p class="event-meta-item">
+                            <strong>{{ row.points }}</strong> points
+                        </p>
+                        <p class="event-meta-item">
+                            <strong>{{ row.tops }}</strong> tops · <strong>{{ row.zones }}</strong> zones
+                        </p>
+                    </div>
+                </article>
+            {% empty %}
+                <section class="event-card empty-state">
+                    <p>Aucune équipe avec paiement validé pour le moment.</p>
+                </section>
+            {% endfor %}
+        </section>
+    </main>
+</body>
+</html>

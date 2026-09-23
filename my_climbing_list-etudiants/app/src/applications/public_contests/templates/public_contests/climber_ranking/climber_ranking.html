@@ -1,0 +1,312 @@
+{% extends "base/public_contests_base.html" %}
+{% load i18n %}
+
+{% block head %}
+<style>
+    /* --------------------------------------------------
+       Titre / identité
+    -------------------------------------------------- */
+    .alti-ligue-title-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+
+    .alti-ligue-title {
+        margin: 0;
+        background-color: #EE7f00;
+        font-size: clamp(1.5rem, 6vw, 1.9rem);
+        padding: 0 5px;
+        color: white;
+        font-weight: bold;
+        transform: skewX(-15deg) rotate(-3deg);
+        text-align: center;
+        line-height: 1.25;
+        display: inline-block;
+    }
+
+    .alti-ligue-title span {
+        display: inline-block;
+    }
+
+    .alti-ligue-subtitle {
+        font-size: clamp(0.85rem, 3vw, 0.95rem);
+        opacity: 0.75;
+        text-align: center;
+    }
+
+    /* --------------------------------------------------
+       Menu Voie / Bloc
+    -------------------------------------------------- */
+    .menu-bar {
+        width: 45%;
+        margin: 2.5svh auto !important;
+        border: 1px solid #39529E;
+        border-radius: 5px;
+        font-size: .9rem;
+        line-height: 1.25;
+    }
+
+    .menu-bar .menu-item {
+        padding: 2px 0;
+        text-align: center;
+        font-size: .9rem;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .menu-bar .menu-item.selected {
+        background-color: #39529E;
+        color: white;
+    }
+
+    @media (max-width: 576px) {
+        .menu-bar {
+            width: 85%;
+        }
+    }
+
+    /* --------------------------------------------------
+       Niveau / Elo
+    -------------------------------------------------- */
+    .level-badge {
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        padding: 0.35rem 0.6rem;
+        border-radius: 0.5rem;
+        color: #fff;
+        display: inline-block;
+        min-width: 3.2rem;
+        text-align: center;
+    }
+
+    .elo-trend {
+        display: inline-block;
+        width: 1em;              /* espace réservé constant */
+        text-align: center;
+        font-size: 0.9em;
+        margin-left: 4px;
+    }
+
+    .elo-trend.up {
+        color: #198754; /* vert */
+    }
+
+    .elo-trend.down {
+        color: #dc3545; /* rouge */
+    }
+
+    /* --------------------------------------------------
+       Mobile cards
+    -------------------------------------------------- */
+    .climber-card {
+        border-radius: 0.75rem;
+        box-shadow: 0 8px 24px rgb(2 6 23 / 5%);
+    }
+
+    .climber-rank {
+        font-weight: 700;
+    }
+
+    /* --------------------------------------------------
+       Mono / chiffres
+    -------------------------------------------------- */
+    .mono {
+        font-variant-numeric: tabular-nums;
+    }
+
+    .placeholder {
+        opacity: 0.4;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- ==================================================
+         HEADER
+    ================================================== -->
+    <div class="mb-4">
+        <div class="alti-ligue-title-wrapper">
+            <h1 class="alti-ligue-title">
+                <span style="padding-bottom: 4px;">Alti&nbsp;Ligue</span>
+            </h1>
+        </div>
+
+        <div class="alti-ligue-subtitle">
+            {% trans "Classement du jour" %}
+            •
+            {{ date|date:"d/m/Y" }}
+        </div>
+    </div>
+
+    <!-- ==================================================
+         TOGGLE VOIE / BLOC
+    ================================================== -->
+    <div class="menu-bar row">
+        <div class="menu-item col-6{% if not bloc %} selected{% endif %}"
+             data-key="voie">
+            {% trans "Voie" %}
+        </div>
+        <div class="menu-item col-6{% if bloc %} selected{% endif %}"
+             data-key="bloc">
+            {% trans "Bloc" %}
+        </div>
+    </div>
+
+    <!-- ==================================================
+         MOBILE VIEW (cards)
+    ================================================== -->
+    <div id="mobileView" class="d-block d-md-none">
+        {% for climber in climbers %}
+            <div class="card mb-2 climber-card"
+                 data-user-id="{{ climber.user.id }}"
+                 data-rank="{{ forloop.counter }}">
+                <div class="card-body py-2">
+
+                    <!-- Ligne 1 -->
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="climber-rank mono">#{{ forloop.counter }}</div>
+                            <strong>{{ climber.user.username }}</strong>
+                        </div>
+
+                        {% if climber.level and climber.level != "-" %}
+                            <span class="level-badge"
+                                  style="background-color: {{ climber.color }};">
+                                {{ climber.level }}
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Ligne 2 -->
+                    <div class="text-muted small mb-1">
+                        Score {{ climber.elo|floatformat:"0" }}
+                        {% if climber.elo_trend == "up" %}
+                            <span class="elo-trend up ms-1">▲</span>
+                        {% elif climber.elo_trend == "down" %}
+                            <span class="elo-trend down ms-1">▼</span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Ligne 3 -->
+                    <div class="d-flex justify-content-between small">
+                        <div>
+                            <strong>{% trans "Top" %}</strong> :
+                            <span class="mono">{{ climber.successes }}</span>
+                        </div>
+
+                        <div class="text-muted text-truncate ms-2">
+                            {{ climber.salle.nom|default:"–" }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        {% empty %}
+            <div class="text-center text-muted py-4">
+                {% trans "Aucun classement disponible aujourd’hui." %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- ==================================================
+         DESKTOP VIEW (table)
+    ================================================== -->
+    <div class="d-none d-md-block" style="max-width: 1300px; margin: auto;">
+        <div class="table-responsive">
+            <table class="table table-sm table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th class="text-center" style="width: 10%;">#</th>
+                        <th class="text-center" style="width: 30%;">{% trans "Grimpeur" %}</th>
+                        <th class="text-center" style="width: 20%;">{% trans "Niveau" %}</th>
+                        <th class="text-center" style="width: 10%;">{% trans "Top" %}</th>
+                        <th class="text-center" style="width: 30%;">{% trans "Salle" %}</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for climber in climbers %}
+                        <tr data-user-id="{{ climber.user.id }}"
+                            data-rank="{{ forloop.counter }}">
+                            <td class="text-center mono fw-bold">
+                                {{ forloop.counter }}
+                            </td>
+                            <td class="text-center">{{ climber.user.username }}</td>
+                            <td class="text-center">
+                                {% if climber.level and climber.level != "-" %}
+                                    <span class="level-badge"
+                                          style="background-color: {{ climber.color }};">
+                                        {{ climber.level }}
+                                    </span>
+
+                                    <span class="text-muted mono ms-1 elo-value">
+                                        ({{ climber.elo|floatformat:"0" }})
+                                    </span>
+
+                                    <span class="elo-trend
+                                        {% if climber.elo_trend == 'up' %}up{% elif climber.elo_trend == 'down' %}down{% endif %}">
+                                        {% if climber.elo_trend == "up" %}
+                                            ▲
+                                        {% elif climber.elo_trend == "down" %}
+                                            ▼
+                                        {% endif %}
+                                    </span>
+                                {% else %}
+                                    <span class="text-muted">–</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center mono">{{ climber.successes }}</td>
+                            <td class="text-center">{{ climber.salle.nom|default:"–" }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                {% trans "Aucun classement disponible aujourd’hui." %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ==================================================
+         FOOTER
+    ================================================== -->
+    <div class="text-muted small mt-3 text-center">
+        {% trans "Classement mis à jour quotidiennement" %}
+        •
+        {% trans "Top" %} {{ limit }}
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    document.querySelectorAll(".menu-bar .menu-item").forEach(item => {
+        item.addEventListener("click", () => {
+            const key = item.dataset.key;
+
+            // On repart toujours de l'URL courante
+            const url = new URL(window.location.href);
+
+            if (key === "bloc") {
+                url.searchParams.set("bloc", "1");
+            } else {
+                // voie → on enlève le paramètre
+                url.searchParams.delete("bloc");
+            }
+
+            window.location.href = url.toString();
+        });
+    });
+})();
+</script>
+{% endblock %}

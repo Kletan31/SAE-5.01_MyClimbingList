@@ -1,0 +1,21 @@
+/* ## Messages ## */
+.banner {
+    margin: 1rem;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: .7rem;
+    line-height: 1.25rem;
+}
+
+.success-banner {
+    background-color: #e8fae8;
+    color: #05840c;
+    border: 1px solid rgba(46, 181, 39, 0.2);
+}
+
+.error-banner {
+    background-color: #FAE8E8;
+    color: #B52A27;
+    border: 1px solid rgba(181, 42, 39, 0.2);
+}

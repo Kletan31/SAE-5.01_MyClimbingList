@@ -1,0 +1,101 @@
+{% extends 'base/main_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block head %}
+<!-- Chargement des fichiers CSS spécifiques -->
+<link rel="stylesheet" href="{% static 'base/css/core/core.css' %}">
+
+<!-- Chargement des composants JS -->
+{% include 'js_components/app_script.html' %}
+{% endblock %}
+
+{% block content %}
+    <!-- pull-to-refresh -->
+    <div id="pull-indicator">
+        <i class="fa-solid fa-rotate-right"></i>
+    </div>
+
+    <!-- Bar supérieure de navigation -->
+    <div class="top-bar">
+        <!-- Bouton de retour vers la page précédente -->
+        <div id="back-container-js" class="back-container d-none">
+            <a id="back-link" href="#">
+                <i class="fa-solid fa-angle-left"></i>
+                <span id="back-label">{% trans "Retour" %}</span>
+            </a>
+        </div>
+
+        <!-- Titre de la page -->
+        <p>{% block page_name %}{% trans "Accueil" %}{% endblock %}</p>
+
+        <!-- Bouton de profil -->
+        <div id="profile-container-js" class="profile-container d-none">
+            <a href="{% url 'core:profile' %}" class="profile-link">
+                <i class="fa-solid fa-circle-user"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Contenu principal de la page -->
+    <div id="main-content">
+        <div id="template-container">
+        {% block template-content %}
+            <!-- Contenu spécifique de la page -->
+        {% endblock %}
+        </div>
+    </div>
+
+    <!-- Bar inférieure de navigation -->
+    <div class="bottom-bar">
+        <div class="row text-center gx-0">
+            <!-- Lien vers la page d'accueil -->
+            <div class="col pt-2">
+                <a href="{% url 'core:home' %}">
+                    <div class="icon-text home-select">
+                        <i class="fa-solid fa-home"></i>
+                        <span>{% trans "Accueil" %}</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Lien vers la section "Contests" -->
+            <div class="col pt-2">
+                <a href="{% url 'contest:home' %}">
+                    <div class="icon-text contests-select">
+                        <i class="fa-solid fa-swords"></i>
+                        <span>{% trans "Contests" %}</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Bouton pour ajouter une nouvelle séance -->
+            <div class="col">
+                <a href="{% url 'core:list' %}" class="add-button">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <i class="fa-light fa-circle-plus"></i>
+                </a>
+            </div>
+
+            <!-- Lien vers les projets -->
+            <div class="col pt-2">
+                <a href="{% url 'core:projects' %}">
+                    <div class="icon-text projet-select">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>{% trans "Projets" %}</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Lien vers les statistiques de l'utilisateur -->
+            <div class="col pt-2">
+                <a href="{% url 'core:graph' %}">
+                    <div class="icon-text stats-select">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>{% trans "Stats" %}</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

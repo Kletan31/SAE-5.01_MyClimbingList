@@ -1,0 +1,122 @@
+{% extends 'base/app_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block page_name %}{{ salle.nom }}{% endblock %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'contest/css/contest_list/contest_list.css' %}">
+{% endblock %}
+
+{% block template-content %}
+<div class="container d-flex flex-column py-1 h-100">
+    <!-- Boutons du haut : fixés -->
+    <div class="text-center py-2 sticky-top border-bottom">
+        <div class="btn-group w-75 row g-0" role="group">
+            <button class="col-4 btn btn-outline-primary filter-top active" data-type="permanent">
+                {% trans "Permanent" %}
+            </button>
+            <button class="col-4 btn btn-outline-primary filter-top" data-type="evenement">
+                {% trans "Événement" %}
+            </button>
+            <button class="col-4 btn btn-outline-primary filter-top" data-type="passe">
+                {% trans "Résultats" %}
+            </button>
+        </div>
+    </div>
+
+    <!-- Liste des contests : scrollable -->
+    <div class="flex-grow-1 overflow-auto px-3" id="contest-list-wrapper">
+        <div id="contest-list" class="pt-3">
+            {% if contests %}
+                {% for contest in contests %}
+                    {% if not contest.is_permanent or contest.is_permanent_enabled %}
+                        <div class="card mb-4 contest-item"
+                             style="display: none"
+                             data-type="{% if contest.end_date and contest.end_date < now %}passe{% elif contest.end_date %}evenement{% else %}permanent{% endif %}"
+                             data-discipline="{{ contest.discipline|default:'' }}">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <h5 class="card-title mb-1">{{ contest.name }}</h5>
+                                        <p class="card-text fst-italic" style="font-size: .85rem;">
+                                            {% if contest.description_courte %}
+                                                {{ contest.description_courte|linebreaksbr }}
+                                            {% else %}
+                                                {% trans "Aucune description." %}
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    {% if contest.discipline %}
+                                        {% if contest.discipline == "voie" %}
+                                            <span class="badge bg-success mx-1">
+                                                {{ contest.discipline|capfirst }}
+                                            </span>
+                                        {% elif contest.discipline == "bloc" %}
+                                            <span class="badge bg-primary mx-1">
+                                                {{ contest.discipline|capfirst }}
+                                            </span>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="badge bg-secondary mx-1">
+                                            {% trans "Toutes disciplines" %}
+                                        </span>
+                                    {% endif %}
+                                </div>
+
+                                {% if contest.end_date %}
+                                    <p class="card-text">
+                                        <small class="text-muted">
+                                            {% blocktrans trimmed with start=contest.start_date|date:"d/m/Y" end=contest.end_date|date:"d/m/Y" %}
+                                                Du {{ start }} au {{ end }}
+                                            {% endblocktrans %}
+                                        </small>
+                                    </p>
+                                {% endif %}
+
+                                <a href="{% url 'contest:contest_detail' contest.id %}" class="btn btn-sm btn-primary w-100">
+                                    {% trans "Voir" %}
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p class="text-center text-muted" style="font-size: .85rem;">
+                    {% trans "Aucun contest à afficher pour le moment." %}
+                </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const topButtons = document.querySelectorAll(".filter-top");
+        const items = document.querySelectorAll(".contest-item");
+
+        let currentType = "permanent";
+
+        function updateDisplay() {
+            items.forEach(item => {
+                const type = item.dataset.type;
+                item.style.display = (type === currentType) ? "block" : "none";
+            });
+        }
+
+        topButtons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                topButtons.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                currentType = btn.dataset.type;
+                updateDisplay();
+            });
+        });
+
+        updateDisplay(); // Initial
+    });
+</script>
+{% endblock %}

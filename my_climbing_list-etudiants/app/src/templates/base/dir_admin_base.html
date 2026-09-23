@@ -1,0 +1,155 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <!-- En-tête classique -->
+    <meta charset="UTF-8">
+    <title>{% trans "My Climbing List" %}</title>
+
+    <!-- Mute log (doit être le premier script importé) -->
+    <script>const LOG = {{ PROD|yesno:"false,true" }};</script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'base/media/fav/fav.svg' %}">
+
+    <!-- CSS de base -->
+    <link rel="stylesheet" href="{% static 'base/css/main/reset.css' %}">
+
+    <!-- Bootstrap v5 -->
+    <link rel="stylesheet" href="{% static 'base/css/bootstrap/bootstrap.min.css' %}">
+    <script src="{% static 'base/js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Font Awesome Pro v6.1.2 -->
+    <link rel="stylesheet" href="{% static 'base/icon_fa/css/all.css' %}" />
+
+    <!-- Ajouts spécifiques -->
+    {% block head %}{% endblock %}
+</head>
+
+<!-- Loader global -->
+<div id="loading-message"
+     style="display: none; text-align: center; padding: 2em; position: fixed;
+            top: 0; left: 0; width: 100%; height: 100vh; background: white; z-index: 9999;">
+    <div class="d-flex flex-column justify-content-center align-items-center h-100">
+        <div class="spinner-border text-primary mb-3" role="status"></div>
+        <p class="fs-5">
+            <strong>{% trans "Merci de patienter…" %}</strong><br>
+            {% trans "Calcul en cours." %}
+        </p>
+    </div>
+</div>
+
+<body class="bg-light">
+
+<!-- Barre en haut -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'dir_admin:dashboard' %}">
+            {% trans "Espace Direction" %}
+        </a>
+
+        <div class="d-flex align-items-center gap-2">
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'dir_admin:frequentation' %}" class="btn btn-primary btn-sm">
+                    {% trans "Fréquentation" %}
+                </a>
+                <a href="{% url 'dir_admin:logout' %}" class="btn btn-outline-light btn-sm">
+                    {% trans "Déconnexion" %}
+                </a>
+            {% endif %}
+
+            <!-- Sélecteur de langue -->
+            <form id="language-form" action="{% url 'set_language' %}" method="post" class="ms-2">
+                {% csrf_token %}
+                <input type="hidden" name="next" id="language-next" value="{{ request.get_full_path }}">
+                <select name="language" id="language-select"
+                        class="form-select form-select-sm"
+                        aria-label="{% trans 'Choisir la langue' %}">
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% for lang_code, lang_name in LANGUAGES %}
+                        <option value="{{ lang_code }}" {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>
+                            {{ lang_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<!-- Contenu principal -->
+<main class="container">
+    {% block content %}{% endblock %}
+</main>
+
+{% block scripts %}{% endblock %}
+
+<!-- ====================== -->
+<!-- JS : loader navigation -->
+<!-- ====================== -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const loader   = document.getElementById("loading-message");
+    const freqLink = document.querySelector("a[href$='frequentation/']");
+
+    if (loader) {
+        loader.style.display = "none";
+        document.body.style.overflow = "auto";
+    }
+
+    if (freqLink && loader) {
+        freqLink.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            loader.style.display = "block";
+            document.body.style.overflow = "hidden";
+
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    window.location.href = this.href;
+                }, 50);
+            });
+        });
+    }
+});
+</script>
+
+<!-- ======================= -->
+<!-- JS : changement langue -->
+<!-- ======================= -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const langSelect = document.getElementById("language-select");
+    const langForm   = document.getElementById("language-form");
+    const nextInput  = document.getElementById("language-next");
+
+    if (!langSelect || !langForm || !nextInput) return;
+
+    function swapLangPrefix(path, newLang) {
+        // Remplace un préfixe /fr/ ou /en/ ou /fr ou /en en début d’URL
+        // par /<newLang>/ (si un préfixe existe)
+        const re = /^\/([a-z]{2})(\/|$)/i;
+        if (re.test(path)) {
+            return path.replace(re, `/${newLang}$2`);
+        }
+        // Si pas de préfixe i18n détecté, on préfixe (utile si certaines URLs ne sont pas dans i18n_patterns)
+        return `/${newLang}${path.startsWith('/') ? '' : '/'}${path}`;
+    }
+
+    langSelect.addEventListener("change", function () {
+        const chosen = this.value;
+        const current = nextInput.value || window.location.pathname + window.location.search;
+
+        // IMPORTANT : ici on force next -> /en/... ou /fr/...
+        nextInput.value = swapLangPrefix(current, chosen);
+
+        langForm.submit();
+    });
+});
+</script>
+
+</body>
+</html>

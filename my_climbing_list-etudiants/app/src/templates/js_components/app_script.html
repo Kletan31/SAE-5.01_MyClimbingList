@@ -1,0 +1,29 @@
+{% load static %}
+<!-- Initialisation du localStorage -->
+<script type="module" src="{% static 'base/js/localStorage/viewportDimensions.js' %}"></script>
+<script type="module" src="{% static 'base/js/localStorage/initLocalStorage.js' %}"></script>
+
+<!-- Initialisation des fonctions utilitaires -->
+<script src="{% static 'base/js/utils/storageUtils.js' %}"></script>
+<script src="{% static 'base/js/utils/cookieUtils.js' %}"></script>
+
+<!-- Chargement des modules -->
+{# ToolTips BootStrap v5.3.3 #}
+<script src="{% static 'base/js/bootstrap/initTooltips.js' %}"></script>
+{# Plotly v2.34.0 #}
+<script src="{% static 'base/js/plotly/plotly-2.34.0.min.js' %}"></script>
+
+<!-- Initialisation des composants principaux -->
+{# Retour arrière #}
+<script src="{% static 'core/js/core/backLink/lastPage.js' %}"></script>
+<script src="{% static 'core/js/core/backLink/backLink.js' %}"></script>
+<script src="{% static 'core/js/core/backLink/hideProfileLink.js' %}"></script>
+{# Permet l'affichage d'une page de chargement entre deux pages #}
+<script type="module" src="{% static 'core/js/core/linkHandler/linkDetection.js' %}"></script>
+{# Gestion des erreurs #}
+<script src="{% static 'core/js/core/errorHandler/csrfErrorChecker.js' %}"></script>
+{# Logique des volets #}
+<script src="{% static 'core/js/core/logbookList/listeners.js' %}"></script>
+<script src="{% static 'core/js/core/logbookList/scrollTo.js' %}"></script>
+{# Pull-To-Refresh #}
+<script src="{% static 'core/js/core/pullToRefresh/pullToRefresh.js' %}"></script>

@@ -1,0 +1,178 @@
+{% extends "base/staff_admin_base.html" %}
+{% load i18n %}
+
+{% block backLink %}{% url 'staff_admin:openings_stats' %}{% endblock %}
+
+{% block head %}
+<style>
+    .staff-table th {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .staff-table th:hover {
+        background-color: #f5f5f5;
+    }
+
+    .mono {
+        font-variant-numeric: tabular-nums;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center my-2 flex-wrap gap-2">
+
+        <div>
+            <!-- Titre -->
+            <h1 class="mb-1">
+                {% trans "Grimpeurs – détail ouverture" %}
+            </h1>
+
+            <!-- Infos ouverture -->
+            <p class="text-muted">
+                {% trans "Ouverture" %} :
+                <strong>
+                    {{ ouverture.nom }}
+                    {% if ouverture.niveau %}
+                        ({{ ouverture.niveau }})
+                    {% endif %}
+                </strong>
+                {% if ouverture.couleur %}
+                    — {{ ouverture.couleur }}
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <!-- Tableau -->
+    <div class="table-responsive">
+        <table id="climbers-table"
+               class="table table-sm table-hover staff-table align-middle">
+
+            <thead class="table-light">
+                <tr>
+                    <th data-type="text">
+                        {% trans "Pseudo" %}
+                    </th>
+                    <th data-type="number" class="text-end">
+                        {% trans "Essais" %}
+                    </th>
+                    <th data-type="number" class="text-end">
+                        {% trans "Top" %}
+                    </th>
+                    <th data-type="date" class="text-end">
+                        {% trans "Dernier passage" %}
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for climber in climbers %}
+                    <tr>
+
+                        <!-- Pseudo -->
+                        <td>
+                            {{ climber.user__username }}
+                        </td>
+
+                        <!-- Essais -->
+                        <td class="text-end mono"
+                            data-value="{{ climber.total_essais }}">
+                            {{ climber.total_essais }}
+                            {% if climber.total_essais > 0 and climber.total_essais_lead > 0 %}
+                                <span class="text-muted">
+                                    ({{ climber.total_essais_lead }})
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Succès -->
+                        <td class="text-end mono"
+                            data-value="{{ climber.total_succes }}">
+                            {{ climber.total_succes }}
+                            {% if climber.total_essais > 0 and climber.total_succes_lead > 0 %}
+                                <span class="text-muted">
+                                    ({{ climber.total_succes_lead }})
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Dernier passage -->
+                        <td class="text-end"
+                            data-value="{{ climber.last_try|date:'Ymd' }}">
+                            {{ climber.last_try|date:"d/m/Y" }}
+                        </td>
+
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4"
+                            class="text-center text-muted py-4">
+                            {% trans "Aucun grimpeur n’a encore essayé cette ouverture." %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* ============================
+   SIMPLE TABLE SORT
+   ============================ */
+
+(function () {
+    const table = document.getElementById("climbers-table");
+    if (!table) return;
+
+    const tbody = table.querySelector("tbody");
+    if (!tbody) return;
+
+    const sortDirection = {};
+
+    table.querySelectorAll("th").forEach((th, index) => {
+        th.addEventListener("click", () => {
+            const type = th.dataset.type || "text";
+            const rows = Array.from(tbody.querySelectorAll("tr"));
+
+            sortDirection[index] = !sortDirection[index];
+            const dir = sortDirection[index] ? 1 : -1;
+
+            rows.sort((a, b) => {
+                const aCell = a.children[index];
+                const bCell = b.children[index];
+
+                const aVal = aCell.dataset.value || aCell.innerText.trim();
+                const bVal = bCell.dataset.value || bCell.innerText.trim();
+
+                if (type === "number") {
+                    return (Number(aVal) - Number(bVal)) * dir;
+                }
+
+                if (type === "date") {
+                    return aVal.localeCompare(bVal) * dir;
+                }
+
+                return aVal.localeCompare(
+                    bVal,
+                    undefined,
+                    { numeric: true, sensitivity: "base" }
+                ) * dir;
+            });
+
+            rows.forEach(row => tbody.appendChild(row));
+        });
+    });
+})();
+</script>
+{% endblock %}

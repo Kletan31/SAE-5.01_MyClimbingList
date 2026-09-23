@@ -1,0 +1,53 @@
+/* Profil Icône */
+
+.profile-icon {
+    margin-bottom: .5rem;
+    font-size: calc(var(--template-height)*12);
+    color: #1E3050;
+}
+
+.profile-page-icons {
+    font-size: 1.25rem;
+}
+
+#profile-username {
+    font-size: calc(var(--template-height)*2.5);
+}
+
+/* Conteneur de données */
+
+.voie-data, .bloc-data {
+    line-height: 1.25;
+}
+
+.data-title {
+    font-size: calc(var(--template-height)*2.5);
+}
+
+.bold-data {
+    font-size: calc(var(--template-height)*3.5);
+}
+
+/* Barres de séparations */
+
+.horizontal-line {
+    height: 1px;
+    width: 95%;
+    margin: calc(var(--template-height)*2) 0;
+    background-color: #e6e6e6;
+}
+
+.vertical-line {
+    width: 1px;
+    height: 85%;
+    background-color: #e6e6e6;
+}
+
+/* Visuel Cotation */
+
+.circle-cotation {
+    width: calc(var(--template-height)*8);
+    height: calc(var(--template-height)*8);
+    font-size: calc(var(--template-height)*3);
+    border: calc(var(--template-height)*.75) solid;
+}

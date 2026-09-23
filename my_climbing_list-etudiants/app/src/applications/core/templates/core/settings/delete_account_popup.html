@@ -1,0 +1,17 @@
+{% load i18n %}
+<div class="popup-overlay" id="delete-account-popup">
+    <div class="delete-popup-container">
+        <span class="delete-popup-title">{% trans "Confirmer la suppression de votre compte" %}</span>
+        <form method="POST" action="{% url 'services:delete_account' %}">
+            {% csrf_token %}
+            <input type="text"
+                   name="username_confirmation"
+                   placeholder="{% trans 'Votre pseudo' %}"
+                   required>
+            <div class="delete-popup-buttons-container">
+                <span class="btn btn-secondary" id="cancel-delete">{% trans "Annuler" %}</span>
+                <button type="submit" class="btn btn-danger">{% trans "Confirmer" %}</button>
+            </div>
+        </form>
+    </div>
+</div>

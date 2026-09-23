@@ -1,0 +1,197 @@
+{% extends "base/staff_admin_base.html" %}
+{% load i18n %}
+
+{% block backLink %}{% url 'staff_admin:contest_ouvertures' contest.id %}{% endblock %}
+
+{% block head %}
+    <style>
+        th[data-sort] {
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .sort-icon {
+            display: inline-block;
+            width: 1rem;
+            text-align: center;
+            font-size: 0.85rem;
+            opacity: 0.6;
+            margin-left: 0.3rem;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">
+        {% trans "Réussites" %} –
+        {% if ouverture.nom %}
+            {{ ouverture.nom }} • {{ ouverture.niveau }}
+        {% else %}
+            {% if ouverture.bloc %}
+                S{{ ouverture.relais }} • {{ ouverture.couleur }} • {{ ouverture.niveau }}
+            {% else %}
+                R{{ ouverture.relais }} • {{ ouverture.couleur }} • {{ ouverture.niveau }}
+            {% endif %}
+        {% endif %}
+    </h1>
+
+    <p class="text-muted">
+        {% trans "Contest :" %} <strong>{{ contest.name }}</strong><br>
+        {% trans "Salle :" %} <strong>{{ contest.salle.nom }}</strong>
+    </p>
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <p class="text-muted m-0">
+            {% blocktrans count user_count as count %}
+                {{ count }} grimpeur a réussi cette ouverture.
+            {% plural %}
+                {{ count }} grimpeurs ont réussi cette ouverture.
+            {% endblocktrans %}
+        </p>
+    </div>
+
+    {% if seances %}
+        <table class="table table-hover mt-4" id="success-table">
+            <thead class="table-light">
+                <tr>
+                    <th data-sort="text">
+                        {% trans "Utilisateur" %} <i class="fa-solid fa-sort sort-icon"></i>
+                    </th>
+                    <th data-sort="date">
+                        {% trans "Date" %} <i class="fa-solid fa-sort sort-icon"></i>
+                    </th>
+
+                    {% if contest.is_permanent %}
+                        <th data-sort="number">
+                            {% trans "Montées" %} <i class="fa-solid fa-sort sort-icon"></i>
+                        </th>
+                        {% if grimpable_en_tete %}
+                            <th data-sort="number">
+                                {% trans "Montées en tête" %} <i class="fa-solid fa-sort sort-icon"></i>
+                            </th>
+                        {% endif %}
+                        <th data-sort="number">
+                            {% trans "Réussites" %} <i class="fa-solid fa-sort sort-icon"></i>
+                        </th>
+                        {% if grimpable_en_tete %}
+                            <th data-sort="number">
+                                {% trans "Réussites en tête" %} <i class="fa-solid fa-sort sort-icon"></i>
+                            </th>
+                        {% endif %}
+                    {% else %}
+                        <th data-sort="text">
+                            {% trans "Status" %} <i class="fa-solid fa-sort sort-icon"></i>
+                        </th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for seance in seances %}
+                    <tr>
+                        <td>{{ seance.user.username }}</td>
+                        <td>
+                            {% if seance.date_seance %}
+                                {{ seance.date_seance|date:"d/m/Y" }}
+                            {% elif seance.created_at %}
+                                {{ seance.created_at|date:"d/m/Y" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+                        {% if contest.is_permanent %}
+                            <td>{{ seance.nb_try|default:"0" }}</td>
+                            {% if grimpable_en_tete %}
+                                <td>{{ seance.nb_try_lead|default:"0" }}</td>
+                            {% endif %}
+                            <td>{{ seance.nb_top|default:"0" }}</td>
+                            {% if grimpable_en_tete %}
+                                <td>{{ seance.nb_top_lead|default:"0" }}</td>
+                            {% endif %}
+                        {% else %}
+                            <td>
+                                {% if seance.has_top or seance.nb_top|default:0 > 0 or seance.nb_top_lead|default:0 > 0 %}
+                                    <span class="badge bg-success">
+                                        {% trans "Top" %}
+                                    </span>
+                                {% else %}
+                                    {% if contest.has_zone and seance.has_zone %}
+                                        <span class="badge bg-primary">
+                                            {% trans "Zone" %}
+                                        </span>
+                                    {% endif %}
+                                    {% if contest.has_degaine and seance.degaines_reached %}
+                                        <span class="badge bg-warning text-dark">
+                                            {% blocktrans %}{{ seance.degaines_reached }} dégaines{% endblocktrans %}
+                                        </span>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="text-muted mt-4">
+            {% trans "Aucun grimpeur n’a encore réussi cette ouverture." %}
+        </p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const table = document.getElementById("success-table");
+    const headers = table.querySelectorAll("th[data-sort]");
+
+    headers.forEach(header => {
+        header.addEventListener("click", () => {
+            const index = Array.from(header.parentNode.children).indexOf(header);
+            const sortType = header.dataset.sort;
+            const tbody = table.querySelector("tbody");
+            const rows = Array.from(tbody.querySelectorAll("tr"));
+
+            const isAsc = header.classList.contains("sorted-asc");
+
+            const sorted = rows.sort((a, b) => {
+                const cellA = a.children[index].textContent.trim();
+                const cellB = b.children[index].textContent.trim();
+
+                if (sortType === "number") {
+                    return isAsc ? Number(cellB) - Number(cellA) : Number(cellA) - Number(cellB);
+                } else if (sortType === "date") {
+                    const parseDate = str => {
+                        const parts = str.split("/");
+                        return new Date(parts[2], parts[1] - 1, parts[0]);
+                    };
+                    return isAsc ? parseDate(cellB) - parseDate(cellA) : parseDate(cellA) - parseDate(cellB);
+                } else {
+                    return isAsc ? cellB.localeCompare(cellA) : cellA.localeCompare(cellB);
+                }
+            });
+
+            headers.forEach(h => {
+                h.classList.remove("sorted-asc", "sorted-desc");
+                const icon = h.querySelector(".sort-icon");
+                if (icon) {
+                    icon.className = "fa-solid fa-sort sort-icon";
+                }
+            });
+
+            header.classList.toggle("sorted-asc", !isAsc);
+            header.classList.toggle("sorted-desc", isAsc);
+            const icon = header.querySelector(".sort-icon");
+            if (icon) {
+                icon.className = isAsc
+                    ? "fa-solid fa-sort-down sort-icon"
+                    : "fa-solid fa-sort-up sort-icon";
+            }
+
+            sorted.forEach(row => tbody.appendChild(row));
+        });
+    });
+});
+</script>
+{% endblock %}

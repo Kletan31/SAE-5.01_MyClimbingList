@@ -1,0 +1,253 @@
+{% extends "base/staff_admin_base.html" %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block backLink %}
+    {% url 'staff_admin:contest_list' %}?tab={{ request.GET.tab|default:'evenement' }}
+{% endblock %}
+
+{% block head %}
+    <style>
+        .ouverture-item {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .ouverture-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .scrollable-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+            background-color: #ffffff;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container py-4">
+        <h1 class="mb-4">{% trans "Modifier un contest" %}</h1>
+
+        <form method="post" class="border rounded p-4 shadow-sm bg-light">
+            {% csrf_token %}
+
+            <!-- Champs du formulaire -->
+            <div class="row">
+                <div class="col-md-6">
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    {% for field in form %}
+                        {% if field.name != "ouvertures" %}
+                            {% if field.field.widget.input_type == "checkbox" %}
+                                <div class="form-check mb-3">
+                                    {{ field|add_class:"form-check-input" }}
+                                    <label class="form-check-label" for="{{ field.id_for_label }}">
+                                        {{ field.label }}
+                                    </label>
+                                    {% if field.errors %}
+                                        <div class="form-text text-danger">{{ field.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <div class="mb-3">
+                                    <label class="form-label" for="{{ field.id_for_label }}">
+                                        {{ field.label }}
+                                    </label>
+                                    {% if field.name == "start_date" or field.name == "end_date" %}
+                                        {{ field|add_class:"form-control"|attr:"type:datetime-local" }}
+                                    {% else %}
+                                        {{ field|add_class:"form-control" }}
+                                    {% endif %}
+                                    {% if field.errors %}
+                                        <div class="form-text text-danger">{{ field.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div id="discipline-filters" class="btn-group mb-3" role="group">
+                <button type="button"
+                        class="btn btn-outline-primary active"
+                        data-discipline="voie">
+                    {% trans "Voie" %}
+                </button>
+                <button type="button"
+                        class="btn btn-outline-primary"
+                        data-discipline="bloc">
+                    {% trans "Bloc" %}
+                </button>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-6">
+                    <div class="section-title">
+                        {% trans "Ouvertures disponibles" %}
+                    </div>
+                    <div class="list-group scrollable-list" id="ouvertures-disponibles">
+                        {% for ouverture in form.fields.ouvertures.queryset %}
+                            <div class="list-group-item ouverture-item"
+                                 data-id="{{ ouverture.pk }}"
+                                 data-text="{{ ouverture }}"
+                                 data-discipline="{{ ouverture.bloc|yesno:'bloc,voie' }}">
+                                {{ ouverture }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="section-title">
+                        {% trans "Ouvertures sélectionnées" %}
+                    </div>
+                    <div class="list-group scrollable-list" id="ouvertures-selectionnees">
+                        <!-- Rempli dynamiquement -->
+                    </div>
+                </div>
+            </div>
+
+            {% if form.errors.ouvertures %}
+                <div class="alert alert-danger mt-3">
+                    {% for error in form.errors.ouvertures %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Champ masqué -->
+            <input type="hidden" name="ouvertures" id="ouvertures-input">
+
+            <!-- Actions -->
+            <div class="mt-4 d-flex gap-3">
+                <button type="submit" class="btn btn-primary">
+                    {% trans "Enregistrer les modifications" %}
+                </button>
+                <a href="{% url 'staff_admin:contest_list' %}?tab={{ request.GET.tab|default:'evenement' }}" class="btn btn-outline-secondary">
+                    {% trans "Annuler" %}
+                </a>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const selectedOuvertures = [
+        {% for ouverture in form.initial.ouvertures %}
+            {
+                id: "{{ ouverture.pk }}",
+                text: "{{ ouverture }}",
+                discipline: "{{ ouverture.bloc|yesno:'bloc,voie' }}"
+            }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const disponibles = document.querySelectorAll("#ouvertures-disponibles .ouverture-item");
+        const selectionnees = document.getElementById("ouvertures-selectionnees");
+        const inputHidden = document.getElementById("ouvertures-input");
+        const selectedIds = new Set();
+        let currentDiscipline = "voie";
+
+        const voieButton = document.querySelector('#discipline-filters button[data-discipline="voie"]');
+        if (voieButton) voieButton.classList.add("active");
+
+        function updateDisciplineFilter() {
+            disponibles.forEach(item => {
+                const discipline = item.dataset.discipline;
+                const id = item.dataset.id;
+                if (selectedIds.has(id)) {
+                    item.style.display = "none";
+                } else {
+                    item.style.display = (currentDiscipline === discipline) ? "" : "none";
+                }
+            });
+        }
+
+        document.querySelectorAll("#discipline-filters button").forEach(btn => {
+            btn.addEventListener("click", () => {
+                document.querySelectorAll("#discipline-filters button").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                currentDiscipline = btn.dataset.discipline;
+                updateDisciplineFilter();
+            });
+        });
+
+        selectedOuvertures.forEach(({ id, text, discipline }) => {
+            selectedIds.add(id);
+
+            const selectedItem = document.createElement("div");
+            selectedItem.classList.add("list-group-item", "ouverture-item", "d-flex", "justify-content-between", "align-items-center");
+            selectedItem.textContent = text;
+            selectedItem.dataset.id = id;
+            selectedItem.dataset.discipline = discipline;  // Ajouté ici
+            selectedItem.title = "Cliquer pour retirer";
+            selectedItem.addEventListener("click", () => {
+                selectedItem.remove();
+                selectedIds.delete(id);
+                updateHiddenInput();
+                updateDisciplineFilter();
+            });
+
+            selectionnees.appendChild(selectedItem);
+        });
+
+        disponibles.forEach(item => {
+            const id = item.dataset.id;
+            const text = item.dataset.text;
+            const discipline = item.dataset.discipline;
+
+            if (selectedIds.has(id)) item.style.display = "none";
+
+            item.addEventListener("click", () => {
+                if (!selectedIds.has(id)) {
+                    selectedIds.add(id);
+
+                    const selectedItem = document.createElement("div");
+                    selectedItem.classList.add("list-group-item", "ouverture-item", "d-flex", "justify-content-between", "align-items-center");
+                    selectedItem.textContent = text;
+                    selectedItem.dataset.id = id;
+                    selectedItem.dataset.discipline = discipline;  // Ajouté aussi ici
+                    selectedItem.title = "Cliquer pour retirer";
+                    selectedItem.addEventListener("click", () => {
+                        selectedItem.remove();
+                        selectedIds.delete(id);
+                        updateHiddenInput();
+                        updateDisciplineFilter();
+                    });
+
+                    selectionnees.appendChild(selectedItem);
+                    updateHiddenInput();
+                    item.style.display = "none";
+                }
+            });
+        });
+
+        function updateHiddenInput() {
+            inputHidden.value = Array.from(selectedIds).join(",");
+        }
+
+        updateHiddenInput();
+        updateDisciplineFilter();
+    });
+</script>
+{% endblock %}

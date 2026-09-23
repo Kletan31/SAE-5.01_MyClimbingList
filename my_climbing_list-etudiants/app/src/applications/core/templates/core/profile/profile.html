@@ -1,0 +1,237 @@
+{% extends 'base/app_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'core/css/profile/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/profile/profile_popup.css' %}">
+{% endblock %}
+
+{% block page_name %}{% trans "Profil" %}{% endblock %}
+
+{% block template-content %}
+<!-- Popup de déconnexion -->
+{% include "core/profile/logout_popup.html" %}
+<!-- Popup choix de langue -->
+{% include "core/profile/language_popup.html" %}
+
+<!-- ## USER INFO ## -->
+<div class="w-100 d-flex flex-column justify-content-center align-items-center mt-2 mb-1">
+    <div class="row w-100">
+        <!-- Déconnexion -->
+        <div class="col-4 d-flex justify-content-start gap-3">
+            <i class="fa-solid fa-right-from-bracket fa-flip-horizontal profile-page-icons" id="logout-button"></i>
+            <a href="{% url 'core:training' %}">
+                <i class="fa-regular fa-dumbbell position-relative" style="top: 2px;"></i>
+            </a>
+        </div>
+        <!-- Profil -->
+        <div class="col-4 text-center">
+            <i class="profile-icon fa-solid fa-circle-user"></i>
+        </div>
+        <!-- Paramètre / Feedback -->
+        <div class="col-4">
+            <div class="d-flex justify-content-end gap-3" style="padding-right: 12px;">
+                <i class="fa-regular fa-globe profile-page-icons" id="language-button"></i>
+                <a href="{% url 'core:feedback' %}?bloc={{ bloc }}" id="feedback-link">
+                    <i class="fa-regular fa-message-exclamation profile-page-icons"></i>
+                </a>
+                <a href="{% url 'core:settings' %}?bloc={{ bloc }}" id="settings-link">
+                    <i class="fa-solid fa-gear profile-page-icons"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <p id="profile-username" class="fw-bold m-0">{{ user.username }}</p>
+    <!-- Menu Voie/Bloc -->
+    <div class="menu-bar row">
+        <div class="menu-item col-6{% if not bloc %} selected{% endif %}" data-key="voie">
+            {% trans "Voie" %}
+        </div>
+        <div class="menu-item col-6{% if bloc %} selected{% endif %}" data-key="bloc">
+            {% trans "Bloc" %}
+        </div>
+    </div>
+</div>
+
+<!-- ## VOIE DATA ## -->
+<div class="voie-data{% if bloc %} d-none{% endif %} w-100 d-flex flex-column justify-content-start align-items-center">
+    <!-- ## Salle préférée ## -->
+    <div class="row w-100 text-center">
+        <p class="data-title m-0">{% trans "Salle préférée" %}</p>
+        <span class="bold-data fw-bold">{{ salle_voie_display }}</span>
+    </div>
+
+    <!-- ## Ascension ## -->
+    <div class="row g-0 w-100 text-center mt-3">
+        <div class="col-1"></div>
+        <!-- ## Moulinette ## -->
+        <div class="col-4">
+            <div class="row w-100 m-auto">
+                <p class="data-title m-0 mb-2">{% trans "Moulinette" %}</p>
+                <!-- ## Top ## -->
+                <div class="col-6">
+                    <div class="d-flex flex-column justify-content-center align-items-center">
+                        <span id="totalRouteTopRope" class="bold-data fw-bold"></span>
+                        <span style="font-size: .65rem">{% trans "Top" %}</span>
+                    </div>
+                </div>
+                <!-- ## Flash ## -->
+                <div class="col-6">
+                    <div class="d-flex flex-column justify-content-center align-items-center">
+                        <span id="totalRouteTopRopeFlash" class="bold-data fw-bold"></span>
+                        <span style="font-size: .65rem">{% trans "Flash" %}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-2 d-flex justify-content-center align-items-center">
+            <div class="vertical-line"></div>
+        </div>
+        <!-- ## Tête ## -->
+        <div class="col-4">
+            <div class="row w-100 m-auto">
+                <p class="data-title m-0 mb-2">{% trans "Tête" %}</p>
+                <!-- ## Top ## -->
+                <div class="col-6">
+                    <div class="d-flex flex-column justify-content-center align-items-center">
+                        <span id="totalRouteLead" class="bold-data fw-bold"></span>
+                        <span style="font-size: .65rem">{% trans "Top" %}</span>
+                    </div>
+                </div>
+                <!-- ## Flash ## -->
+                <div class="col-6">
+                    <div class="d-flex flex-column justify-content-center align-items-center">
+                        <span id="totalRouteLeadFlash" class="bold-data fw-bold"></span>
+                        <span style="font-size: .65rem">{% trans "Flash" %}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <!-- ## BARRE HORIZONTALE ## -->
+    <div class="w-100 d-flex align-items-center justify-content-center">
+        <div class="horizontal-line"></div>
+    </div>
+
+    <!-- ## Profil / Style ## -->
+    <div class="row g-0 w-100 text-center mb-2">
+        <div class="col-1"></div>
+        <!-- ## Profil ## -->
+        <div class="col-4">
+            <p class="data-title m-0 mb-2">{% trans "Profil favori" %}</p>
+            <span id="preferredRouteProfile" class="style-profil fw-bold style-bloc" style="background-color: #333;"></span>
+        </div>
+
+        <div class="col-2 d-flex justify-content-center align-items-center">
+            <div class="vertical-line"></div>
+        </div>
+
+        <!-- ## Style ## -->
+        <div class="col-4">
+            <p class="data-title m-0 mb-2">{% trans "Style favori" %}</p>
+            <span id="preferredRouteStyle" class="style-profil fw-bold"></span>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <!-- ## Cotation ## -->
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <p class="data-title m-0">{% trans "Niveau" %}</p>
+        <span id="levelRoute" class="circle-cotation my-2"></span>
+        <p class="m-0 mb-2" style="font-size: .65rem;">
+            <span id="totalRouteSessions"></span> {% trans "séances enregistrées" %}
+        </p>
+    </div>
+
+    <!-- ## Bouton "Carnet" ## -->
+    <div class="carnet-button text-center mt-2">
+        <a href="{% url 'core:logbook' %}?bloc=false">
+            <button type="submit" class="btn btn-primary" id="confirm-button">{% trans "Mon Carnet" %}</button>
+        </a>
+    </div>
+</div>
+
+<!-- ## BLOC DATA ## -->
+<div class="bloc-data{% if not bloc %} d-none{% endif %} w-100 d-flex flex-column justify-content-start align-items-center">
+    <!-- ## Salle préférée ## -->
+    <div class="row w-100 text-center">
+        <p class="data-title m-0">{% trans "Salle préférée" %}</p>
+        <span class="bold-data fw-bold">{{ salle_bloc_display }}</span>
+    </div>
+
+    <!-- ## Ascension ## -->
+    <div class="w-100 mt-3">
+        <p class="data-title m-0 mb-2 text-center">{% trans "Ascensions" %}</p>
+        <div class="row m-0 g-0 w-100 text-center">
+            <div class="col-4"></div>
+            <!-- ## Top ## -->
+            <div class="col-2">
+                <div class="d-flex flex-column justify-content-center align-items-center">
+                    <span id="totalBoulder" class="bold-data fw-bold"></span>
+                    <span style="font-size: .65rem">{% trans "Top" %}</span>
+                </div>
+            </div>
+
+            <!-- ## Flash ## -->
+            <div class="col-2">
+                <div class="d-flex flex-column justify-content-center align-items-center">
+                    <span id="totalBoulderFlash" class="bold-data fw-bold"></span>
+                    <span style="font-size: .65rem">{% trans "Flash" %}</span>
+                </div>
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+
+    <!-- ## BARRE HORIZONTALE ## -->
+    <div class="w-100 d-flex align-items-center justify-content-center">
+        <div class="horizontal-line"></div>
+    </div>
+
+    <!-- ## Profil / Style ## -->
+    <div class="row g-0 w-100 text-center mb-2">
+        <div class="col-1"></div>
+        <!-- ## Profil ## -->
+        <div class="col-4">
+            <p class="data-title m-0 mb-2">{% trans "Profil favori" %}</p>
+            <span id="preferredBoulderProfile" class="style-profil fw-bold style-bloc" style="background-color: #333;"></span>
+        </div>
+
+        <div class="col-2 d-flex justify-content-center align-items-center">
+            <div class="vertical-line"></div>
+        </div>
+
+        <!-- ## Style ## -->
+        <div class="col-4">
+            <p class="data-title m-0 mb-2">{% trans "Style favori" %}</p>
+            <span id="preferredBoulderStyle" class="style-profil fw-bold"></span>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <!-- ## Cotation ## -->
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <p class="data-title m-0">{% trans "Niveau" %}</p>
+        <span id="levelBoulder" class="circle-cotation my-2"></span>
+        <p class="m-0 mb-2" style="font-size: .65rem;">
+            <span id="totalBoulderSessions"></span> {% trans "séances enregistrées" %}
+        </p>
+    </div>
+
+    <!-- ## Bouton "Carnet" ## -->
+    <div class="carnet-button text-center mt-2">
+        <a href="{% url 'core:logbook' %}?bloc=true">
+            <button type="submit" class="btn btn-primary" id="confirm-button">{% trans "Mon Carnet" %}</button>
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% include 'core/profile/script.html' %}
+{% endblock %}

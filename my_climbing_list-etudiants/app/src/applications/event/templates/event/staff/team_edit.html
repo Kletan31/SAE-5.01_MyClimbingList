@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier le duo - {{ event.name }}</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+</head>
+<body>
+    <h1>Modifier les emails du duo</h1>
+
+    <p>
+        <a href="{% url 'event:staff_team_list' slug=event.slug %}">Retour aux équipes</a>
+    </p>
+
+    <h2>{{ team.participant_1 }} / {{ team.participant_2 }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Enregistrer</button>
+    </form>
+</body>
+</html>

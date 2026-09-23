@@ -1,0 +1,18 @@
+{% load static %}
+<script src="{% static 'core/js/graph/loadGraphData.js' %}"></script>
+<script src="{% static 'core/js/graph/syncFlashIcons.js' %}"></script>
+<script src="{% static 'core/js/graph/displayGraph.js' %}"></script>
+<script type="module">
+import { toggleMenuSelection } from "{% static 'core/js/graph/toggleMenuSelection.js' %}";
+
+document.addEventListener('DOMContentLoaded', () => {
+    initTooltips()
+    loadGraphData();
+
+    toggleMenuSelection('.menu-bar-graph .menu-item', 'selected');
+    toggleMenuSelection('.menu-bar .menu-item', 'selected');
+    toggleFlashMode();
+
+    displayGraph();
+});
+</script>

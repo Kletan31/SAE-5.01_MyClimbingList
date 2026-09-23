@@ -1,0 +1,27 @@
+# Environnement et secrets générés localement
+.env
+.env.*
+!.env.example
+.local/
+*.pem
+*.key
+*.der
+*.p12
+*.pfx
+# Artefacts
+__pycache__/
+*.py[cod]
+*.log
+.DS_Store
+.idea/
+.vscode/
+node_modules/
+.venv/
+staticfiles/
+cache/
+*.sqlite*
+*.sql
+*.dump
+*.zip
+*.tar
+*.gz

@@ -1,0 +1,35 @@
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Route Event</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+</head>
+
+<h1>Espace staff — Route Event</h1>
+
+<p>
+    <a href="{% url 'route_event:staff_event_list' %}">Gérer les événements</a> |
+    <a href="{% url 'route_event:staff_logout' %}">Se déconnecter</a>
+</p>
+
+{% if staff_salle %}
+    <p>Salle : {{ staff_salle.nom }}</p>
+{% else %}
+    <p>Aucune salle favorite associée à ce compte.</p>
+{% endif %}
+
+<ul>
+    {% for event in events %}
+        <li>
+            <strong>{{ event.name }}</strong> — {{ event.date }}
+            <br>
+            <a href="{% url 'route_event:staff_event_update' slug=event.slug %}">Modifier</a> |
+            <a href="{% url 'route_event:staff_participant_list' slug=event.slug %}">Participants</a> |
+            <a href="{% url 'route_event:staff_ranking' slug=event.slug %}">Classement</a> |
+            <a href="{% url 'route_event:staff_ranking_display' slug=event.slug %}">Écran</a> |
+            <a href="{% url 'route_event:staff_route_list' slug=event.slug %}">Voies</a>
+        </li>
+    {% empty %}
+        <li>Aucun événement.</li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,53 @@
+{% extends "base/dir_admin_base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="pb-5">
+    <h2 class="mb-4">{% trans "Fréquentation de l'application" %}</h2>
+
+    <!-- === TAUX DE RÉTENTION === -->
+    <div class="mb-5">
+        <h4>{% trans "Taux de rétention à 1 an" %}</h4>
+
+        {% if retention_stats.rate %}
+            <p style="font-size:1.1rem; margin-bottom: 1rem;">
+                {{ retention_stats.rate }} %
+                <span style="color:#666; font-size:0.9rem;">
+                    ({{ retention_stats.retained }} pour {{ retention_stats.total }}
+                    utilisateurs inscrits depuis plus d’un an)
+                </span>
+            </p>
+        {% else %}
+            <p>{% trans "Aucune donnée disponible pour le moment." %}</p>
+        {% endif %}
+
+        {% if retention_graph_html %}
+            <div class="mt-4">
+                {{ retention_graph_html|safe }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- === FRÉQUENTATION GLOBALE === -->
+    <div class="mb-5">
+        <h4>{% trans "Fréquentation toutes salles confondues" %}</h4>
+
+        {% if graph_html %}
+            {{ graph_html|safe }}
+        {% else %}
+            <p>{% trans "Aucune donnée de fréquentation disponible." %}</p>
+        {% endif %}
+    </div>
+
+    <!-- === FRÉQUENTATION PAR SALLE === -->
+    <div>
+        <h4>{% trans "Fréquentation par salle" %}</h4>
+
+        {% if graph_salle_html %}
+            {{ graph_salle_html|safe }}
+        {% else %}
+            <p>{% trans "Aucune donnée par salle disponible." %}</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base/app_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block head %}
+    {{ block.super }}
+    <style>
+        /* Icône de rechargement */
+        .icon {
+            color: #555;
+            margin-bottom: 2svh;
+        }
+
+        /* Texte d'information */
+        .message {
+            color: #555;
+            margin-bottom: 2.5svh;
+        }
+    </style>
+{% endblock %}
+
+{% block page_name %}
+    {% trans "Oups !" %}
+{% endblock %}
+
+{% block template-content %}
+<div class="offline-container w-100 text-center" style="padding-top: 22.5svh;">
+    <i class="fa-regular fa-arrow-rotate-right icon" style="font-size: 48px;"></i>
+
+    <div id="spinnerWrapper" class="icon w-100 justify-content-center align-items-center"
+         style="display: none; height: 48px;">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+
+    <p class="message">{% trans "Connexion perdue. Veuillez réessayer." %}</p>
+
+    <div id="retry-wrapper">
+        <a id="reloadButton" class="btn btn-secondary">{% trans "Réessayer" %}</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const icon = document.querySelector(".fa-arrow-rotate-right");
+    const button = document.getElementById("reloadButton");
+    const spinner = document.getElementById("spinnerWrapper");
+    const fallback = "/core/home/";
+    const referrer = document.referrer;
+    const currentPath = window.location.href;
+
+    button.addEventListener("click", function () {
+        icon.style.display = "none";
+        spinner.style.display = "flex";
+
+        setTimeout(function () {
+            if (referrer && referrer !== currentPath) {
+                window.location.href = referrer;
+            } else {
+                window.location.href = fallback;
+            }
+        }, 1000);
+    });
+});
+</script>
+{% endblock %}

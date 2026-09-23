@@ -1,0 +1,36 @@
+{% load static %}
+<script src="{% static 'core/js/guidebook/map/PinchZoom.js' %}"></script>
+<script src="{% static 'core/js/guidebook/map/fetchSvg.js' %}"></script>
+<script src="{% static 'core/js/guidebook/map/hideEmptyRelais.js' %}"></script>
+<script src="{% static 'core/js/guidebook/map/relaisLogic.js' %}"></script>
+<script src="{% static 'core/js/guidebook/list/restoreScrollPosition.js' %}"></script>
+<script src="{% static 'core/js/guidebook/utils/updateRows.js' %}"></script>
+<script src="{% static 'core/js/guidebook/utils/resetAllCircles.js' %}"></script>
+<script src="{% static 'core/js/guidebook/utils/circleDisciplineToggler.js' %}"></script>
+
+<script type="module">
+import { manageSessionStorage } from "{% static "core/js/guidebook/main/manageSessionStorage.js" %}";
+import { initVoiesSelection } from "{% static "core/js/guidebook/main/routeSelection.js" %}";
+import { toggleGuidebookType } from "{% static "core/js/guidebook/main/toggleGuidebookType.js" %}";
+import { initializeTabSwitcher } from "{% static "core/js/guidebook/main/tabSwitcher.js" %}";
+import { initializeScrollPositionManager } from "{% static "core/js/guidebook/list/scrollPosition.js" %}";
+import { initializeSorting } from "{% static 'core/js/guidebook/list/sortGuidebookTable.js' %}";
+import PinchZoom from "{% static 'base/js/pinchzoom/pinch-zoom-2.3.5.min.js' %}"; // Exporter via "export default"
+
+document.addEventListener('DOMContentLoaded', async () => {
+    // PinchZoom
+    window.PinchZoom = PinchZoom;
+
+    // Main
+    manageSessionStorage();
+    initVoiesSelection();
+    toggleGuidebookType();  // JS Map
+
+    // List
+    initializeScrollPositionManager();
+    initializeSorting();
+
+    // Appelle des fonctions accessibles globalement
+    initializeTabSwitcher();
+});
+</script>

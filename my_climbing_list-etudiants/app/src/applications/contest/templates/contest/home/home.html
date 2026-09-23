@@ -1,0 +1,187 @@
+{% extends 'base/app_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block page_name %}{% trans "Contests" %}{% endblock %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'contest/css/home/home.css' %}">
+{% endblock %}
+
+{% block template-content %}
+<div class="container py-4">
+    <div class="row g-3" id="sallesGrid">
+        <!-- =========================
+             ALTI LIGUE (full width)
+        ========================== -->
+        <div class="col-12 d-flex">
+            <a href="{% url 'contest:ranking' %}"
+               class="text-decoration-none flex-fill">
+                <div class="card salle-hero-card text-center h-100">
+                    <div class="card-body py-4 d-flex flex-column justify-content-center">
+                        <div class="salle-hero-icon-wrap mb-2">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <h4 class="card-title mb-1">
+                            {% trans "Alti Ligue" %}
+                        </h4>
+                        <span class="badge w-auto m-auto mt-2" style="background-color: #951B95;">
+                            {% trans "Classement global" %}
+                        </span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- =========================
+             SALLES
+        ========================== -->
+        {% for salle in salles %}
+            <div class="col-6 grid-col d-flex">
+                <a href="{% url 'contest:salle_detail' salle.id %}" class="text-decoration-none flex-fill">
+                    <div class="card salle-card text-center h-100">
+                        <div class="card-body py-3 d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="salle-icon-wrap">
+                                    <i class="fa-solid fa-swords"></i>
+                                </div>
+                                <h5 class="card-title mb-1">{{ salle.nom }}</h5>
+                            </div>
+                            <div class="badge-slot mt-2">
+                                {% if salle.active_contests %}
+                                    <span class="badge bg-success">
+                                        {% blocktrans trimmed with n=salle.active_contests %}
+                                            {{ n }} en cours
+                                        {% endblocktrans %}
+                                    </span>
+                                {% elif salle.upcoming_contests %}
+                                    <span class="badge bg-warning text-dark">
+                                        {% blocktrans trimmed with n=salle.upcoming_contests %}
+                                            {{ n }} à venir
+                                        {% endblocktrans %}
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-secondary">
+                                        {% trans "Aucun en cours" %}
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="alert alert-light border text-center mb-0">
+                    {% trans "Aucune salle disponible pour le moment." %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% if needs_identity %}
+    <!-- Modal identité -->
+    <div class="modal fade" id="identityModal" tabindex="-1"
+         aria-labelledby="identityModalLabel" aria-hidden="true"
+         data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius:16px;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="identityModalLabel">
+                        {% trans "Avant de continuer" %}
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    {% blocktrans trimmed %}
+                        Merci d’indiquer vos <strong>Nom, Prénom</strong> ainsi que votre <strong>genre</strong>
+                        pour participer aux contests.
+                    {% endblocktrans %}
+                    <form method="post" id="identity-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="update_identity" value="1">
+
+                        <div class="mb-3">
+                            {{ identity_form.first_name.label_tag }}
+                            {{ identity_form.first_name }}
+                        </div>
+                        <div class="mb-3">
+                            {{ identity_form.last_name.label_tag }}
+                            {{ identity_form.last_name }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">{% trans "Genre" %}</label>
+                            <div class="d-flex justify-content-around fs-2">
+                                <label>
+                                    <input type="radio" name="gender" value="M" class="d-none" required
+                                           {% if identity_form.initial.gender == "M" %}checked{% endif %}>
+                                    <i class="fa-solid fa-mars"></i>
+                                </label>
+                                <label>
+                                    <input type="radio" name="gender" value="F" class="d-none" required
+                                           {% if identity_form.initial.gender == "F" %}checked{% endif %}>
+                                    <i class="fa-solid fa-venus"></i>
+                                </label>
+                                <label>
+                                    <input type="radio" name="gender" value="N" class="d-none" required
+                                           {% if identity_form.initial.gender == "N" %}checked{% endif %}>
+                                    <i class="fa-solid fa-genderless"></i>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2 mt-3">
+                            <button type="submit" class="btn btn-primary flex-fill">
+                                {% trans "Enregistrer" %}
+                            </button>
+                            <a href="/" class="btn btn-outline-secondary flex-fill">
+                                {% trans "Retour" %}
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if needs_identity %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const modalEl = document.getElementById("identityModal");
+    if (!modalEl) return;
+    document.body.appendChild(modalEl);
+    new bootstrap.Modal(modalEl, {backdrop: 'static', keyboard: false}).show();
+    if (typeof LOG !== "undefined" && LOG) console.log("Réinitialisation du cache");
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({ action: "CLEAR_MAIN_CACHE" });
+    }
+  });
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const radios = document.querySelectorAll('input[name="gender"]');
+
+  function updateIcons() {
+    document.querySelectorAll('label i').forEach(icon => {
+      icon.classList.remove("icon-selected");
+    });
+    const checked = document.querySelector('input[name="gender"]:checked');
+    if (checked) {
+      checked.parentElement.querySelector("i").classList.add("icon-selected");
+    }
+  }
+
+  radios.forEach(radio => {
+    radio.addEventListener("change", updateIcons);
+  });
+
+  updateIcons(); // appliquer au chargement
+});
+</script>
+{% endif %}
+{% endblock %}

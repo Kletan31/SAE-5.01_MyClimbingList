@@ -1,0 +1,19 @@
+{% load i18n %}
+
+<div class="popup-overlay" id="popup-overlay">
+    <div class="profile-popup-container" id="popup-container">
+        <span class="profile-popup-title">
+            {% trans "Voulez-vous vraiment vous déconnecter ?" %}
+        </span>
+        <div class="mb-2 profile-popup-buttons-container">
+            <span class="profile-popup-button">
+                <a href="{% url 'custom_auth:logout' %}">
+                    {% trans "Oui" %}
+                </a>
+            </span>
+            <span class="profile-popup-button cancel" id="cancel-logout">
+                {% trans "Non" %}
+            </span>
+        </div>
+    </div>
+</div>

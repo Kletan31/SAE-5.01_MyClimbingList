@@ -1,0 +1,50 @@
+.route-admin-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.route-admin-panel {
+    border: 1px solid #ddd;
+    padding: 16px;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.route-admin-panel table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.route-admin-panel th,
+.route-admin-panel td {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+.route-order-actions {
+    white-space: nowrap;
+}
+
+.route-order-actions a {
+    display: inline-block;
+    padding: 4px 8px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+tr.route-moving {
+    opacity: 0.45;
+}
+
+tr.route-updated {
+    background: #fff7d6;
+}
+
+@media (max-width: 900px) {
+    .route-admin-layout {
+        grid-template-columns: 1fr;
+    }
+}

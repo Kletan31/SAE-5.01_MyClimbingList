@@ -1,0 +1,380 @@
+{% extends "base/staff_admin_base.html" %}
+{% load static i18n %}
+
+{% block backLink %}{% url 'staff_admin:dashboard' %}{% endblock %}
+
+{% block head %}
+<style>
+    .staff-table th {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .staff-table th:hover {
+        background-color: #f5f5f5;
+    }
+
+    .nav-pills .nav-link.active {
+        background-color: #0d6efd;
+    }
+
+    .ratio-badge {
+        font-variant-numeric: tabular-nums;
+    }
+
+    .opening-row {
+        cursor: pointer;
+    }
+
+    .opening-row:hover {
+        background-color: #f8f9fa;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center my-2 flex-wrap gap-2">
+        <div>
+            <h1 class="mb-1">{% trans "Ouvertures – statistiques d’utilisation" %}</h1>
+
+            <p class="text-muted">
+                {% trans "Salle" %} : <strong>{{ salle.nom }}</strong>
+            </p>
+
+            <!-- Global / Aujourd’hui -->
+            <ul class="nav nav-pills mb-3" id="period-filter">
+                <li class="nav-item">
+                    <a class="nav-link {% if period != 'today' %}active{% endif %}"
+                       data-period="global"
+                       href="{% url 'staff_admin:openings_stats' %}">
+                        {% trans "Global" %}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if period == 'today' %}active{% endif %}"
+                       data-period="today"
+                       href="{% url 'staff_admin:openings_stats_today' %}">
+                        {% trans "Aujourd’hui" %}
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Filtres -->
+            <ul class="nav nav-pills mb-3" id="type-filter">
+                <li class="nav-item"><button class="nav-link active" data-filter="all">{% trans "Toutes" %}</button></li>
+                <li class="nav-item"><button class="nav-link" data-filter="voie">{% trans "Voies" %}</button></li>
+                <li class="nav-item"><button class="nav-link" data-filter="bloc">{% trans "Blocs" %}</button></li>
+                <li class="nav-item"><button class="nav-link" data-filter="lead">{% trans "Tête" %}</button></li>
+            </ul>
+
+            <!-- Filtre degré -->
+            <ul class="nav nav-pills mb-3" id="grade-filter">
+                <li class="nav-item">
+                    <button class="nav-link active" data-grade="all">{% trans "Tous degrés" %}</button>
+                </li>
+                <li class="nav-item"><button class="nav-link" data-grade="5">5</button></li>
+                <li class="nav-item"><button class="nav-link" data-grade="6">6</button></li>
+                <li class="nav-item"><button class="nav-link" data-grade="7">7</button></li>
+                <li class="nav-item"><button class="nav-link" data-grade="8">8</button></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="table-responsive">
+        <table id="openings-table" class="table table-sm table-hover staff-table align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>{% trans "Type" %}</th>
+                    <th>{% trans "Relais / Secteur" %}</th>
+                    <th>{% trans "Couleur" %}</th>
+                    <th>{% trans "Cotation" %}</th>
+                    <th>{% trans "Ouverture" %}</th>
+
+                    <th class="text-end" data-type="number">{% trans "Essais" %}</th>
+                    <th class="text-end" data-type="number">{% trans "Top" %}</th>
+                    <th class="text-end" data-type="number">{% trans "Ratio" %}</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for item in openings %}
+                {% if period != "today" or item.total_essais > 0 %}
+                <tr class="opening-row"
+                    data-type="{% if item.ouverture.bloc %}bloc{% else %}voie{% endif %}"
+                    data-lead="{% if not item.ouverture.bloc and item.ouverture.relais and item.ouverture.relais in salle.relais_en_tete %}1{% else %}0{% endif %}"
+                    data-grade="{{ item.ouverture.niveau|slice:':1' }}"
+                    data-href="{% if period == 'today' %}
+                                  {% url 'staff_admin:opening_climbers_today' item.ouverture.id %}
+                               {% else %}
+                                  {% url 'staff_admin:opening_climbers' item.ouverture.id %}
+                               {% endif %}">
+
+                    <td>
+                        {% if item.ouverture.bloc %}
+                            <span class="badge bg-secondary">{% trans "Bloc" %}</span>
+                        {% else %}
+                            <span class="badge bg-primary">{% trans "Voie" %}</span>
+                        {% endif %}
+                    </td>
+
+                    <td>{{ item.ouverture.relais|default:"–" }}</td>
+                    <td>{{ item.ouverture.couleur }}</td>
+                    <td>{{ item.ouverture.niveau }}</td>
+
+                    <td data-value="{{ item.ouverture.date_ouverture|date:'Ymd' }}">
+                        {{ item.ouverture.date_ouverture|date:"d/m/Y" }}
+                    </td>
+
+                    <td class="text-end"
+                        data-value="{{ item.total_essais }}">
+                        {{ item.total_essais }}
+                        {% if item.total_essais > 0 and item.total_essais_lead > 0 %}
+                            <span class="text-muted">({{ item.total_essais_lead }})</span>
+                        {% endif %}
+                    </td>
+
+                    <td class="text-end"
+                        data-value="{{ item.total_succes }}">
+                        {{ item.total_succes }}
+                        {% if item.total_essais > 0 and item.total_succes_lead > 0 %}
+                            <span class="text-muted">({{ item.total_succes_lead }})</span>
+                        {% endif %}
+                    </td>
+
+                    <td class="text-end"
+                        data-value="{% if item.total_essais == 0 %}NaN{% else %}{{ item.ratio }}{% endif %}">
+                        {% if item.total_essais == 0 %}
+                            <span class="badge bg-secondary">NaN</span>
+                        {% else %}
+                            <span class="badge bg-light text-dark ratio-badge">
+                                {{ item.ratio|floatformat:2 }}
+                                {% if item.total_essais_lead > 0 %}
+                                    <span class="text-muted">({{ item.ratio_lead|floatformat:2 }})</span>
+                                {% endif %}
+                            </span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* ============================
+   HELPERS
+   ============================ */
+
+function getCellSortValue(cell) {
+    return (cell && cell.dataset && cell.dataset.value !== undefined)
+        ? String(cell.dataset.value)
+        : (cell ? cell.innerText.trim() : "");
+}
+
+function parseNumberLoose(val) {
+    if (val === null || val === undefined) return NaN;
+
+    const s = String(val)
+        .replace(/\u00A0/g, " ")
+        .replace(/\s/g, "")
+        .replace(",", ".");
+
+    if (!s || s === "–" || s === "-") return NaN;
+    return Number(s);
+}
+
+function getVisibleRows(tbody) {
+    return Array.from(tbody.querySelectorAll("tr"))
+        .filter(row => row.style.display !== "none");
+}
+
+/* ============================
+   TABLE SORT (visible rows)
+   ============================ */
+
+(function () {
+    const table = document.getElementById("openings-table");
+    if (!table) return;
+
+    const tbody = table.querySelector("tbody");
+    const sortDirection = {};
+
+    table.querySelectorAll("th").forEach((th, index) => {
+        th.addEventListener("click", () => {
+            const type = th.dataset.type || "text";
+            const rows = getVisibleRows(tbody);
+
+            sortDirection[index] = !sortDirection[index];
+            const dir = sortDirection[index] ? 1 : -1;
+
+            rows.sort((a, b) => {
+                const aVal = getCellSortValue(a.children[index]);
+                const bVal = getCellSortValue(b.children[index]);
+
+                if (type === "number") {
+                    const aNum = parseNumberLoose(aVal);
+                    const bNum = parseNumberLoose(bVal);
+
+                    const aIsNaN = Number.isNaN(aNum);
+                    const bIsNaN = Number.isNaN(bNum);
+
+                    // ----------------------------
+                    // NaN TOUJOURS EN BAS
+                    // ----------------------------
+                    if (aIsNaN && bIsNaN) return 0;
+                    if (aIsNaN) return 1;   // a après b
+                    if (bIsNaN) return -1;  // b après a
+
+                    // ----------------------------
+                    // TRI NUMÉRIQUE NORMAL
+                    // ----------------------------
+                    return (aNum - bNum) * dir;
+                }
+
+                if (type === "date") {
+                    return aVal.localeCompare(bVal) * dir;
+                }
+
+                return aVal.localeCompare(
+                    bVal,
+                    undefined,
+                    { numeric: true, sensitivity: "base" }
+                ) * dir;
+            });
+
+            rows.forEach(row => tbody.appendChild(row));
+        });
+    });
+})();
+
+/* ============================
+   FILTER BLOC / VOIE
+   ============================ */
+
+(function () {
+    const buttons = document.querySelectorAll("#type-filter button");
+    const rows = document.querySelectorAll("#openings-table tbody tr");
+
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            buttons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            const filter = btn.dataset.filter;
+            rows.forEach(row => {
+                row.style.display =
+                    (filter === "all" || row.dataset.type === filter) ? "" : "none";
+            });
+        });
+    });
+})();
+
+/* ============================
+   ROW CLICK NAVIGATION
+   ============================ */
+
+(function () {
+    document.querySelectorAll("#openings-table tbody tr[data-href]")
+        .forEach(row => {
+            row.addEventListener("click", (event) => {
+                const tag = event.target.tagName.toLowerCase();
+                if (["a", "button", "th"].includes(tag)) return;
+
+                const href = row.dataset.href;
+                if (href) window.location.href = href;
+            });
+        });
+})();
+</script>
+<script>
+(function () {
+    const STORAGE_KEY = "staff_openings_filters";
+
+    const typeButtons  = document.querySelectorAll("#type-filter button");
+    const gradeButtons = document.querySelectorAll("#grade-filter button");
+    const rows         = document.querySelectorAll("#openings-table tbody tr");
+
+    if (!rows.length) return;
+
+    let state = {
+        type: "all",
+        grade: "all",
+    };
+
+    // ----------------------------
+    // Appliquer les filtres
+    // ----------------------------
+    function applyFilters() {
+        rows.forEach(row => {
+            let visible = true;
+
+            // Type
+            if (state.type === "voie") {
+                visible = row.dataset.type === "voie";
+            } else if (state.type === "bloc") {
+                visible = row.dataset.type === "bloc";
+            } else if (state.type === "lead") {
+                visible = row.dataset.lead === "1";
+            }
+
+            // Degré
+            if (visible && state.grade !== "all") {
+                visible = row.dataset.grade === state.grade;
+            }
+
+            row.style.display = visible ? "" : "none";
+        });
+    }
+
+    // ----------------------------
+    // UI helpers
+    // ----------------------------
+    function updateActive(buttons, value, attr) {
+        buttons.forEach(btn =>
+            btn.classList.toggle("active", btn.dataset[attr] === value)
+        );
+    }
+
+    // ----------------------------
+    // Restore state
+    // ----------------------------
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    state = { ...state, ...saved };
+
+    updateActive(typeButtons, state.type, "filter");
+    updateActive(gradeButtons, state.grade, "grade");
+    applyFilters();
+
+    // ----------------------------
+    // Bind type buttons
+    // ----------------------------
+    typeButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            state.type = btn.dataset.filter;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            updateActive(typeButtons, state.type, "filter");
+            applyFilters();
+        });
+    });
+
+    // ----------------------------
+    // Bind grade buttons
+    // ----------------------------
+    gradeButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            state.grade = btn.dataset.grade;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            updateActive(gradeButtons, state.grade, "grade");
+            applyFilters();
+        });
+    });
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,227 @@
+{% extends "base/public_contests_base.html" %}
+{% load i18n %}
+
+{% block head %}
+<style>
+    .contest-card {
+        border-left: 4px solid #EE7F00;
+        transition: background-color 0.15s ease;
+    }
+
+    .contest-card:hover {
+        background-color: rgba(238, 127, 0, 0.05);
+    }
+
+    .contest-title {
+        color: #1D1D1B;
+        font-weight: 600;
+    }
+
+    .contest-salle {
+        color: #39529E;
+        font-size: 0.85rem;
+    }
+
+    .badge-discipline {
+        background-color: #FFB514;
+        color: #1D1D1B;
+    }
+
+    .badge-format {
+        background-color: #39529E;
+    }
+
+    .badge-type {
+        background-color: #951B95;
+    }
+
+    .contest-date {
+        font-size: 0.8rem;
+        color: #6c757d;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <form id="language-form"
+          action="{% url 'set_language' %}"
+          method="post"
+          class="d-flex justify-content-end mb-3">
+        {% csrf_token %}
+
+        <input type="hidden"
+               name="next"
+               id="language-next"
+               value="{{ request.get_full_path }}">
+
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+
+        <select name="language"
+                id="language-select"
+                class="form-select form-select-sm"
+                style="width: auto;"
+                aria-label="{% trans 'Choisir la langue' %}">
+            {% for lang_code, lang_name in LANGUAGES %}
+                <option value="{{ lang_code }}"
+                        {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>
+                    {{ lang_name }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    {% now "U" as now_ts %}
+
+    <!-- ========================= -->
+    <!-- CONTESTS EN COURS -->
+    <!-- ========================= -->
+    <h2 class="h5 text-center mb-4">
+        {% trans "Contests en cours" %}
+    </h2>
+
+    <div class="list-group mb-5">
+
+        {% for contest in contests_en_cours %}
+            <a href="{% url 'public_contests:contest_detail' contest.id %}"
+               class="list-group-item list-group-item-action contest-card mb-2">
+
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="contest-title">
+                            {{ contest.name }}
+                        </div>
+                        {% if contest.salle %}
+                            <div class="contest-salle">
+                                {{ contest.salle.name }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {% if contest.end_date %}
+                        <div class="contest-date text-end">
+                            {% trans "Jusqu’au" %}<br>
+                            {{ contest.end_date|date:"d/m/Y" }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mt-2 d-flex flex-wrap gap-2">
+                    <span class="badge badge-type">
+                        {% if contest.is_team_contest %}
+                            {% trans "Équipe" %}
+                        {% else %}
+                            {% trans "Individuel" %}
+                        {% endif %}
+                    </span>
+
+                    <span class="badge badge-format">
+                        {{ contest.get_format_display }}
+                    </span>
+
+                    {% if contest.discipline %}
+                        <span class="badge badge-discipline">
+                            {{ contest.get_discipline_display }}
+                        </span>
+                    {% endif %}
+                </div>
+            </a>
+
+        {% empty %}
+            <div class="list-group-item text-center text-muted py-4">
+                {% trans "Aucun contest en cours." %}
+            </div>
+        {% endfor %}
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- CONTESTS TERMINÉS -->
+    <!-- ========================= -->
+    <h2 class="h5 text-center mb-4">
+        {% trans "Contests terminés" %}
+    </h2>
+
+    <div class="list-group">
+
+        {% for contest in contests_termines %}
+            <a href="{% url 'public_contests:contest_detail' contest.id %}"
+               class="list-group-item list-group-item-action contest-card mb-2 opacity-75">
+
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="contest-title">
+                            {{ contest.name }}
+                        </div>
+                        {% if contest.salle %}
+                            <div class="contest-salle">
+                                {{ contest.salle.name }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="contest-date text-end">
+                        {% trans "Terminé le" %}<br>
+                        {{ contest.end_date|date:"d/m/Y" }}
+                    </div>
+                </div>
+
+                <div class="mt-2 d-flex flex-wrap gap-2">
+                    <span class="badge badge-type">
+                        {% if contest.is_team_contest %}
+                            {% trans "Équipe" %}
+                        {% else %}
+                            {% trans "Individuel" %}
+                        {% endif %}
+                    </span>
+
+                    <span class="badge badge-format">
+                        {{ contest.get_format_display }}
+                    </span>
+
+                    {% if contest.discipline %}
+                        <span class="badge badge-discipline">
+                            {{ contest.get_discipline_display }}
+                        </span>
+                    {% endif %}
+                </div>
+            </a>
+
+        {% empty %}
+            <div class="list-group-item text-center text-muted py-4">
+                {% trans "Aucun contest terminé récemment." %}
+            </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const select = document.getElementById("language-select");
+    const form   = document.getElementById("language-form");
+    const next   = document.getElementById("language-next");
+
+    if (!select || !form || !next) return;
+
+    function swapLangPrefix(path, newLang) {
+        const re = /^\/([a-z]{2})(\/|$)/i;
+        if (re.test(path)) {
+            return path.replace(re, `/${newLang}$2`);
+        }
+        return `/${newLang}${path.startsWith("/") ? "" : "/"}${path}`;
+    }
+
+    select.addEventListener("change", function () {
+        const currentPath = window.location.pathname + window.location.search;
+        next.value = swapLangPrefix(currentPath, this.value);
+        form.submit();
+    });
+});
+</script>
+{% endblock %}

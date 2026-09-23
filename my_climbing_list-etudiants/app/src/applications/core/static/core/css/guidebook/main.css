@@ -1,0 +1,110 @@
+/* Élément sélectionné dans la bar inférieure de navigation */
+.fa-solid.fa-circle-plus {
+    display: block;
+    color: #EE7f00;
+}
+
+.fa-light.fa-circle-plus {
+    display: none;
+}
+
+/* Style pour HTML injecté */
+#list-guidebook, #map-guidebook {
+    width: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#list-guidebook {
+    height: 100%;
+}
+
+#map-guidebook {
+    height: 60%;
+    border-top: 1px solid #dee2e6;
+}
+
+#list-guidebook.map-display {
+    height: 40%;
+}
+
+/* ## Icône Guidebook Type ## */
+#guidebook-type-link {
+    position: absolute;
+    top: 18px;
+    right: 30px;
+    font-size: 1.25rem;
+}
+
+/* ## Style pour le tableau ## */
+.table-head {
+    text-align: center;
+    border-bottom: 1px solid #dee2e6;
+    border-top: 1px solid #dee2e6;
+    font-size: .9rem;
+}
+
+.scrollable-container {
+    width: 100%;
+    overflow-y: auto;
+}
+
+.table-head .title-column {
+    width: 22.5%;
+}
+
+.table-head .title-column.map-display {
+    width: 30%;
+}
+
+.table td {
+    vertical-align: middle;
+    text-align: center;
+    width: 22.5%;
+    font-size: .9rem;
+}
+
+.table td.map-display {
+    width: 30%;!important;
+}
+
+.status-column {
+    width: 10%!important;
+}
+
+/* ## Visuel pour les ouvertures sélectionnées ## */
+.fa-xmark {
+    display: none;
+}
+
+.selected-row :is(.fa-sparkles, .fa-square, .fa-square-check) {
+    display: none;
+}
+
+.selected-row .fa-xmark {
+    display: block;
+}
+
+/* ## Visuel pour profil-style ## */
+.style-profil {
+    margin: .1rem 0;
+    font-size: .55rem;
+}
+
+/* ## Visuel pour les cotations ## */
+.circle-cotation {
+    width: 0;
+    height: 0;
+    display: flex;
+    border: 3px solid;
+    padding: .95rem;
+    margin: auto;
+    font-size: 0.8rem;
+}
+
+/* ## Bouton "Ajouter ma séance" ## */
+#add-button-container {
+    position: fixed;
+    bottom: calc(9px + var(--bottom-bar-height));
+}

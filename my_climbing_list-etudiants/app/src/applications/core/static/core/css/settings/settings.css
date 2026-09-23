@@ -1,0 +1,59 @@
+/* Titre */
+
+#settings-title {
+    font-weight: 500;
+    line-height: 1.2;
+    font-size: calc(var(--template-height)*4.5);
+}
+
+.input-title {
+    font-size: calc(var(--template-height)*2.75);
+}
+
+/* Icône info */
+
+.fa-circle-info {
+    color: darkslateblue;
+}
+
+/* Icône genre-contest */
+
+#gender-input :not(.selected) {
+    font-size: calc(1.2*var(--template-height)*2.5);
+}
+
+/* ## Données ## */
+
+/* Pour une transition fluide entre display et input */
+#email-display, #username-display, #last-name-display, #first-name-display {
+    padding: calc(.375rem + 1px) calc(.75rem + 6px) calc(.375rem + 1px) calc(.75rem + 1px);
+    line-height: 1.5;
+    font-size: calc(var(--template-height)*2.5);
+}
+
+#email-input, #username-input, #last-name-input, #first-name-input {
+    font-size: calc(var(--template-height)*2.5);
+}
+
+#gender-display, #gender-input {
+    padding: calc(.5875rem) calc(.75rem + 6px) calc(.5875rem) calc(.75rem + 1px);
+    line-height: 1.5;
+    font-size: calc(1.4*var(--template-height)*2.5);
+}
+
+/* ## Message ## */
+
+.message {
+    text-align: center;
+    font-size: .7rem;
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.25;
+}
+
+/* ## Bouton suppression du compte ## */
+
+.suppress-account-container {
+    position: absolute;
+    bottom: 2.5svh;
+}

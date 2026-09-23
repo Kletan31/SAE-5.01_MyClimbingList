@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Supprimer {{ event.name }}</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+</head>
+<body>
+    <h1>Supprimer l’événement</h1>
+
+    <p>
+        Tu es sur le point de supprimer :
+        <strong>{{ event.name }}</strong>
+    </p>
+
+    <p>
+        Cette action supprimera aussi les phases, équipes, participants, blocs associés et performances liées à cet événement.
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Confirmer la suppression</button>
+    </form>
+
+    <p>
+        <a href="{% url 'event:staff_event_list' %}">Annuler</a>
+    </p>
+</body>
+</html>

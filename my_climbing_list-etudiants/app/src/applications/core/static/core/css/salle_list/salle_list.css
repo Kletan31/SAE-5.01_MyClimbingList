@@ -1,0 +1,57 @@
+/* Élément sélectionné dans la bar inférieure de navigation */
+.fa-solid.fa-circle-plus {
+    display: block;
+    color: #EE7f00;
+}
+
+.fa-light.fa-circle-plus {
+    display: none;
+}
+
+/* ## Style pour chaque ligne de salle ## */
+
+.salle-row {
+    width: 100%;
+    display: flex;
+    padding: 1rem;
+    border-top: 2px solid #e6e6e6;
+}
+
+/* ## Image de chaque salle ## */
+
+.salle-image img {
+    height: 5.875rem;
+    border-radius: 5px;
+}
+
+/* ## Détails de la salle ## */
+
+.salle-details {
+    flex-grow: 1;
+    height: 5.875rem;
+    padding-left: 20px;
+    padding-right: 2px;
+}
+
+.salle-details h5 {
+    margin-bottom: .75rem;
+    font-size: .9em;
+}
+
+/* ## Barres de progression pour chaque salle ## */
+
+.progress-container {
+    margin-bottom: .75rem;
+}
+
+.progress-text {
+    display: block;
+    font-weight: bold;
+    margin-bottom: .375rem;
+    color: #333;
+    font-size: 0.65rem;
+}
+
+.progress {
+    height: 10px;
+}

@@ -1,0 +1,15 @@
+{% load static %}
+<script type="module">
+import { initializeStats } from "{% static 'core/js/profile/displayData.js' %}";
+import { toggleMenuAndData } from "{% static 'core/js/profile/toggleMenuAndData.js' %}";
+import { initializeLogoutButton } from "{% static 'core/js/profile/logoutButton.js' %}";
+import { initializeLanguageButton } from "{% static 'core/js/profile/langButton.js' %}";
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeStats();
+    toggleMenuAndData();
+    initTooltips();
+    initializeLogoutButton();
+    initializeLanguageButton();
+});
+</script>

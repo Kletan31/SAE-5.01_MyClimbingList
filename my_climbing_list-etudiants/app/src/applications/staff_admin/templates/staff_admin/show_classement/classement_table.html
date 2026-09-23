@@ -1,0 +1,45 @@
+{% load i18n %}
+
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table table-striped mb-0 align-middle">
+            <thead>
+            <tr>
+                <th style="width:100px;">{% trans "Position" %}</th>
+
+                {% if is_team %}
+                    <th>{% trans "Équipe" %}</th>
+                {% else %}
+                    <th>{% trans "Nom" %}</th>
+                    <th>{% trans "Prénom" %}</th>
+                {% endif %}
+
+                <th style="width:160px;">{% trans "Score" %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for e in rows %}
+                <tr>
+                    <td>{{ e.rank }}</td>
+
+                    {% if is_team %}
+                        <td>{{ e.team_name }}</td>
+                    {% else %}
+                        <td>{{ e.nom }}</td>
+                        <td>{{ e.prenom }}</td>
+                    {% endif %}
+
+                    <td>{{ e.score }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="{% if is_team %}3{% else %}4{% endif %}"
+                        class="text-center py-4 text-muted">
+                        {% trans "Aucun participant." %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

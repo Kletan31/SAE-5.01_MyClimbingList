@@ -1,0 +1,87 @@
+{% extends 'base/main_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'base/css/custom_auth/custom_auth.css' %}">
+{% include 'js_components/custom_auth_script.html' %}
+{% endblock %}
+
+{% block content %}
+
+<!-- Fond d'écran -->
+<div class="background-image"></div>
+
+<!-- Logo -->
+<div class="logo-container mb-5">
+    <img src="{% static 'base/media/brand/logo-altissimo-top-ms-v2018-noir.svg' %}"
+         alt="Logo Altissimo"
+         class="logo-img">
+</div>
+
+<!-- Bloc central -->
+<div class="auth-fixed-wrapper">
+
+    <!-- Conteneur principal -->
+    <div class="auth-form-container">
+        {% block auth_content %}
+        <div class="text-center mt-4" style="font-size: .6rem; line-height: 1.2;">
+            <p class="m-0">My Climbing List v2.5-bêta</p>
+            <p class="m-0">Powered by Altissimo <i class="fa-regular fa-registered"></i></p>
+        </div>
+        {% endblock %}
+    </div>
+
+    <!-- Sélecteur de langue -->
+    <form id="language-form"
+          action="{% url 'set_language' %}"
+          method="post"
+          class="language-selector mt-3">
+        {% csrf_token %}
+        <input type="hidden" name="next" id="language-next" value="{{ request.get_full_path }}">
+
+        <select name="language"
+                id="language-select"
+                class="form-select form-select-sm text-center"
+                aria-label="{% trans 'Choisir la langue' %}">
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% for lang_code, lang_name in LANGUAGES %}
+                <option value="{{ lang_code }}" {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>
+                    {{ lang_name }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const langSelect = document.getElementById("language-select");
+    const langForm   = document.getElementById("language-form");
+    const nextInput  = document.getElementById("language-next");
+
+    if (!langSelect || !langForm || !nextInput) return;
+
+    function swapLangPrefix(path, newLang) {
+        const re = /^\/([a-z]{2})(\/|$)/i;
+        if (re.test(path)) {
+            return path.replace(re, `/${newLang}$2`);
+        }
+        return `/${newLang}${path.startsWith('/') ? '' : '/'}${path}`;
+    }
+
+    langSelect.addEventListener("change", function () {
+        const chosen  = this.value;
+        const current = nextInput.value || window.location.pathname + window.location.search;
+
+        nextInput.value = swapLangPrefix(current, chosen);
+        langForm.submit();
+    });
+});
+</script>
+{% endblock %}

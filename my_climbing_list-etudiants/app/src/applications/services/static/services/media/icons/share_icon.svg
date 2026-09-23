@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="578.83002"
+   height="788.12402"
+   viewBox="0 0 153.14877 208.52449"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25)"
+   sodipodi:docname="share_icon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#50ec50"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     showgrid="true"
+     inkscape:zoom="0.7009763"
+     inkscape:cx="166.91006"
+     inkscape:cy="373.05113"
+     inkscape:window-width="1464"
+     inkscape:window-height="916"
+     inkscape:window-x="0"
+     inkscape:window-y="44"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       id="grid5"
+       units="mm"
+       originx="0"
+       originy="0"
+       spacingx="0.99999998"
+       spacingy="1"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       dotted="false"
+       gridanglex="30"
+       gridanglez="30"
+       visible="true" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath2">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:1.05833;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+         id="rect3"
+         width="126.26199"
+         height="61.836742"
+         x="41.416237"
+         y="8.9159956" />
+    </clipPath>
+  </defs>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="rect2"
+       style="color:#000000;fill:#000000;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none;paint-order:fill markers stroke"
+       d="M 27.78125,60.696286 C 12.504873,60.696286 0,73.201159 0,88.477536 v 92.265684 c 0,15.27638 12.504873,27.78125 27.78125,27.78125 h 97.58577 c 15.27638,0 27.78125,-12.50487 27.78125,-27.78125 V 88.477536 c 0,-15.276377 -12.50487,-27.78125 -27.78125,-27.78125 H 96.417887 v 13.22865 h 28.949133 c 8.17625,0 14.55312,6.376358 14.55312,14.5526 v 92.265684 c 0,8.17625 -6.37687,14.5526 -14.55312,14.5526 H 27.78125 c -8.176243,0 -14.5526,-6.37635 -14.5526,-14.5526 V 88.477536 c 0,-8.176242 6.376357,-14.5526 14.5526,-14.5526 h 28.949137 v -13.22865 z" />
+    <path
+       style="color:#000000;fill:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none;paint-order:fill markers stroke"
+       d="m 76.575354,14.663106 a 6.6146002,5.8763426 0 0 0 -6.615212,5.876907 V 125.66494 a 6.6146002,5.8763426 0 0 0 6.615212,5.87691 6.6146002,5.8763426 0 0 0 6.61328,-5.87691 V 20.540013 a 6.6146002,5.8763426 0 0 0 -6.61328,-5.876907 z"
+       id="path6-9" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:13.2292;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+       d="M 45.688987,36.614338 76.57439,6.6143396 107.45979,36.614339"
+       id="path2"
+       sodipodi:nodetypes="ccc" />
+  </g>
+</svg>

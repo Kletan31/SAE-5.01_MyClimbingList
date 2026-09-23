@@ -1,0 +1,237 @@
+/* Variable */
+:root {
+    --primary-color: #EE7F00;
+    --secondary-color: #39529E;
+    --bs-success-rgb: 149, 27, 149 !important;
+    --top-bar-height: calc(30px + 10px + env(safe-area-inset-top));  /* Hauteur = 30px + padding */
+    --bottom-bar-height: calc(52px + 10px + env(safe-area-inset-bottom)); /* Hauteur = 52px + padding */
+    --base-font-size: 4.25svw;
+}
+
+html {
+    height: 100vh;
+    background-color: #FFF;
+}
+
+/* Personalisation du format des liens */
+a {
+    text-decoration: none!important;
+    color: inherit!important;
+}
+
+/* Personalisation du style des boutons */
+.btn:not(.btn-outline-primary):not(.btn-outline-secondary):not(.btn-outline-danger):not(.btn-outline-success) {
+    color: white !important;
+    border: none !important;
+    font-weight: bold !important;
+}
+
+.btn-primary, .btn-outline-primary:hover, .btn-outline-primary.active {
+    background-color: #EE7F00!important;
+    color: white!important;
+}
+
+.btn-outline-primary {
+    border-color: #EE7F00!important;
+    color: black!important;
+}
+
+.btn-secondary, .btn-outline-secondary:hover, .btn-outline-secondary.active {
+    background-color: #39529E!important;
+    color: white!important;
+}
+
+.btn-outline-secondary {
+    border-color: #39529E!important;
+    color: black!important;
+}
+
+.btn-success, .btn-outline-success:hover, .btn-outline-success.active {
+    background-color: #951A95!important;
+    color: white!important;
+}
+
+.btn-outline-success {
+    border-color: #951A95!important;
+    color: black!important;
+}
+
+.btn-success {
+    --bs-btn-bg: #951A95!important;
+    background-color: #951A95!important;
+}
+
+.btn-custom {
+    border-radius: 0!important;
+    transform: skewX(-15deg) rotate(-3deg);
+}
+
+/* Empêcher la modification du curseur sur les graphs généré par ploty v2.34.0 */
+/*noinspection CssUnusedSymbol*/
+.js-plotly-plot .plotly .cursor-crosshair {
+    cursor: default!important;
+}
+
+/* === Élément "loading" === */
+.fast-spin {
+    animation-duration: 1s !important; /* Accélère la rotation */
+}
+
+/* === Popup Overlay === */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease, visibility 0.3s ease;
+}
+
+.popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ## MENU VOIE / BLOC ## */
+
+.menu-bar {
+    width: 45%;
+    margin: 2.5svh auto !important;
+    border: 1px solid #39529E;
+    border-radius: 5px;
+    font-size: .9rem;
+    line-height: 1.25;
+}
+
+.menu-bar .menu-item {
+    padding: 2px 0;
+    text-align: center;
+    font-size: .9rem;
+}
+
+.menu-bar .menu-item.selected {
+    background-color: #39529E;
+    color: white;
+}
+
+/* MENU TYPE DE GRAPH */
+
+.menu-bar-graph {
+    border: 1px solid #EE7f00;
+    border-radius: 5px;
+}
+
+.menu-bar-graph .menu-item {
+    padding: 2px 0;
+    text-align: center;
+    font-size: .75rem;
+    line-height: 1.25;
+}
+
+/* Styles spécifiques pour 100vw < 335px */
+@media (max-width: 335px) {
+    .menu-bar-graph .menu-item {
+        font-size: .65rem;
+    }
+}
+
+.menu-bar-graph .menu-item.selected {
+    background-color: #EE7f00;
+    color: white;
+}
+
+/* ## Visuel cotation ## */
+
+.circle-cotation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+/* ## Visuel pour profil-style ## */
+
+.style-profil-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.style-profil {
+    font-size: .7rem;
+    color: white;
+    padding: 2px 4px;
+    border-radius: 5px;
+    line-height: 1.25;
+}
+
+.style-undefined {
+    background-color: #333;
+}
+
+.style-conti, .style-classic {
+    background-color: blue;
+}
+
+.style-resi, .style-technic {
+    background-color: red;
+}
+
+.style-bloc, .style-physic {
+    background-color: purple;
+}
+
+.style-tricky {
+    background-color: hotpink;
+}
+
+.style-coordo {
+    background-color: orange;
+}
+
+/* ## Visuel pour preloadView ## */
+
+.spinner-wrapper {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.spinner-wrapper.active {
+    visibility: visible;
+    opacity: 1;
+    z-index: 9999;
+}
+
+/* L’animation texte démarre après 1s et reste invisible avant */
+.spinner-text {
+    opacity: 0;
+}
+
+.spinner-wrapper.active .spinner-text {
+    animation: delayedFadeIn 1.3s ease forwards;
+}
+
+
+@keyframes delayedFadeIn {
+    0% { opacity: 0; }
+    75% { opacity: 0; }   /* Délai simulé ici : 75 % de 1.3s = ~1s */
+    100% { opacity: 1; }
+}

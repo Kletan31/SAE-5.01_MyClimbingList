@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+</head>
+<body>
+    <h1>{{ title }}</h1>
+
+    <p>
+        <a href="{% url 'event:staff_event_update' slug=event.slug %}">Retour à l’événement</a>
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">{{ submit_label }}</button>
+    </form>
+</body>
+</html>

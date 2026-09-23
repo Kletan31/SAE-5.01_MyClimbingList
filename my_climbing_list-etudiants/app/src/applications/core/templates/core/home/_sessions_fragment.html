@@ -1,0 +1,48 @@
+{% load i18n %}
+
+{% for key, value in seances_data.items %}
+<a href="{% url 'core:details' %}?date_seance={{ key.1|date:'Y-m-d' }}&salle_id={{ key.2 }}&bloc={{ key.3 }}">
+    <div class="seance-row row g-0 p-2">
+        <div class="seance col-6">
+            <h5 class="fw-bold" style="font-size: 1rem">
+                {{ key.0 }}
+                <span class="type">
+                    {% if key.3 %}
+                        {% trans "Bloc" %}
+                    {% else %}
+                        {% trans "Voie" %}
+                    {% endif %}
+                </span>
+            </h5>
+            <h6 class="fst-italic" style="font-size: .9rem">{{ key.1|date:"d M Y" }}</h6>
+        </div>
+
+        <div class="col-3">
+            <div class="row w-100 g-0">
+                <div class="col-5 d-flex flex-column justify-content-center align-items-center">
+                    <span class="total-ascension fw-bold">{{ value.total_try }}</span>
+                    <span class="text-description">{% trans "Montée" context "label_single" %}</span>
+                </div>
+                <div class="col-2 d-flex justify-content-center align-items-end" style="padding-bottom: .1rem;">
+                    <span class="vertical-bar"></span>
+                </div>
+                <div class="col-5 d-flex flex-column justify-content-center align-items-center">
+                    <span class="total-ascension fw-bold">{{ value.total_top }}</span>
+                    <span class="text-description">{% trans "Top" %}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-cotation col-3">
+            <div class="circle-cotation" style="border-color:{{ value.cotation_color }};">
+                {% if value.max_cotation == "enfant" %}
+                    -
+                {% else %}
+                    {{ value.max_cotation }}
+                {% endif %}
+            </div>
+            <span class="text-description">{% trans "Max" %}</span>
+        </div>
+    </div>
+</a>
+{% endfor %}

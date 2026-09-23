@@ -1,0 +1,14 @@
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Route Event</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+</head>
+<h1>Connexion staff — Route Event</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" name="next" value="{{ next }}">
+    <button type="submit">Se connecter</button>
+</form>

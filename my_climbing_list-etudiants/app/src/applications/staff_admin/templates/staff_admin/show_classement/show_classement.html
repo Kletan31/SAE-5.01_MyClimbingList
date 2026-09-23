@@ -1,0 +1,101 @@
+{% extends "base/staff_admin_base.html" %}
+{% load i18n %}
+
+{% block backLink %}
+    {% url 'staff_admin:contest_list' %}?tab={{ request.GET.tab|default:'evenement' }}
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <!-- HEADER -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h4 mb-0">
+      {% trans "Classement" %} — {{ contest.name }}
+    </h1>
+
+    <div class="d-flex gap-2">
+      <a href="{% url 'staff_admin:export_classement_csv' contest.id %}"
+         class="btn btn-sm btn-outline-primary">
+        <i class="fa-solid fa-file-csv me-1"></i>CSV
+      </a>
+
+      <a href="{% url 'staff_admin:export_classement_pdf' contest.id %}"
+         class="btn btn-sm btn-outline-danger">
+        <i class="fa-solid fa-file-pdf me-1"></i>PDF
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ================================================= -->
+  <!-- CLASSEMENT PAR ÉQUIPE -->
+  <!-- ================================================= -->
+  {% if is_team %}
+
+    {% include "staff_admin/show_classement/classement_table.html" with rows=classement_equipe is_team=True %}
+
+  <!-- ================================================= -->
+  <!-- CLASSEMENT INDIVIDUEL -->
+  <!-- ================================================= -->
+  {% else %}
+
+    <!-- TABS -->
+    <ul class="nav nav-tabs mb-3" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active"
+                data-bs-toggle="tab"
+                data-bs-target="#tab-general"
+                type="button"
+                role="tab">
+          {% trans "Général" %}
+        </button>
+      </li>
+
+      <li class="nav-item" role="presentation">
+        <button class="nav-link"
+                data-bs-toggle="tab"
+                data-bs-target="#tab-femmes"
+                type="button"
+                role="tab">
+          {% trans "Femmes" %}
+        </button>
+      </li>
+
+      <li class="nav-item" role="presentation">
+        <button class="nav-link"
+                data-bs-toggle="tab"
+                data-bs-target="#tab-hommes"
+                type="button"
+                role="tab">
+          {% trans "Hommes" %}
+        </button>
+      </li>
+    </ul>
+
+    <!-- CONTENT -->
+    <div class="tab-content">
+
+      <div class="tab-pane fade show active"
+           id="tab-general"
+           role="tabpanel">
+        {% include "staff_admin/show_classement/classement_table.html" with rows=classement_general is_team=False %}
+      </div>
+
+      <div class="tab-pane fade"
+           id="tab-femmes"
+           role="tabpanel">
+        {% include "staff_admin/show_classement/classement_table.html" with rows=classement_femme is_team=False %}
+      </div>
+
+      <div class="tab-pane fade"
+           id="tab-hommes"
+           role="tabpanel">
+        {% include "staff_admin/show_classement/classement_table.html" with rows=classement_homme is_team=False %}
+      </div>
+
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

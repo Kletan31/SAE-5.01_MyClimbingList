@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+</head>
+<body>
+    <h1>{{ title }}</h1>
+
+    <p>
+        <a href="{% url 'event:staff_event_list' %}">Retour à la liste</a>
+        {% if event %}
+            |
+            <a href="{% url 'event:staff_team_list' slug=event.slug %}">Équipes</a> |
+            <a href="{% url 'event:staff_route_list' slug=event.slug %}">Topo</a> |
+            <a href="{% url 'event:staff_ranking' slug=event.slug %}">Classement</a>
+        {% endif %}
+    </p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+
+    {% if form.non_field_errors %}
+        <div>
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <h2>Informations générales</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">{{ submit_label }}</button>
+    </form>
+
+    {% if event %}
+        <hr>
+
+        <h2>Phases</h2>
+
+        <h3>Ajouter une phase</h3>
+
+        {% if phase_form.non_field_errors %}
+            <div>
+                {% for error in phase_form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post" action="{% url 'event:staff_phase_create' slug=event.slug %}">
+            {% csrf_token %}
+            {{ phase_form.as_p }}
+
+            <button type="submit">Ajouter la phase</button>
+        </form>
+
+        <h3>Phases existantes</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Début</th>
+                    <th>Fin</th>
+                    <th>Places</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for phase in phases %}
+                    <tr>
+                        <td>{{ phase.name }}</td>
+                        <td>{{ phase.start_time }}</td>
+                        <td>{{ phase.end_time }}</td>
+                        <td>{{ phase.capacity }}</td>
+                        <td>
+                            <a href="{% url 'event:staff_phase_update' phase_id=phase.id %}">Modifier</a>
+
+                            <form method="post" action="{% url 'event:staff_phase_delete' phase_id=phase.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5">Aucune phase définie.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</body>
+</html>

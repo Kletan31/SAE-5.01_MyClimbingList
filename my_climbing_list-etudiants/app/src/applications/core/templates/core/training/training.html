@@ -1,0 +1,162 @@
+{# templates/contest/training/training.html #}
+{% extends "base/app_base.html" %}
+{% load i18n %}
+
+{% block head %}
+{{ block.super }}
+<style>
+/* -----------------------------------------
+   Cards salles autorisées (compact)
+----------------------------------------- */
+
+.salle-auth-card {
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+
+    /* compacité */
+    padding: 0.6rem 0.75rem;
+    min-height: 48px;
+}
+
+/* Cache la checkbox native */
+.salle-auth-card input[type="checkbox"] {
+    display: none;
+}
+
+/* Label salle */
+.salle-auth-card strong {
+    font-size: 0.95rem;
+    line-height: 1.1;
+}
+
+/* Icône check */
+.salle-auth-card .check-icon {
+    opacity: 0;
+    font-size: 0.9rem;
+    transition: opacity 0.15s ease-in-out;
+}
+
+/* Hover */
+.salle-auth-card:hover {
+    background-color: #f8f9fa;
+}
+
+/* État sélectionné */
+.salle-auth-card:has(input[type="checkbox"]:checked) {
+    border-color: #198754;
+    background-color: #f0fff4;
+}
+
+.salle-auth-card:has(input[type="checkbox"]:checked) strong {
+    font-weight: 600;
+    color: #198754;
+}
+
+.salle-auth-card:has(input[type="checkbox"]:checked) .check-icon {
+    opacity: 1;
+}
+</style>
+{% endblock %}
+
+{% block page_name %}
+{% trans "Suivi" %}
+{% endblock %}
+
+{% block template-content %}
+{% if messages %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({
+            action: 'CLEAR_TRAINING_CACHE'
+        });
+    }
+});
+</script>
+<div class="toast-container position-fixed text-center start-50 translate-middle-x p-3" style="z-index: 1080;">
+    {% for message in messages %}
+        <div class="toast align-items-center text-bg-success border-0"
+             role="alert"
+             aria-live="assertive"
+             aria-atomic="true"
+             data-bs-delay="2500">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ message }}
+                </div>
+                <button type="button"
+                        class="btn-close btn-close-white me-2 m-auto"
+                        data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="container py-3">
+
+    <p class="text-muted mb-4 text-center">
+        {% trans "Sélectionne les salles autorisées à consulter tes séances afin de te proposer un suivi d'entraînement personnalisé." %}
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="row g-2 mb-4">
+
+            {% for checkbox in form.salles %}
+                <div class="col-12">
+                    <label class="card salle-auth-card d-flex align-items-center gap-3">
+
+                        {{ checkbox.tag }}
+
+                        <div class="flex-grow-1">
+                            <strong>{{ checkbox.choice_label }}</strong>
+                        </div>
+
+                        <i class="fa-solid fa-check check-icon"></i>
+                    </label>
+                </div>
+            {% endfor %}
+
+        </div>
+
+        <button type="submit" class="btn btn-secondary w-100">
+            {% trans "Enregistrer mes choix" %}
+        </button>
+    </form>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const toastElList = document.querySelectorAll('.toast');
+    toastElList.forEach(function (toastEl) {
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.querySelector("form");
+    if (!form) return;
+
+    form.addEventListener("submit", () => {
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({
+                action: 'CLEAR_TRAINING_CACHE'
+            });
+        }
+    });
+
+});
+</script>
+{% endblock %}

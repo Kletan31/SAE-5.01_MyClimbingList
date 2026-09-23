@@ -1,0 +1,115 @@
+/* === Général === */
+body {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    background-image: var(--auth-bg-url);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.logo-container {
+    position: fixed;
+    top: env(safe-area-inset-top);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-img {
+    max-width: 300px;
+    width: 100%;
+}
+
+.auth-form-container {
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    padding: 20px 30px 10px 30px;
+}
+
+.form-control {
+    font-size: .9rem;
+    border-radius: 5px;
+    border: 1px solid #d2d2d2;
+    width: 100%;
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+}
+
+.text-menu {
+    font-size: .75rem;
+    font-weight: bold;
+    border-top: 1px solid rgb(160, 160, 160);
+}
+
+.custom-footer {
+    position: fixed;
+    bottom: 20px;
+    font-size: .75rem;
+}
+
+/* === Message d'erreur === */
+.error-banner {
+    width: 100%;
+    background-color: #FAE8E8;
+    color: #B52A27;
+    padding: 10px;
+    border: 1px solid rgba(181, 42, 39, 0.2);
+    border-radius: 5px;
+    font-size: .7rem;
+}
+
+/* === Langage selecteur === */
+.auth-fixed-wrapper {
+    position: fixed;
+    top: calc(env(safe-area-inset-top) + 107px + 3rem);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 300px;
+    gap: 1rem;
+    z-index: 10;
+}
+
+.auth-form-container {
+    position: static;
+}
+
+.language-selector {
+    background-color: rgba(255, 255, 255, 0.65);
+    border-radius: 5px;
+    width: 40%;
+}
+
+.language-selector select {
+    background-color: transparent;
+    border: none;
+    font-size: 0.8rem;
+}

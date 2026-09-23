@@ -1,0 +1,15 @@
+{% load static %}
+<script type="module">
+import { initializeEditableFields } from "{% static 'core/js/settings/initializeEditor.js' %}";
+import { initializeGenderOrder } from "{% static 'core/js/settings/initializeGenderSelector.js' %}";
+import { triggerDeleteProcess } from "{% static 'core/js/settings/triggerDeleteProcess.js' %}";
+import { setupSettingsCacheClearButton } from "{% static 'core/js/settings/cacheManager.js' %}";
+
+document.addEventListener('DOMContentLoaded', () => {
+    initTooltips();
+    initializeGenderOrder();
+    initializeEditableFields();
+    triggerDeleteProcess();
+    setupSettingsCacheClearButton();
+});
+</script>

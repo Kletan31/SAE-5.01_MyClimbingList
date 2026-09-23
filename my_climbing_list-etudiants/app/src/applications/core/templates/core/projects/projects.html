@@ -1,0 +1,223 @@
+{% extends 'base/app_base.html' %}
+{% load ouverture_translate %}
+{% load static %}
+{% load i18n %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'core/css/core/logList.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/projects/projects.css' %}">
+{% endblock %}
+
+{% block page_name %}{% trans "Projets" %}{% endblock %}
+
+{% block template-content %}
+<div class="menu w-100">
+    <!-- Menu Voie/Bloc -->
+    <div class="menu-bar row">
+        <div class="menu-item col-6 selected">{% trans "Voie" %}</div>
+        <div class="menu-item col-6">{% trans "Bloc" %}</div>
+    </div>
+
+    <p id="voieCount" class="m-0 pb-3">
+        {% if projets_voie|length == 0 %}
+            {% trans "Aucune voie en projet" %}
+        {% else %}
+            {% blocktrans trimmed count count=projets_voie|length %}
+                {{ count }} voie en projet
+            {% plural %}
+                {{ count }} voies en projet
+            {% endblocktrans %}
+        {% endif %}
+        <i
+            data-bs-toggle="tooltip"
+            data-bs-html="true"
+            title="{% trans 'Voies essayées mais pas enchaînées<br><strong>Astuce</strong> : glissez vers la gauche pour supprimer un projet' %}"
+            class="fa-regular fa-circle-info me-2 help-text">
+        </i>
+    </p>
+
+    <p id="blocCount" class="m-0 pb-3 d-none">
+        {% if projets_bloc|length == 0 %}
+            {% trans "Aucun bloc en projet" %}
+        {% else %}
+            {% blocktrans trimmed count count=projets_bloc|length %}
+                {{ count }} bloc en projet
+            {% plural %}
+                {{ count }} blocs en projet
+            {% endblocktrans %}
+        {% endif %}
+        <i
+            data-bs-toggle="tooltip"
+            data-bs-html="true"
+            title="{% trans 'Blocs essayés mais pas enchaînés<br><strong>Astuce</strong> : glissez vers la gauche pour supprimer un projet' %}"
+            class="fa-regular fa-circle-info me-2 help-text">
+        </i>
+    </p>
+</div>
+
+<div id="logbookContainer">
+    {% if projets_voie or projets_bloc %}
+    <div class="scrollable-container w-100">
+        <!-- VOIE -->
+        <div id="projetsVoie" class="list-container w-100">
+            {% for projet in projets_voie %}
+                <div class="swipe-container" data-ouverture-id="{{ projet.ouverture_id }}">
+                    <!-- Fond rouge -->
+                    <div class="delete-background">
+                        <i class="fa-solid fa-trash text-white"></i>
+                    </div>
+
+                    <!-- Contenu glissable -->
+                    <div class="swipe-content">
+                        <div class="main-row row g-0 w-100 p-2">
+                            <!-- Nom, couleur, salle -->
+                            <div class="col-6">
+                                <p class="fw-bold m-0 mb-1 prevent-overflow" style="font-size: .75rem; text-overflow: ellipsis;">{{ projet.nom|capfirst }}</p>
+                                <p class="fst-italic m-0" style="font-size: .75rem; font-weight: 500;">{{ projet.salle.nom }}</p>
+                                <p class="m-0" style="font-size: .75rem; font-weight: 300;">
+                                    {% trans "Relais" %}: {{ projet.relais }} – {{ projet.couleur|ouverture_color }}
+                                </p>
+                            </div>
+
+                            <!-- Style & Profil -->
+                            <div class="col-3 d-flex flex-column justify-content-center align-items-center">
+                                {% if projet.style %}
+                                <span class="style-profil style-{{ projet.style|slugify }} fst-italic">{{ projet.style|ouverture_style }}</span>
+                                {% endif %}
+                                {% if projet.profil %}
+                                <span class="style-profil fw-bold" style="background-color: #333;">{{ projet.profil|ouverture_profile }}</span>
+                                {% endif %}
+                            </div>
+
+                            <!-- Cotation -->
+                            <div class="col-3 d-flex justify-content-center align-items-center">
+                                <span id="levelRoute" class="circle-cotation" style="border-color: {{ projet.niveau_couleur }};">
+                                    {{ projet.niveau }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="details-row w-100 px-2">
+                            <div class="row g-0 w-100 mx-0 my-1">
+                                <div class="col-3 text-center prevent-overflow">
+                                    <p class="m-0">{% trans "Ouvert le" %}</p>
+                                </div>
+                                <div class="col-3 text-center prevent-overflow">
+                                    <p class="m-0">{% trans "Dernière montée" context "label_single" %}</p>
+                                </div>
+                                <div class="col-3 text-center prevent-overflow">
+                                    <p class="m-0">{% trans "Moulinette" %}</p>
+                                </div>
+                                {% if projet.leadable %}
+                                <div class="col-3 text-center prevent-overflow">
+                                    <p class="m-0">{% trans "Tête" %}</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="row g-0 w-100 mx-0 mt-1">
+                                <div class="col-3 text-center prevent-overflow">
+                                    <p class="m-0 fw-bold">{{ projet.date_ouverture|date:"d M Y" }}</p>
+                                </div>
+                                <div class="col-3 text-center prevent-overflow">
+                                    <p class="m-0 fw-bold">{{ projet.last_try_date|date:"d M Y" }}</p>
+                                </div>
+                                <div class="col-3 text-center prevent-overflow">
+                                    <p class="m-0 fw-bold">
+                                        {{ projet.total_try_moulinette }}
+                                        {% if projet.leadable %} | {{ projet.total_top_moulinette }}{% endif %}
+                                    </p>
+                                </div>
+                                {% if projet.leadable %}
+                                <div class="col-3 text-center prevent-overflow">
+                                    <p class="m-0 fw-bold">{{ projet.total_try_lead }}</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- BLOC -->
+        <div id="projetsBloc" class="list-container w-100 d-none">
+            {% for projet in projets_bloc %}
+            <div class="swipe-container" data-ouverture-id="{{ projet.ouverture_id }}">
+                <!-- Fond rouge -->
+                <div class="delete-background">
+                    <i class="fa-solid fa-trash text-white"></i>
+                </div>
+
+                <!-- Contenu glissable -->
+                <div class="swipe-content">
+                    <div class="main-row row g-0 w-100 p-2">
+                        <!-- Nom, couleur, salle -->
+                        <div class="col-6">
+                            <p class="fw-bold m-0 mb-1 prevent-overflow" style="font-size: .75rem; text-overflow: ellipsis;">{{ projet.nom|capfirst }}</p>
+                            <p class="fst-italic m-0" style="font-size: .75rem; font-weight: 500;">{{ projet.salle.nom }}</p>
+                            <p class="m-0" style="font-size: .75rem; font-weight: 300;">
+                                {% trans "Secteur" %}: {{ projet.relais }} – {{ projet.couleur|ouverture_color }}
+                            </p>
+                        </div>
+
+                        <!-- Style & Profil -->
+                        <div class="col-3 d-flex flex-column justify-content-center align-items-center">
+                            {% if projet.style %}
+                            <span class="style-profil style-{{ projet.style|slugify }} fst-italic">{{ projet.style|ouverture_style }}</span>
+                            {% endif %}
+                            {% if projet.profil %}
+                            <span class="style-profil fw-bold" style="background-color: #333;">{{ projet.profil|ouverture_profile }}</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Cotation -->
+                        <div class="col-3 d-flex justify-content-center align-items-center">
+                            <span id="levelRoute" class="circle-cotation" style="border-color: {{ projet.niveau_couleur }};">
+                                {{ projet.niveau }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="details-row w-100 px-2">
+                        <div class="row g-0 w-100 mx-0 my-1">
+                            <div class="col-3 text-center prevent-overflow">
+                                <p class="m-0">{% trans "Ouvert le" %}</p>
+                            </div>
+                            <div class="col-3 text-center prevent-overflow">
+                                <p class="m-0">{% trans "Dernière montée" context "label_single" %}</p>
+                            </div>
+                            <div class="col-3 text-center prevent-overflow">
+                                <p class="m-0">
+                                    {% blocktrans trimmed count count=projet.total_try_moulinette %}
+                                        Montée
+                                    {% plural %}
+                                        Montées
+                                    {% endblocktrans %}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row g-0 w-100 mx-0 mt-1">
+                            <div class="col-3 text-center prevent-overflow">
+                                <p class="m-0 fw-bold">{{ projet.date_ouverture|date:"d M Y" }}</p>
+                            </div>
+                            <div class="col-3 text-center prevent-overflow">
+                                <p class="m-0 fw-bold">{{ projet.last_try_date|date:"d M Y" }}</p>
+                            </div>
+                            <div class="col-3 text-center prevent-overflow">
+                                <p class="m-0 fw-bold">{{ projet.total_try_moulinette }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% include 'core/projects/script.html' %}
+{% endblock %}

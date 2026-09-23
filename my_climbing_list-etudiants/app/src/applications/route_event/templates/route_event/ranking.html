@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classement - {{ event.name }}</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'route_event/css/route_event.css' %}">
+</head>
+<body>
+    <main class="event-page">
+        <header class="event-header">
+            <img class="event-logo" src="{% static 'route_event/media/logo_20.svg' %}" alt="Contest voie">
+        </header>
+
+        <div class="event-actions">
+            {% if is_staff_view %}
+                <a class="event-link-button" href="{% url 'route_event:staff_home' %}">Staff</a>
+                <a class="event-link-button" href="{% url 'route_event:staff_participant_list' slug=event.slug %}">Participants</a>
+                <a class="event-link-button" href="{% url 'route_event:staff_route_list' slug=event.slug %}">Voies</a>
+                <a class="event-link-button" href="{% url 'route_event:staff_route_rankings' slug=event.slug %}">Détails</a>
+                <a class="event-link-button event-button-primary" href="{% url 'route_event:staff_ranking_export_csv' slug=event.slug %}">Export CSV</a>
+                <a class="event-link-button event-button-primary" href="{% url 'route_event:staff_ranking_export_pdf' slug=event.slug %}">Export PDF</a>
+                <button class="event-button" type="button" onclick="window.location.reload()">Actualiser</button>
+            {% elif is_public_view %}
+                <button class="event-button" type="button" onclick="window.location.reload()">Actualiser</button>
+                <a class="event-link-button" href="{% url 'route_event:public_route_rankings' slug=event.slug %}">Détails</a>
+                <a class="event-link-button" href="{% url 'route_event:home' %}">Événements</a>
+            {% else %}
+                <button class="event-button" type="button" onclick="window.location.reload()">Actualiser</button>
+                <a class="event-link-button" href="{% url 'route_event:participant_route_rankings' token=participant.access_token %}">Détails</a>
+                <a class="event-link-button" href="{% url 'route_event:participant_access' token=participant.access_token %}">Retour topo</a>
+            {% endif %}
+        </div>
+
+        <nav class="event-card">
+            <h2 class="event-card-title">
+                Filtrer
+            </h2>
+
+            <div class="event-actions">
+                <a class="event-link-button" href="?{% if selected_gender %}gender={{ selected_gender }}{% endif %}">
+                    Global
+                </a>
+
+                {% for phase in phases %}
+                    <a class="event-link-button" href="?phase={{ phase.id }}{% if selected_gender %}&gender={{ selected_gender }}{% endif %}">
+                        {{ phase.name }}
+                    </a>
+                {% endfor %}
+            </div>
+
+            <div class="event-actions">
+                <a class="event-link-button event-link-button-gender"
+                   href="?{% if selected_phase %}phase={{ selected_phase.id }}{% endif %}">
+                    Général
+                </a>
+
+                <a class="event-link-button event-link-button-gender"
+                   href="?{% if selected_phase %}phase={{ selected_phase.id }}&{% endif %}gender=M">
+                    Homme
+                </a>
+
+                <a class="event-link-button event-link-button-gender"
+                   href="?{% if selected_phase %}phase={{ selected_phase.id }}&{% endif %}gender=F">
+                    Femme
+                </a>
+            </div>
+        </nav>
+
+        <section class="route-list">
+            {% for row in ranking_rows %}
+                <article class="route-card ranking-card">
+                    <div class="route-card-header">
+                        <div>
+                            <h2 class="route-title">
+                                #{{ row.rank }} — {{ row.participant }}
+                            </h2>
+
+                            <p class="route-details">
+                                {{ row.participant.get_gender_display }}
+
+                                {% if not selected_phase %}
+                                    · {{ row.participant.phase.name }}
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="event-meta">
+                        <p class="event-meta-item">
+                            <strong>{{ row.qualification_points }}</strong> points qualification
+                        </p>
+
+                        <p class="event-meta-item">
+                            <strong>{{ row.routes_done }}</strong> voie(s) saisie(s)
+                        </p>
+                    </div>
+                </article>
+            {% empty %}
+                <section class="event-card empty-state">
+                    <p>Aucune personne ne correspond à ce classement pour le moment.</p>
+                </section>
+            {% endfor %}
+        </section>
+    </main>
+</body>
+</html>

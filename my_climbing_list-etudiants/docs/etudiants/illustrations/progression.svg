@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="270" viewBox="0 0 1100 270"><rect width="1100" height="270" fill="white"/>
+<rect x="5" y="15" width="350" height="105" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="180.0" y="52" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Pratique</text>
+<text x="180.0" y="83" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Essais, tops, modes</text>
+<rect x="375" y="15" width="350" height="105" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="550.0" y="52" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Moteur Elo</text>
+<text x="550.0" y="83" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Règle et état de calcul</text>
+<rect x="745" y="15" width="350" height="105" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="920.0" y="52" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Niveaux quotidiens</text>
+<text x="920.0" y="83" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Valeurs enregistrées</text>
+<line x1="355" y1="66" x2="375" y2="66" stroke="#2F6B9A" stroke-width="2"/><polygon points="375,66 365.0950818741206,70.78462087522354 365.0950818741206,61.21537912477647" fill="#2F6B9A"/>
+<line x1="725" y1="66" x2="745" y2="66" stroke="#2F6B9A" stroke-width="2"/><polygon points="745,66 735.0950818741205,70.78462087522354 735.0950818741205,61.21537912477647" fill="#2F6B9A"/>
+<rect x="565" y="175" width="350" height="75" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="740.0" y="212" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Graphique</text>
+<text x="740.0" y="243" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Lecture des valeurs</text>
+<line x1="920" y1="120" x2="740" y2="175" stroke="#2F6B9A" stroke-width="2"/><polygon points="740,175 748.0744291052654,167.52981963912225 750.870738916374,176.68137902093238" fill="#2F6B9A"/>
+<text x="260" y="195" font-family="Helvetica Neue,Arial,sans-serif" font-size="21" font-weight="400" text-anchor="middle" fill="#233447">Une correction du passé</text>
+<text x="260" y="223" font-family="Helvetica Neue,Arial,sans-serif" font-size="21" font-weight="400" text-anchor="middle" fill="#233447">peut nécessiter un recalcul.</text>
+</svg>

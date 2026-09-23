@@ -1,0 +1,255 @@
+{% extends 'base/app_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block head %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'core/css/home/home.css' %}">
+    
+<!-- Balises <meta> pour stocker les données -->
+<meta id="localStorageTotalRouteSessions" data-value="{{ total_seances.voie }}">
+<meta id="localStorageTotalBoulderSessions" data-value="{{ total_seances.bloc }}">
+{% endblock %}
+
+{% block page_name %}{% trans "Accueil" %}{% endblock %}
+
+{% block template-content %}
+<!-- Popup d'information -->
+{% if popup_to_show %}
+{% include 'core/home/popup.html' %}
+{% endif %}
+
+<!-- ## Conteneur principal pour les statistiques hebdomadaires ## -->
+<div class="weekly-stat-container w-100">
+
+    <!-- Titre -->
+    <div class="w-100 d-flex align-items-center justify-content-center mb-3">
+        <div class="weekly-stat-title position-absolute">
+            <span class="fw-bold">{% trans "Aperçu de la semaine" %}</span>
+        </div>
+    </div>
+
+    <!-- Conteneur pour les valeurs de statistiques par défaut -->
+    {% if not weekly_stats.nombre_seances_voie and not weekly_stats.nombre_seances_bloc %}
+    <div class="row w-75 g-0 m-auto pt-2">
+        <div class="value-block-weekly-stat col-3">
+            <span class="fw-bold">0</span>
+            <span class="sub-text">{% trans "Séance" context "label_single" %}</span>
+        </div>
+
+        <div class="value-block-weekly-stat col-6">
+            <div class="row w-100 g-0">
+                <div class="col-1"></div>
+                <div class="col-4 d-flex flex-column justify-content-center align-items-center">
+                    <span class="fw-bold">0</span>
+                    <span class="sub-text">{% trans "Montée" context "label_single" %}</span>
+                </div>
+                <div class="col-2 d-flex justify-content-center pt-1">
+                    <span class="weekly-stat-vertical-bar"></span>
+                </div>
+                <div class="col-4 d-flex flex-column justify-content-center align-items-center">
+                    <span class="fw-bold">0</span>
+                    <span class="sub-text">{% trans "Top" %}</span>
+                </div>
+                <div class="col-1"></div>
+            </div>
+        </div>
+
+        <div class="value-block-weekly-stat col-3">
+            <span class="fw-bold">-</span>
+            <span class="sub-text">{% trans "Max" %}</span>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if weekly_stats.nombre_seances_voie > 0 %}
+    <!-- ## VOIE ## -->
+    <div class="w-100 d-flex justify-content-center align-items-center mb-2">
+        <span class="fw-bold seance-type">{% trans "Voie" %}</span>
+    </div>
+    <div class="row w-75 g-0 m-auto">
+        <div class="value-block-weekly-stat col-3">
+            <span class="fw-bold">{{ weekly_stats.nombre_seances_voie }}</span>
+            <span class="sub-text">
+                {% blocktrans count weekly_stats.nombre_seances_voie as count trimmed %}
+                    Séance
+                {% plural %}
+                    Séances
+                {% endblocktrans %}
+            </span>
+        </div>
+
+        <div class="value-block-weekly-stat col-6">
+            <div class="row w-100 g-0">
+                <div class="col-1"></div>
+                <div class="col-4 d-flex flex-column justify-content-center align-items-center">
+                    <span class="fw-bold">{{ weekly_stats.total_try_voie }}</span>
+                    <span class="sub-text">{% trans "Montée" context "label_single" %}</span>
+                </div>
+                <div class="col-2 d-flex justify-content-center pt-1">
+                    <span class="weekly-stat-vertical-bar"></span>
+                </div>
+                <div class="col-4 d-flex flex-column justify-content-center align-items-center">
+                    <span class="fw-bold">{{ weekly_stats.total_top_voie }}</span>
+                    <span class="sub-text">{% trans "Top" %}</span>
+                </div>
+                <div class="col-1"></div>
+            </div>
+        </div>
+
+        <div class="value-block-weekly-stat col-3">
+            <span class="fw-bold">
+                {% if weekly_stats.cotation_max_voie == "enfant" %}
+                    -
+                {% else %}
+                    {{ weekly_stats.cotation_max_voie }}
+                {% endif %}
+            </span>
+            <span class="sub-text">{% trans "Max" %}</span>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if weekly_stats.nombre_seances_voie and weekly_stats.nombre_seances_bloc %}
+    <div class="w-100 d-flex flex-column align-items-center justify-content-center">
+        <div class="horizontal-line mt-2 mb-1" style="height: 1px; width: 75%; background-color: #e6e6e6;"></div>
+    </div>
+    {% endif %}
+
+    {% if weekly_stats.nombre_seances_bloc > 0 %}
+    <!-- ## BLOC ## -->
+    {% if weekly_stats.nombre_seances_voie == 0 %}
+    <div class="w-100 d-flex justify-content-center align-items-center mb-2">
+        <span class="fw-bold seance-type">{% trans "Bloc" %}</span>
+    </div>
+    {% endif %}
+
+    <div class="row w-75 g-0 m-auto">
+        <div class="value-block-weekly-stat col-3">
+            <span class="fw-bold">{{ weekly_stats.nombre_seances_bloc }}</span>
+            <span class="sub-text">
+                {% blocktrans count weekly_stats.nombre_seances_bloc as count trimmed %}
+                    Séance
+                {% plural %}
+                    Séances
+                {% endblocktrans %}
+            </span>
+        </div>
+
+        <div class="value-block-weekly-stat col-6">
+            <div class="row w-100 g-0">
+                <div class="col-1"></div>
+                <div class="col-4 d-flex flex-column justify-content-center align-items-center">
+                    <span class="fw-bold">{{ weekly_stats.total_try_bloc }}</span>
+                    <span class="sub-text">{% trans "Montée" context "label_single" %}</span>
+                </div>
+                <div class="col-2 d-flex justify-content-center pt-1">
+                    <span class="weekly-stat-vertical-bar"></span>
+                </div>
+                <div class="col-4 d-flex flex-column justify-content-center align-items-center">
+                    <span class="fw-bold">{{ weekly_stats.total_top_bloc }}</span>
+                    <span class="sub-text">{% trans "Top" %}</span>
+                </div>
+                <div class="col-1"></div>
+            </div>
+        </div>
+
+        <div class="value-block-weekly-stat col-3">
+            <span class="fw-bold">
+                {% if weekly_stats.cotation_max_bloc == "enfant" %}
+                    -
+                {% else %}
+                    {{ weekly_stats.cotation_max_bloc }}
+                {% endif %}
+            </span>
+            <span class="sub-text">{% trans "Max" %}</span>
+        </div>
+    </div>
+
+    {% if weekly_stats.nombre_seances_voie > 0 %}
+    <div class="w-100 d-flex justify-content-center align-items-center mt-2">
+        <span class="fw-bold seance-type">{% trans "Bloc" %}</span>
+    </div>
+    {% endif %}
+    {% endif %}
+</div>
+
+<!-- ## Affichage des séances enregistrées ## -->
+<div class="scrollable-container w-100">
+    {% if seances_data %}
+        {% for key, value in seances_data.items %}
+            <a href="{% url 'core:details' %}?date_seance={{ key.1|date:'Y-m-d' }}&salle_id={{ key.2 }}&bloc={{ key.3 }}">
+                <div class="seance-row row g-0 p-2">
+                    <div class="seance col-6">
+                        <h5 class="fw-bold" style="font-size: 1rem">
+                            {{ key.0 }}
+                            <span class="type">
+                                {% if key.3 %}
+                                    {% trans "Bloc" %}
+                                {% else %}
+                                    {% trans "Voie" %}
+                                {% endif %}
+                            </span>
+                        </h5>
+                        <h6 class="fst-italic" style="font-size: .9rem">{{ key.1|date:"d M Y" }}</h6>
+                    </div>
+
+                    <div class="col-3">
+                        <div class="row w-100 g-0">
+                            <div class="col-5 d-flex flex-column justify-content-center align-items-center">
+                                <span class="total-ascension fw-bold">{{ value.total_try }}</span>
+                                <span class="text-description">{% trans "Montée" context "label_single" %}</span>
+                            </div>
+                            <div class="col-2 d-flex justify-content-center align-items-end" style="padding-bottom: .1rem;">
+                                <span class="vertical-bar"></span>
+                            </div>
+                            <div class="col-5 d-flex flex-column justify-content-center align-items-center">
+                                <span class="total-ascension fw-bold">{{ value.total_top }}</span>
+                                <span class="text-description">{% trans "Top" %}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="max-cotation col-3">
+                        <div class="circle-cotation" style="border-color:{{ value.cotation_color }};">
+                            {% if value.max_cotation == "enfant" %}
+                                -
+                            {% else %}
+                                {{ value.max_cotation }}
+                            {% endif %}
+                        </div>
+                        <span class="text-description">{% trans "Max" %}</span>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+
+        <!-- Indicateurs -->
+        <div id="loader-spinner" class="text-center py-3" style="display: none;">
+            <div class="spinner-grow text-secondary" role="status" style="width: 1.8rem; height: 1.8rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <div id="offline-notice" style="display: none;">
+            <p class="m-0 py-3 text-secondary text-center">
+                <i class="fa-solid fa-wifi-slash"></i>
+            </p>
+        </div>
+
+        <div class="bottom-info">
+            <p class="m-0 p-3">
+                {% blocktrans count seances_data|length as count trimmed %}séance enregistrée{% plural %}séances enregistrées{% endblocktrans %}
+            </p>
+        </div>
+    {% else %}
+        <div class="bottom-info">
+            <p class="m-0 p-3">{% trans "Aucune séance enregistrée" %}</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% include 'core/home/script.html' %}
+{% endblock %}

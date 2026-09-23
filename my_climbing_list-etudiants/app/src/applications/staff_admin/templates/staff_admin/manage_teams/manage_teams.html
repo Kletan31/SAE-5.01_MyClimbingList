@@ -1,0 +1,189 @@
+{% extends "base/staff_admin_base.html" %}
+{% load i18n %}
+{% load staff_admin_extras %}
+
+{% block backLink %}{% url 'staff_admin:inscriptions' contest.id %}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <h1 class="mb-4">
+        {% blocktrans %}Gestion des équipes – {{ contest.name }}{% endblocktrans %}
+    </h1>
+
+    <div class="row">
+        <!-- Équipes existantes -->
+        <div class="col-12 mb-4">
+            <h2>{% trans "Équipes existantes" %}</h2>
+            <div class="d-flex flex-wrap gap-3">
+                {% for team in teams %}
+                    <div class="card team-card p-3" style="min-width: 250px;">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="mb-2">{{ team.name }}</h5>
+                                <ul class="list-unstyled mb-0">
+                                    {% for member in team.members.all %}
+                                        <li data-user-id="{{ member.id }}">{{ member.username }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <form method="post" onsubmit="return confirm('{% trans "Supprimer cette équipe ?" %}')">
+                                {% csrf_token %}
+                                <input type="hidden" name="delete_team" value="1">
+                                <input type="hidden" name="team_id" value="{{ team.id }}">
+                                <button type="submit" class="btn btn-sm btn-outline-danger ms-2">✕</button>
+                            </form>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary mt-2 w-100"
+                                onclick="loadTeam('{{ team.id }}')">
+                            {% trans "Modifier" %}
+                        </button>
+                    </div>
+                {% empty %}
+                    <p class="text-muted">
+                        {% trans "Aucune équipe créée pour le moment." %}
+                    </p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Utilisateurs non assignés -->
+        <div class="col-md-6">
+            <h4>{% trans "Inscrits sans équipe" %}</h4>
+            <ul id="available-users" class="list-group" style="min-height: 200px;">
+                {% for user in users %}
+                    {% if not teams_by_user|get_item:user.id %}
+                        <li class="list-group-item list-group-item-action" data-user-id="{{ user.id }}">
+                            {{ user.username }}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Formulaire de création/modification -->
+        <div class="col-md-6">
+            <h4 id="form-title">{% trans "Créer une nouvelle équipe" %}</h4>
+            <form method="post" id="team-form">
+                {% csrf_token %}
+                <input type="hidden" name="create_team" value="1" id="form-mode">
+                <input type="hidden" name="team_id" value="" id="form-team-id">
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        {% trans "Nom de l’équipe" %}
+                    </label>
+                    <input type="text" name="team_name" id="team-name" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        {% trans "Membres de l’équipe" %}
+                    </label>
+                    <ul id="selected-users" class="list-group"></ul>
+                    <input type="hidden" name="team_members" id="team-members">
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-success">
+                        {% trans "Enregistrer" %}
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                        {% trans "Annuler" %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const availableUsers = document.getElementById('available-users');
+const selectedUsers = document.getElementById('selected-users');
+const hiddenMembersInput = document.getElementById('team-members');
+
+let initialTeamMemberIds = new Set();
+
+function updateHiddenInput() {
+    const ids = Array.from(selectedUsers.querySelectorAll('li'))
+        .map(li => li.dataset.userId)
+        .filter(id => id !== undefined && id !== "undefined" && id !== "");
+    hiddenMembersInput.value = ids.join(',');
+}
+
+availableUsers.addEventListener('click', e => {
+    if (e.target.tagName === 'LI') {
+        const clone = e.target.cloneNode(true);
+        clone.dataset.userId = e.target.dataset.userId; // propagation du data attr
+        selectedUsers.appendChild(clone);
+        e.target.remove();
+        updateHiddenInput();
+    }
+});
+
+selectedUsers.addEventListener('click', e => {
+    if (e.target.tagName === 'LI') {
+        const clone = e.target.cloneNode(true);
+        clone.dataset.userId = e.target.dataset.userId;
+        availableUsers.appendChild(clone);
+        e.target.remove();
+        updateHiddenInput();
+    }
+});
+
+function resetForm() {
+    document.getElementById('form-title').textContent = 'Créer une nouvelle équipe';
+    document.getElementById('form-mode').name = 'create_team';
+    document.getElementById('form-team-id').value = '';
+    document.getElementById('team-name').value = '';
+
+    Array.from(selectedUsers.querySelectorAll('li')).forEach(li => {
+        availableUsers.appendChild(li);
+    });
+
+    const allAvailable = Array.from(availableUsers.querySelectorAll('li'));
+    allAvailable.forEach(li => {
+        const userId = li.dataset.userId;
+        if (initialTeamMemberIds.has(userId)) {
+            selectedUsers.appendChild(li);
+        }
+    });
+
+    initialTeamMemberIds.clear();
+    document.getElementById('team-name').value = '';
+    selectedUsers.innerHTML = '';
+    updateHiddenInput();
+}
+
+function loadTeam(teamId) {
+    const card = document.querySelector(`[onclick="loadTeam('${teamId}')"]`).closest('.team-card');
+    const name = card.querySelector('h5').textContent;
+    const members = Array.from(card.querySelectorAll('li'))
+        .map(li => ({
+            id: li.dataset.userId,
+            name: li.textContent.trim()
+        }));
+
+    resetForm();
+    document.getElementById('form-title').textContent = 'Modifier l’équipe';
+    document.getElementById('form-mode').name = 'update_team';
+    document.getElementById('form-team-id').value = teamId;
+    document.getElementById('team-name').value = name;
+
+    initialTeamMemberIds.clear();
+    members.forEach(member => {
+        const li = document.createElement('li');
+        li.className = 'list-group-item list-group-item-action';
+        li.dataset.userId = member.id;
+        li.textContent = member.name;
+        selectedUsers.appendChild(li);
+        initialTeamMemberIds.add(member.id);
+    });
+    updateHiddenInput();
+}
+</script>
+{% endblock %}

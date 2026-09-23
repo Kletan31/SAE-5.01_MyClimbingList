@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier participant - {{ event.name }}</title>
+
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'route_event/css/staff_participants.css' %}">
+</head>
+<body>
+    <main class="staff-page">
+        <h1>Modifier l’email du participant</h1>
+
+        <p class="staff-nav">
+            <a href="{% url 'route_event:staff_participant_list' slug=event.slug %}">
+                Retour aux participants
+            </a>
+        </p>
+
+        <section class="staff-card">
+            <h2>{{ participant }}</h2>
+
+            <p>
+                Créneau : {{ participant.phase.name }}<br>
+                Catégorie : {{ participant.get_gender_display }}
+            </p>
+
+            <form method="post" class="staff-form">
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <button type="submit">
+                    Enregistrer
+                </button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

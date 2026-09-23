@@ -1,0 +1,19 @@
+{% extends 'base/app_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block page_name %}{% trans "Contests" %}{% endblock %}
+
+{% block template-content %}
+    <div class="spinner-wrapper">
+        <i class="fa-solid fa-spinner-scale fa-spin-pulse"></i>
+    </div>
+    <script>
+        if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({ action: "CLEAR_CONTESTS_CACHE" });
+        }
+        setTimeout(function() {
+            window.location.href = "{{ redirect_url }}";
+        }, 500);
+    </script>
+{% endblock %}

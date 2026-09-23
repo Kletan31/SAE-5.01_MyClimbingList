@@ -1,0 +1,12 @@
+{% load static %}
+<script type="module">
+import { initializeTogglePasswordFields } from "{% static 'custom_auth/js/changePwdType.js' %}";
+import { clearLocalStorage } from "{% static 'custom_auth/js/clearLocalStorage.js' %}";
+import { initializeAuthFormSubmission } from "{% static 'custom_auth/js/submitDetection.js' %}";
+
+document.addEventListener("DOMContentLoaded", function () {
+    initializeTogglePasswordFields();
+    clearLocalStorage();
+    initializeAuthFormSubmission();
+});
+</script>

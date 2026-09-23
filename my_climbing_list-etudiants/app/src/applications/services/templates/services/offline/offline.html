@@ -1,0 +1,54 @@
+{% extends 'base/custom_auth_base.html' %}
+{% load static %}
+{% load i18n %}
+{% block auth_content %}
+<h4 class="fw-bold mb-3">{% trans "Maintenance" %}</h4>
+
+<p style="font-size: .9rem; line-height: 1.25;">
+    {% blocktrans trimmed %}
+    Nous travaillons activement pour rétablir l'accès le plus rapidement possible.
+    Merci de votre patience et de votre compréhension.
+    {% endblocktrans %}
+</p>
+
+<p style="font-size: .9rem; line-height: 1.25;">
+    {% blocktrans trimmed %}
+    Si vous avez des questions, n’hésitez pas à nous contacter à l’adresse suivante :
+    {% endblocktrans %}
+</p>
+
+<p style="font-weight: 500;">contact@example.test</p>
+
+<span id="retryButton" class="btn btn-primary mt-2" style="color: white!important;">{% trans "Réessayer" %}</span>
+<i id="loadingSpinner" class="d-none fa-solid fa-spinner-third fa-spin fast-spin" style="font-size: 2rem;"></i>
+{{ block.super }}
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const retryButton = document.getElementById("retryButton");
+    const loadingSpinner = document.getElementById("loadingSpinner");
+
+    retryButton.addEventListener("click", function () {
+        retryButton.classList.add("d-none");
+        loadingSpinner.classList.remove("d-none");
+
+        setTimeout(function () {
+            // Détecte la langue à partir du chemin
+            const pathParts = window.location.pathname.split("/");
+            const lang = pathParts[1]; // ex: "fr" ou "en" ou "pt"
+
+            // Construit l’URL de redirection
+            const supportedLangs = ["fr", "en", "pt"];
+            const redirectUrl = supportedLangs.includes(lang)
+                ? `/${lang}/`
+                : "/";
+
+            // Redirection
+            window.location.href = redirectUrl;
+        }, 1000);
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,225 @@
+{% extends "base/staff_admin_base.html" %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block head %}
+    <style>
+        .ouverture-item {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .ouverture-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .scrollable-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+            background-color: #ffffff;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container py-4">
+        <h1 class="mb-4">{% trans "Créer un contest" %}</h1>
+
+        <form method="post" class="border rounded p-4 shadow-sm bg-light">
+            {% csrf_token %}
+
+            <!-- Champs du formulaire -->
+            <div class="row">
+                <div class="col-md-6">
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    {% for field in form %}
+                        {% if field.name != "ouvertures" %}
+                            {% if field.field.widget.input_type == "checkbox" %}
+                                <div class="form-check mb-3">
+                                    {{ field|add_class:"form-check-input" }}
+                                    <label class="form-check-label" for="{{ field.id_for_label }}">
+                                        {{ field.label }}
+                                    </label>
+
+                                    {# AIDE #}
+                                    {% if field.help_text %}
+                                      <div class="form-text">{{ field.help_text }}</div>
+                                    {% endif %}
+
+                                    {# ERREURS #}
+                                    {% if field.errors %}
+                                        <div class="form-text text-danger">{{ field.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <div class="mb-3">
+                                    <label class="form-label" for="{{ field.id_for_label }}">
+                                        {{ field.label }}
+                                    </label>
+                                    {% if field.name == "start_date" or field.name == "end_date" %}
+                                        {{ field|add_class:"form-control"|attr:"type:datetime-local" }}
+                                    {% else %}
+                                        {{ field|add_class:"form-control" }}
+                                    {% endif %}
+
+                                    {# AIDE #}
+                                    {% if field.help_text %}
+                                      <div class="form-text">{{ field.help_text }}</div>
+                                    {% endif %}
+
+                                    {# ERREURS #}
+                                    {% if field.errors %}
+                                        <div class="form-text text-danger">{{ field.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Filtres discipline -->
+            <div class="mb-3">
+                <div class="btn-group" role="group" id="discipline-filters">
+                    <button type="button" class="btn btn-outline-primary" data-discipline="bloc">
+                        {% trans "Bloc" %}
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" data-discipline="voie">
+                        {% trans "Voie" %}
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sélection des ouvertures -->
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="section-title">
+                        {% trans "Ouvertures disponibles" %}
+                    </div>
+                    <div class="list-group scrollable-list" id="ouvertures-disponibles">
+                        {% for ouverture in form.fields.ouvertures.queryset %}
+                            <div class="list-group-item ouverture-item"
+                                 data-id="{{ ouverture.pk }}"
+                                 data-text="{{ ouverture }}"
+                                 data-discipline="{{ ouverture.bloc|yesno:'bloc,voie' }}">
+                                {{ ouverture }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="section-title">
+                        {% trans "Ouvertures sélectionnées" %}
+                    </div>
+                    <div class="list-group scrollable-list" id="ouvertures-selectionnees">
+                        <!-- Rempli dynamiquement -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Champ masqué -->
+            <input type="hidden" name="ouvertures" id="ouvertures-input">
+
+            <!-- Actions -->
+            <div class="mt-4 d-flex gap-3">
+                <button type="submit" class="btn btn-primary">
+                    {% trans "Créer" %}
+                </button>
+                <a href="{% url 'staff_admin:dashboard' %}" class="btn btn-outline-secondary">
+                    {% trans "Annuler" %}
+                </a>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const disponibles = document.querySelectorAll("#ouvertures-disponibles .ouverture-item");
+            const selectionnees = document.getElementById("ouvertures-selectionnees");
+            const inputHidden = document.getElementById("ouvertures-input");
+            const selectedIds = new Set();
+            let currentDiscipline = "voie";
+
+            // Active le bouton "voie" au chargement
+            const voieButton = document.querySelector('#discipline-filters button[data-discipline="voie"]');
+            if (voieButton) {
+                voieButton.classList.add("active");
+            }
+
+            // Filtrage des ouvertures selon la discipline
+            function updateDisciplineFilter() {
+                disponibles.forEach(item => {
+                    const discipline = item.dataset.discipline;
+                    const id = item.dataset.id;
+                    if (selectedIds.has(id)) {
+                        item.style.display = "none";
+                    } else {
+                        item.style.display = (currentDiscipline === discipline) ? "" : "none";
+                    }
+                });
+            }
+
+            // Gestion des filtres par discipline
+            document.querySelectorAll("#discipline-filters button").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    document.querySelectorAll("#discipline-filters button").forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    currentDiscipline = btn.dataset.discipline;
+                    updateDisciplineFilter();
+                });
+            });
+
+            // Clic sur une ouverture disponible
+            disponibles.forEach(item => {
+                const id = item.dataset.id;
+                const text = item.dataset.text;
+
+                item.addEventListener("click", () => {
+                    if (!selectedIds.has(id)) {
+                        selectedIds.add(id);
+
+                        const selectedItem = document.createElement("div");
+                        selectedItem.classList.add("list-group-item", "ouverture-item", "d-flex", "justify-content-between", "align-items-center");
+                        selectedItem.textContent = text;
+                        selectedItem.dataset.id = id;
+                        selectedItem.title = "Cliquer pour retirer";
+                        selectedItem.addEventListener("click", () => {
+                            selectedItem.remove();
+                            selectedIds.delete(id);
+                            updateHiddenInput();
+                            updateDisciplineFilter(); // met à jour la colonne gauche
+                        });
+
+                        selectionnees.appendChild(selectedItem);
+                        updateHiddenInput();
+                        item.style.display = "none";
+                    }
+                });
+            });
+
+            function updateHiddenInput() {
+                inputHidden.value = Array.from(selectedIds).join(",");
+            }
+
+            updateDisciplineFilter(); // Appel initial
+        });
+    </script>
+{% endblock %}

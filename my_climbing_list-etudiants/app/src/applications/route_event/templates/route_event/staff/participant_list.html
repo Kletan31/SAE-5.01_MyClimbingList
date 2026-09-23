@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Participants - {{ event.name }}</title>
+
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'route_event/css/staff_participants.css' %}">
+</head>
+<body>
+    <main class="staff-page">
+        <h1>Participants — {{ event.name }}</h1>
+
+        <p class="staff-nav">
+            <a href="{% url 'route_event:staff_home' %}">Accueil staff</a> |
+            <a href="{% url 'route_event:staff_event_update' slug=event.slug %}">Événement</a> |
+            <a href="{% url 'route_event:staff_route_list' slug=event.slug %}">Voies</a>
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Créneau</th>
+                    <th>Participant</th>
+                    <th>Email</th>
+                    <th>Catégorie</th>
+                    <th>Paiement</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for participant in participants %}
+                    <tr>
+                        <td>{{ participant.phase.name }}</td>
+
+                        <td>
+                            <strong>{{ participant }}</strong>
+                        </td>
+
+                        <td>
+                            <span class="participant-email">
+                                {{ participant.email }}
+                            </span>
+                        </td>
+
+                        <td>{{ participant.get_gender_display }}</td>
+
+                        <td>
+                            {% if participant.is_payment_validated %}
+                                <span class="payment-valid">
+                                    Validé
+                                </span>
+                            {% else %}
+                                <span class="payment-pending">
+                                    En attente
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <div class="actions">
+                                {% if participant.is_payment_validated %}
+                                    <form
+                                        method="post"
+                                        action="{% url 'route_event:staff_unvalidate_participant' participant_id=participant.id %}"
+                                    >
+                                        {% csrf_token %}
+                                        <button type="submit">
+                                            Mettre en attente
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    <form
+                                        method="post"
+                                        action="{% url 'route_event:staff_validate_participant' participant_id=participant.id %}"
+                                    >
+                                        {% csrf_token %}
+                                        <button type="submit">
+                                            Valider
+                                        </button>
+                                    </form>
+                                {% endif %}
+
+                                <form
+                                    method="post"
+                                    action="{% url 'route_event:staff_resend_participant_link' participant_id=participant.id %}"
+                                >
+                                    {% csrf_token %}
+                                    <button type="submit">
+                                        Renvoyer le lien
+                                    </button>
+                                </form>
+
+                                <a
+                                    class="action-link edit-link"
+                                    href="{% url 'route_event:staff_participant_update' participant_id=participant.id %}"
+                                >
+                                    Modifier
+                                </a>
+
+                                <form
+                                    method="post"
+                                    action="{% url 'route_event:staff_delete_participant' participant_id=participant.id %}"
+                                >
+                                    {% csrf_token %}
+                                    <button
+                                        class="danger-button"
+                                        type="submit"
+                                    >
+                                        Supprimer
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6">
+                            Aucun participant inscrit.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

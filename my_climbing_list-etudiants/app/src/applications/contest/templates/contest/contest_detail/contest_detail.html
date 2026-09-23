@@ -1,0 +1,168 @@
+{% extends "base/app_base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block page_name %}{% trans "Contests" %}{% endblock %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'contest/css/contest_detail/contest_detail.css' %}">
+{% endblock %}
+
+{% block template-content %}
+<div class="container py-4">
+    <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="h5 mb-0">{{ contest.name }}</h2>
+            {% if contest.max_participants %}
+                {% if contest.is_full %}
+                    <span class="badge bg-danger">{% trans "Complet" %}</span>
+                {% else %}
+                    <span class="badge bg-primary">
+                        {% blocktrans trimmed with acc=contest.accepted_count max=contest.max_participants %}
+                            {{ acc }}/{{ max }}
+                        {% endblocktrans %}
+                    </span>
+                {% endif %}
+            {% else %}
+                <span class="badge bg-secondary">{{ contest.accepted_count }}</span>
+            {% endif %}
+        </div>
+
+        <p class="text-muted fst-italic px-2 mt-2" style="font-size: .85rem; line-height: 1.25rem; text-align: justify;">
+            {% if contest.description %}
+                {{ contest.description|linebreaksbr }}
+            {% else %}
+                {% trans "Aucune description" %}
+            {% endif %}
+        </p>
+        <ul class="list-unstyled small">
+            <p class="m-0 mb-2">
+                <strong>{% trans "Discipline :" %}</strong>
+                {% if contest.get_discipline_display %}
+                    {{ contest.get_discipline_display }}
+                {% else %}
+                    {% trans "Toutes disciplines" %}
+                {% endif %}
+            </p>
+            <p class="m-0 mb-2">
+                <strong>{% trans "Format :" %}</strong> {{ contest.get_format_display }}
+            </p>
+            {% if contest.start_date and contest.end_date %}
+                <p class="m-0 mb-2">
+                    <strong>{% trans "Dates :" %}</strong>
+                    {% blocktrans trimmed with start=contest.start_date|date:"d/m/Y" end=contest.end_date|date:"d/m/Y" %}
+                        du {{ start }} au {{ end }}
+                    {% endblocktrans %}
+                </p>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div class="d-flex flex-column justify-content-center">
+        {% if is_registered %}
+            {# Messages de statut #}
+            {% if status == "pending" %}
+                <div class="alert alert-info text-center">
+                    {% trans "Votre inscription est en attente de validation par un membre du staff." %}
+                </div>
+            {% elif status == "refused" %}
+                <div class="alert alert-danger text-center">
+                    {% trans "Votre inscription a été refusée par un membre du staff." %}
+                </div>
+            {% endif %}
+
+            {# Accès / infos temporelles #}
+            {% if is_running and can_access %}
+                <a href="{% url 'contest:classement_topo' contest.id %}"
+                   class="btn btn-primary mx-auto" style="width: fit-content;">
+                    {% trans "Accéder au contest" %}
+                </a>
+            {% else %}
+                {% if not has_started %}
+                    {% if not contest.is_payant or status == "accepted" %}
+                        <div class="alert alert-warning text-center" style="line-height: 1.5rem;">
+                            {% blocktrans trimmed with start=contest.start_date|date:"d/m/Y H:i" %}
+                            Votre inscription est validée !
+                            Le contest débute le {{ start }}.
+                            Vous pourrez accéder au topo à partir de cette date.
+                            {% endblocktrans %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+                <a id="access-contest" href="{% url 'contest:contest_detail' contest.id %}"
+                   class="btn btn-outline-primary mx-auto" style="width: fit-content;">
+                    {% trans "Actualiser" %}
+                </a>
+            {% endif %}
+
+        {% else %}
+            {# Utilisateur non inscrit #}
+            {% if contest.is_full %}
+                <div class="alert alert-warning text-center">
+                    {% trans "Le contest a atteint le nombre maximum de participants." %}
+                </div>
+                <button class="btn btn-secondary mx-auto" style="width: fit-content;" disabled>
+                    {% trans "Participer" %}
+                </button>
+            {% else %}
+                <form id="participation-form" method="post"
+                      action="{% url 'contest:inscription' contest.id %}"
+                      class="mx-auto" style="width: fit-content;">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-secondary" id="participation-button">
+                        {% trans "Participer" %}
+                    </button>
+                </form>
+
+                {% if contest.is_payant %}
+                    <p class="text-muted text-center mt-2 mb-0" style="font-size:.9rem;">
+                        {% trans "Votre inscription passera en attente de validation par le staff." %}
+                    </p>
+                {% elif not has_started %}
+                    <p class="text-muted text-center mt-2 mb-0" style="font-size:.85rem;">
+                        {% blocktrans trimmed with start=contest.start_date|date:"d/m/Y H:i" %}
+                            Le contest débute le <strong>{{ start }}</strong>.
+                        {% endblocktrans %}
+                    </p>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const participationButton = document.getElementById("participation-button");
+        const form = document.getElementById("participation-form");
+
+        participationButton?.addEventListener("click", function () {
+            preloadView();
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    form.submit();
+                }, 50);
+            });
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const buttons = [
+            document.getElementById("access-contest"),
+            document.getElementById("participation-button"),
+        ];
+
+        const clearCacheAndReload = () => {
+            if (navigator.serviceWorker?.controller) {
+                navigator.serviceWorker.controller.postMessage({ action: "CLEAR_CONTESTS_CACHE" });
+            }
+            setTimeout(() => window.location.reload(), 100);
+        };
+
+        buttons.forEach(btn => btn?.addEventListener("click", clearCacheAndReload));
+    });
+</script>
+{% endblock %}

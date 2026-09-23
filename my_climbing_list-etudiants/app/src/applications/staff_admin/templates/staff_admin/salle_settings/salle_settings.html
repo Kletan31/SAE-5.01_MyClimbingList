@@ -1,0 +1,46 @@
+{% extends "base/staff_admin_base.html" %}
+{% load i18n %}
+
+{% block backLink %}{% url 'staff_admin:dashboard' %}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4">{% trans "Paramètres de la salle" %}</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="{% trans 'Fermer' %}">
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" class="card shadow-sm p-4">
+        {% csrf_token %}
+
+        <div class="form-check form-switch mb-3">
+            <input class="form-check-input"
+                   type="checkbox"
+                   id="masquerCotationCheckbox"
+                   name="masquer_cotation_recentes"
+                   {% if salle.masquer_cotation_recentes %}checked{% endif %}>
+            <label class="form-check-label" for="masquerCotationCheckbox">
+                {% trans "Masquer les cotations des ouvertures de moins d'une semaine" %}
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            {% trans "Enregistrer" %}
+        </button>
+    </form>
+
+    <div class="text-muted mt-4" style="font-size: 0.9rem;">
+        {% trans "⚠️ Ce paramètre n'affecte que l'affichage côté client. Les cotations sont toujours enregistrées dans la base." %}
+    </div>
+</div>
+{% endblock %}

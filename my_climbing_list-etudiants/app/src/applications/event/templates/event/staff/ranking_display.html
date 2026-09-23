@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classement écran - {{ event.name }}</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'event/css/event.css' %}">
+    <script src="{% static 'event/js/ranking_display.js' %}" defer></script>
+</head>
+<body>
+    <main class="event-display-page {% if show_only_finalists %}finalists-display{% endif %}">
+        <header class="event-display-header">
+            <img class="event-display-logo" src="{% static 'event/media/big_air.png' %}" alt="Big Air">
+
+            <div class="event-display-title-block">
+                <h1>{{ event.name }}</h1>
+
+                <div class="event-display-subheader">
+                    <p>
+                        {% if show_only_finalists %}
+                            Finalistes — mise à jour automatique
+                        {% elif selected_phase %}
+                            {{ selected_phase.name }} — mise à jour automatique
+                        {% else %}
+                            Classement global — mise à jour automatique
+                        {% endif %}
+                    </p>
+
+                    {% if not show_only_finalists %}
+                        <button
+                            type="button"
+                            id="toggle-scroll"
+                            class="event-display-toggle"
+                        >
+                            Pause défilement
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </header>
+
+        <nav class="event-display-filters">
+            <a href="?" {% if not selected_phase and not show_only_finalists %}class="active"{% endif %}>
+                Global
+            </a>
+
+            {% for phase in phases %}
+                <a
+                    href="?phase={{ phase.id }}"
+                    {% if selected_phase and selected_phase.id == phase.id %}class="active"{% endif %}
+                >
+                    {{ phase.name }}
+                </a>
+            {% endfor %}
+
+            <a href="?finalists=1" {% if show_only_finalists %}class="active"{% endif %}>
+                Finalistes
+            </a>
+        </nav>
+
+        <section class="event-display-ranking">
+            {% for row in ranking_rows %}
+                <article
+                    class="event-display-row
+                        {% if row.team.team_type == 'X' %}display-mixed{% endif %}
+                        {% if show_finalist_badge and row.is_mixed_qualified %}display-qualified{% endif %}
+                    "
+                >
+                    <div class="display-rank">#{{ row.rank }}</div>
+
+                    <div class="display-team">
+                        <strong>{{ row.team.participant_1 }} / {{ row.team.participant_2 }}</strong>
+                        <span>
+                            {{ row.team.get_team_type_display }} · {{ row.team.phase.name }}
+                            {% if show_finalist_badge and row.is_mixed_qualified %}
+                                · FINALISTE
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="display-score">
+                        <strong>{{ row.points }}</strong>
+                        <span>{{ row.tops }} tops · {{ row.zones }} zones</span>
+                    </div>
+                </article>
+            {% empty %}
+                <section class="event-card empty-state">
+                    <p>Aucune équipe validée pour le moment.</p>
+                </section>
+            {% endfor %}
+        </section>
+    </main>
+</body>
+</html>

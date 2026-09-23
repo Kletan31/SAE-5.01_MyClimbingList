@@ -1,0 +1,17 @@
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Route Event</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+</head>
+<h1>{{ title }}</h1>
+
+<p>
+    <a href="{% url 'route_event:staff_event_update' slug=event.slug %}">Retour à l’événement</a>
+</p>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">{{ submit_label }}</button>
+</form>

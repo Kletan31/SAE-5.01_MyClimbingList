@@ -1,0 +1,155 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classement par voie - {{ event.name }}</title>
+
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'route_event/css/route_event.css' %}">
+</head>
+
+<body>
+    <main class="event-page">
+
+        <header class="event-header">
+            <img
+                class="event-logo"
+                src="{% static 'route_event/media/logo_20.svg' %}"
+                alt="Contest voie"
+            >
+        </header>
+
+        <div class="event-actions">
+            {% if is_staff_view %}
+                <a class="event-link-button"
+                   href="{% url 'route_event:staff_home' %}">
+                    Staff
+                </a>
+
+                <a class="event-link-button"
+                   href="{% url 'route_event:staff_ranking' slug=event.slug %}">
+                    Classement
+                </a>
+
+                <a class="event-link-button"
+                   href="{% url 'route_event:staff_participant_list' slug=event.slug %}">
+                    Participants
+                </a>
+
+                <a class="event-link-button"
+                   href="{% url 'route_event:staff_route_list' slug=event.slug %}">
+                    Voies
+                </a>
+
+                <button
+                    class="event-button"
+                    type="button"
+                    onclick="window.location.reload()"
+                >
+                    Actualiser
+                </button>
+            {% elif is_public_view %}
+                <button
+                    class="event-button"
+                    type="button"
+                    onclick="window.location.reload()"
+                >
+                    Actualiser
+                </button>
+
+                <a class="event-link-button"
+                   href="{% url 'route_event:public_ranking' slug=event.slug %}">
+                    Classement
+                </a>
+
+                <a class="event-link-button"
+                   href="{% url 'route_event:home' %}">
+                    Événements
+                </a>
+            {% else %}
+                <button
+                    class="event-button"
+                    type="button"
+                    onclick="window.location.reload()"
+                >
+                    Actualiser
+                </button>
+
+                <a class="event-link-button"
+                   href="{% url 'route_event:participant_ranking' token=participant.access_token %}">
+                    Classement
+                </a>
+
+                <a class="event-link-button"
+                   href="{% url 'route_event:participant_access' token=participant.access_token %}">
+                    Retour topo
+                </a>
+            {% endif %}
+        </div>
+
+        <section class="route-list">
+            {% for section in route_sections %}
+
+            <details class="route-card route-accordion">
+                <summary class="route-accordion-summary">
+                    <span class="route-accordion-title-block">
+                        <span class="route-title">
+                            Voie {{ section.route.display_order }}
+                            · Relais {{ section.route.ouverture.relais }}
+                        </span>
+
+                        <span class="route-details">
+                            {{ section.route.ouverture.nom }}
+                            · {{ section.route.ouverture.niveau }}
+                            · {{ section.route.ouverture.couleur }}
+                        </span>
+                    </span>
+
+                    <span class="route-accordion-icon">
+                        +
+                    </span>
+                </summary>
+
+                <div class="route-ranking-list">
+                    {% for row in section.rows %}
+                        <div class="route-ranking-row">
+                            <div class="route-ranking-left">
+                                <div class="route-ranking-rank">
+                                    #{{ row.rank }}
+                                </div>
+
+                                <div class="route-ranking-participant">
+                                    {{ row.participant }}
+                                </div>
+                            </div>
+
+                            <div class="route-ranking-right">
+                                <div class="route-ranking-hold">
+                                    {% if row.performance and row.performance.hold_number > 0 %}
+                                        {{ row.performance.hold_number }}{% if row.performance.hold_plus %}+{% endif %}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </div>
+
+                                <div class="route-ranking-points">
+                                    {{ row.ranking_points }} pts
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </details>
+
+            {% empty %}
+                <section class="event-card empty-state">
+                    <p>Aucune voie disponible.</p>
+                </section>
+            {% endfor %}
+        </section>
+
+    </main>
+</body>
+</html>

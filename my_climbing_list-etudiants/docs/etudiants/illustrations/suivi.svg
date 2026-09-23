@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="280" viewBox="0 0 1100 280"><rect width="1100" height="280" fill="white"/>
+<rect x="10" y="20" width="310" height="90" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="165.0" y="57" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Grimpeur</text>
+<text x="165.0" y="88" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Accorde un partage</text>
+<rect x="10" y="160" width="310" height="90" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="165.0" y="197" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Staff</text>
+<text x="165.0" y="228" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Possède un rôle par salle</text>
+<rect x="440" y="90" width="290" height="100" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="585.0" y="127" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Salle concernée</text>
+<text x="585.0" y="158" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Deux relations distinctes</text>
+<rect x="835" y="90" width="250" height="100" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="960.0" y="127" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Suivi autorisé</text>
+<text x="960.0" y="158" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Contrôle à chaque lecture</text>
+<line x1="320" y1="65" x2="440" y2="115" stroke="#2F6B9A" stroke-width="2"/><polygon points="440,115 429.01675985487145,115.60698922102193 432.6972374511973,106.77384298984003" fill="#2F6B9A"/>
+<line x1="320" y1="205" x2="440" y2="165" stroke="#2F6B9A" stroke-width="2"/><polygon points="440,165 432.11639957602983,172.67130004335493 429.0903396348109,163.59312021969814" fill="#2F6B9A"/>
+<line x1="730" y1="140" x2="835" y2="140" stroke="#2F6B9A" stroke-width="2"/><polygon points="835,140 825.0950818741205,144.78462087522354 825.0950818741205,135.21537912477646" fill="#2F6B9A"/>
+</svg>

@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Espace staff event</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+</head>
+<body>
+    <h1>Espace staff event</h1>
+
+    <p>
+        <a href="{% url 'event:staff_event_list' %}">Gérer les événements</a> |
+        <a href="{% url 'event:staff_logout' %}">Se déconnecter</a>
+    </p>
+
+    <h2>Événements</h2>
+
+    {% if events %}
+        <ul>
+            {% for event in events %}
+                <li>
+                    <strong>{{ event.name }}</strong><br>
+                    Salle : {{ event.salle.nom }}<br>
+                    Début : {{ event.date }}<br>
+                    <a href="{% url 'event:staff_team_list' slug=event.slug %}">Voir les équipes</a>
+                    |
+                    <a href="{% url 'event:staff_route_list' slug=event.slug %}">Gérer le topo</a>
+                    |
+                    <a href="{% url 'event:staff_ranking' slug=event.slug %}">Classement</a>
+                    |
+                    <a href="{% url 'event:staff_ranking_display' slug=event.slug %}">Écran classement</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun événement disponible.</p>
+    {% endif %}
+</body>
+</html>

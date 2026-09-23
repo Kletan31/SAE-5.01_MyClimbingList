@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="290" viewBox="0 0 1100 290"><rect width="1100" height="290" fill="white"/>
+<rect x="10" y="20" width="330" height="100" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="175.0" y="57" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Salle et topo</text>
+<text x="175.0" y="88" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Trouver une ouverture</text>
+<rect x="380" y="20" width="330" height="100" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="545.0" y="57" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Pratique</text>
+<text x="545.0" y="88" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Noter essais et tops</text>
+<rect x="750" y="20" width="330" height="100" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="915.0" y="57" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Carnet</text>
+<text x="915.0" y="88" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Conserver le passé</text>
+<line x1="340" y1="70" x2="380" y2="70" stroke="#2F6B9A" stroke-width="2"/><polygon points="380,70 370.0950818741206,74.78462087522354 370.0950818741206,65.21537912477646" fill="#2F6B9A"/>
+<line x1="710" y1="70" x2="750" y2="70" stroke="#2F6B9A" stroke-width="2"/><polygon points="750,70 740.0950818741205,74.78462087522354 740.0950818741205,65.21537912477646" fill="#2F6B9A"/>
+<rect x="195" y="180" width="330" height="90" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="360.0" y="217" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Projets</text>
+<text x="360.0" y="248" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Retrouver un objectif</text>
+<rect x="575" y="180" width="330" height="90" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="740.0" y="217" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Progression</text>
+<text x="740.0" y="248" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Relire son évolution</text>
+<line x1="545" y1="120" x2="360" y2="180" stroke="#2F6B9A" stroke-width="2"/><polygon points="360,180 367.94570612282126,172.3930456679588 370.8978621594902,181.49552678102125" fill="#2F6B9A"/>
+<line x1="915" y1="120" x2="740" y2="180" stroke="#2F6B9A" stroke-width="2"/><polygon points="740,180 747.8177482135973,172.26160140153036 750.9212860786071,181.31358684114244" fill="#2F6B9A"/>
+</svg>

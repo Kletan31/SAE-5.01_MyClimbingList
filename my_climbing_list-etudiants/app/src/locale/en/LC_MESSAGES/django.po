@@ -1,0 +1,1445 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-27 07:38+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Contests"
+msgstr "Contests"
+
+msgid "Classement"
+msgstr "Ranking"
+
+msgid "Topo"
+msgstr "Guidebook"
+
+msgid "Équipes"
+msgstr "Teams"
+
+msgid "Général"
+msgstr "General"
+
+msgid "Femmes"
+msgstr "Women"
+
+msgid "Hommes"
+msgstr "Men"
+
+msgid "Aucun participant pour le moment."
+msgstr "No participants at the moment."
+
+msgid "S%(rel)s • %(coul)s"
+msgstr "S%(rel)s • %(coul)s"
+
+msgid "R%(rel)s • %(coul)s"
+msgstr "R%(rel)s • %(coul)s"
+
+msgid "S%(rel)s -"
+msgstr "S%(rel)s -"
+
+msgid "R%(rel)s -"
+msgstr "R%(rel)s -"
+
+msgid "Top"
+msgstr "Top"
+
+msgid "Zone"
+msgstr "Zone"
+
+msgid "Dégaines"
+msgstr "Quickdraws"
+
+msgid "Aucune ouverture associée à ce contest."
+msgstr "No routes associated with this contest."
+
+msgid "Enregistrer"
+msgstr "Save"
+
+msgid "Actualiser"
+msgstr "Refresh"
+
+msgid "Ne plus participer"
+msgstr "Unregister"
+
+msgid "Fermer"
+msgstr "Close"
+
+msgid "Complet"
+msgstr "Full"
+
+msgid "%(acc)s/%(max)s"
+msgstr "%(acc)s/%(max)s"
+
+msgid "Aucune description"
+msgstr "No description"
+
+msgid "Discipline :"
+msgstr "Discipline:"
+
+msgid "Toutes disciplines"
+msgstr "All disciplines"
+
+msgid "Format :"
+msgstr "Format:"
+
+msgid "Dates :"
+msgstr "Dates:"
+
+msgid "du %(start)s au %(end)s"
+msgstr "from %(start)s to %(end)s"
+
+msgid "Votre inscription est en attente de validation par un membre du staff."
+msgstr "Your registration is awaiting approval by a staff member."
+
+msgid "Votre inscription a été refusée par un membre du staff."
+msgstr "Your registration has been rejected by a staff member."
+
+msgid "Accéder au contest"
+msgstr "Go to contest"
+
+msgid ""
+"Votre inscription est validée ! Le contest débute le %(start)s. Vous pourrez "
+"accéder au topo à partir de cette date."
+msgstr ""
+"Your registration has been approved! The contest starts on %(start)s. You "
+"will be able to access the guidebook from that date."
+
+msgid "Le contest a atteint le nombre maximum de participants."
+msgstr "The contest has reached the maximum number of participants."
+
+msgid "Participer"
+msgstr "Participate"
+
+msgid "Votre inscription passera en attente de validation par le staff."
+msgstr "Your registration will be pending approval by the staff."
+
+msgid "Le contest débute le <strong>%(start)s</strong>."
+msgstr "The contest starts on <strong>%(start)s</strong>."
+
+msgid "Permanent"
+msgstr "Permanent"
+
+msgid "Événement"
+msgstr "Event"
+
+msgid "Résultats"
+msgstr "Results for"
+
+msgid "Aucune description."
+msgstr "No description."
+
+msgid "Du %(start)s au %(end)s"
+msgstr "From %(start)s to %(end)s"
+
+msgid "Voir"
+msgstr "View"
+
+msgid "Aucun contest à afficher pour le moment."
+msgstr "No contests to display at the moment."
+
+msgid "Alti Ligue"
+msgstr "Alti League"
+
+msgid "Classement global"
+msgstr "Ranking"
+
+msgid "%(n)s en cours"
+msgstr "%(n)s ongoing"
+
+msgid "%(n)s à venir"
+msgstr "%(n)s upcoming"
+
+msgid "Aucun en cours"
+msgstr "None ongoing"
+
+msgid "Aucune salle disponible pour le moment."
+msgstr "No gym available at the moment."
+
+msgid "Avant de continuer"
+msgstr "Before continuing"
+
+msgid ""
+"Merci d’indiquer vos <strong>Nom, Prénom</strong> ainsi que votre "
+"<strong>genre</strong> pour participer aux contests."
+msgstr ""
+"Please provide your <strong>Last name, First name</strong> as well as your "
+"<strong>gender</strong> to participate in contests."
+
+msgid "Genre"
+msgstr "Gender"
+
+msgid "Retour"
+msgstr "Back"
+
+msgid "Résultats de"
+msgstr "Results for"
+
+msgid "Membres de l’équipe :"
+msgstr "Team members:"
+
+msgid "Score total :"
+msgstr "Total score:"
+
+msgid "pts"
+msgstr "pts"
+
+msgid "Points de départ :"
+msgstr "Starting points:"
+
+msgid "S%(item.ouverture.relais)s • %(item.ouverture.couleur)s"
+msgstr "S%(item.ouverture.relais)s • %(item.ouverture.couleur)s"
+
+msgid "R%(item.ouverture.relais)s • %(item.ouverture.couleur)s"
+msgstr "R%(item.ouverture.relais)s • %(item.ouverture.couleur)s"
+
+msgid "%(pts)s pts"
+msgstr "%(pts)s pts"
+
+msgid "%(n)s dégaines"
+msgstr "%(n)s quickdraws"
+
+msgid "Aucune réussite pour ce contest."
+msgstr "No successful attempts for this contest."
+
+msgid "Classement du jour"
+msgstr "Ranking"
+
+msgid "Voie"
+msgstr "Route"
+
+msgctxt "label_single"
+msgid "Séance"
+msgstr "Session"
+
+msgid "Secteur:"
+msgstr "Sector:"
+
+msgid "Relais:"
+msgstr "Anchor:"
+
+msgid "Moulinette"
+msgstr "Top-rope"
+
+msgctxt "label_single"
+msgid "Montée"
+msgstr "Ascent"
+
+msgid "Flash"
+msgstr "Flash"
+
+msgid "Tête"
+msgstr "Lead"
+
+msgid "Ajouter une ouverture"
+msgstr "Add a route"
+
+msgid "Modifier"
+msgstr "Edit"
+
+msgid "ma séance"
+msgstr "my session"
+
+msgid "Détails"
+msgstr "Details"
+
+msgid "Style"
+msgstr "Style"
+
+msgid "Profil"
+msgstr "Profile"
+
+msgid "Carnet"
+msgstr "Logbook"
+
+msgid "Donnez votre avis"
+msgstr "Give your feedback"
+
+msgid "Votre retour d'expérience est précieux."
+msgstr "Your feedback is valuable."
+
+msgid "Merci pour votre retour ! Votre message a été envoyé avec succès."
+msgstr "Thank you for your feedback! Your message has been sent successfully."
+
+msgid ""
+"Une erreur s’est produite. Merci de réessayer plus tard ou de contacter "
+"l'une de nos salles."
+msgstr "An error occurred. Please try again later or contact one of our gyms."
+
+msgid "Nom"
+msgstr "Last name"
+
+msgid "Adresse e-mail"
+msgstr "Email address"
+
+msgid "Message"
+msgstr "Message"
+
+msgid "Envoyer"
+msgstr "Send"
+
+msgid "Stats"
+msgstr "Stats"
+
+msgid "Progression"
+msgstr "Progression"
+
+msgid "Ascensions"
+msgstr "Ascents"
+
+msgid "Profils"
+msgstr "Profiles"
+
+msgid "Styles"
+msgstr "Styles"
+
+msgid "Vous devez réussir douze voies différentes pour voir votre progression"
+msgstr "You must complete twelve different routes to see your progression"
+
+msgid "Vous devez réussir douze blocs différents pour voir votre progression"
+msgstr "You must complete twelve different boulders to see your progression"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Propriétés"
+msgstr "Properties"
+
+msgid "Relais"
+msgstr "Anchor"
+
+msgid "Cotation"
+msgstr "Grade"
+
+msgid "Couleur"
+msgstr "Colour"
+
+msgid "Secteur"
+msgstr "Sector"
+
+msgid "Projet"
+msgstr "Project"
+
+msgid "Réussie"
+msgstr "Completed"
+
+msgid "Nouvelle"
+msgstr "New"
+
+msgid "Retirer"
+msgstr "Remove"
+
+msgid "Cotation masquée"
+msgstr "Grade hidden"
+
+msgid "Nouveau"
+msgstr "New"
+
+msgid "Ajouter ma séance"
+msgstr "Add my session"
+
+msgid "Blocs"
+msgstr "Boulders"
+
+msgid "Max"
+msgstr "Max"
+
+msgid "Accueil"
+msgstr "Home"
+
+msgid "Aperçu de la semaine"
+msgstr "Weekly overview"
+
+msgid "Séance"
+msgid_plural "Séances"
+msgstr[0] "Session"
+msgstr[1] "Sessions"
+
+msgid "séance enregistrée"
+msgid_plural "séances enregistrées"
+msgstr[0] "session recorded"
+msgstr[1] "sessions recorded"
+
+msgid "Aucune séance enregistrée"
+msgstr "No sessions recorded"
+
+msgid "C'est parti !"
+msgstr "Let's go!"
+
+msgid "bloc réalisé"
+msgstr "boulder completed"
+
+msgid "voie réalisée"
+msgstr "route completed"
+
+msgid "blocs réalisés"
+msgstr "boulders completed"
+
+msgid "voies réalisées"
+msgstr "routes completed"
+
+msgid "Aucune"
+msgstr "None"
+
+msgid "bloc ne correspond aux filtres sélectionnés."
+msgstr "No boulder matches the selected filters."
+
+msgid "voie ne correspond aux filtres sélectionnés."
+msgstr "No route matches the selected filters."
+
+msgid "Vous n'avez pas encore réalisé de bloc"
+msgstr "You have not completed any boulders yet"
+
+msgid "Vous n'avez pas encore réalisée de voie"
+msgstr "You have not completed any routes yet"
+
+msgid "Oups !"
+msgstr "Oops!"
+
+msgid "Connexion perdue. Veuillez réessayer."
+msgstr "Connection lost. Please try again."
+
+msgid "Réessayer"
+msgstr "Retry"
+
+msgid "Choisissez votre langue"
+msgstr "Choose your language"
+
+msgid "Français"
+msgstr "French"
+
+msgid "English"
+msgstr "English"
+
+msgid "Spanish"
+msgstr "Spanish"
+
+msgid "Portuguese"
+msgstr "Portuguese"
+
+msgid "Voulez-vous vraiment vous déconnecter ?"
+msgstr "Do you really want to log out?"
+
+msgid "Oui"
+msgstr "Yes"
+
+msgid "Non"
+msgstr "No"
+
+msgid "Salle préférée"
+msgstr "Favourite gym"
+
+msgid "Profil favori"
+msgstr "Favourite profile"
+
+msgid "Style favori"
+msgstr "Favourite style"
+
+msgid "Niveau"
+msgstr "Grade"
+
+msgid "séances enregistrées"
+msgstr "sessions recorded"
+
+msgid "Mon Carnet"
+msgstr "My Logbook"
+
+msgid "Projets"
+msgstr "Projects"
+
+msgid "Aucune voie en projet"
+msgstr "No routes in project"
+
+msgid "%(count)s voie en projet"
+msgid_plural "%(count)s voies en projet"
+msgstr[0] "%(count)s route in project"
+msgstr[1] "%(count)s routes in project"
+
+msgid "Aucun bloc en projet"
+msgstr "No boulders in project"
+
+msgid "%(count)s bloc en projet"
+msgid_plural "%(count)s blocs en projet"
+msgstr[0] "%(count)s boulder in project"
+msgstr[1] "%(count)s boulders in project"
+
+msgid "Ouvert le"
+msgstr "Opened on"
+
+msgctxt "label_single"
+msgid "Dernière montée"
+msgstr "Last ascent"
+
+msgid "Montée"
+msgid_plural "Montées"
+msgstr[0] "Ascent"
+msgstr[1] "Ascents"
+
+msgid "Les salles"
+msgstr "Gyms"
+
+msgid "Image de la salle"
+msgstr "Gym image"
+
+msgid "Définir comme salle favorite"
+msgstr "Set as favourite gym"
+
+msgid "Confirmer la suppression de votre compte"
+msgstr "Confirm account deletion"
+
+msgid "Votre pseudo"
+msgstr "Your username"
+
+msgid "Annuler"
+msgstr "Cancel"
+
+msgid "Confirmer"
+msgstr "Confirm"
+
+msgid "Paramètres"
+msgstr "Settings"
+
+msgid "Données Personnelles"
+msgstr "Personal data"
+
+msgid "Membre depuis le"
+msgstr "Member since"
+
+msgid "Utilisée pour réinitialiser votre mot de passe"
+msgstr "Used to reset your password"
+
+msgid "Nom d'utilisateur"
+msgstr "Username"
+
+msgid "Le nom qui sera affiché lors des contests"
+msgstr "The name displayed during contests"
+
+msgid "Permet au staff de vous identifier lors des contests"
+msgstr "Allows staff to identify you during contests"
+
+msgid "Prénom"
+msgstr "First name"
+
+msgid "Permet un classement par genre lors des contests"
+msgstr "Allows gender-based ranking during contests"
+
+msgid "Données nécessaires à l'organisation des contests."
+msgstr "Data required to organise contests."
+
+msgid "Aucune exploitation commerciale."
+msgstr "No commercial use."
+
+msgid "Sauvegarder"
+msgstr "Save"
+
+msgid "Suppression du compte"
+msgstr "Account deletion"
+
+msgid "Suivi"
+msgstr "Tracking"
+
+msgid ""
+"Sélectionne les salles autorisées à consulter tes séances afin de te "
+"proposer un suivi d'entraînement personnalisé."
+msgstr ""
+"Select the gyms allowed to view your sessions in order to provide you with a "
+"personalized training tracking."
+
+msgid "Enregistrer mes choix"
+msgstr "Save"
+
+msgid "My Climbing List"
+msgstr "My Climbing List"
+
+msgid "Mot de passe"
+msgstr "Password"
+
+msgid "Connexion"
+msgstr "Log in"
+
+msgid "Créer un compte"
+msgstr "Create an account"
+
+msgid "Mot de passe oublié ?"
+msgstr "Forgot password?"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Confirmation"
+msgstr "Confirmation"
+
+msgid "Inscription"
+msgstr "Sign up"
+
+msgid "Identifiez-vous"
+msgstr "Sign in"
+
+msgid "Contacter le support"
+msgstr "Contact support"
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Nous vous répondrons dans les plus brefs délais."
+msgstr "We will get back to you as soon as possible."
+
+msgid "En attente de réseau"
+msgstr "Waiting for network"
+
+msgid ""
+"Si vous pensez que le problème ne vient pas de votre appareil, veuillez "
+"contacter notre support technique."
+msgstr ""
+"If you believe the issue is not related to your device, please contact our "
+"technical support."
+
+msgid "Le nom d'utilisateur contient des caractères invalides."
+msgstr "The username contains invalid characters."
+
+msgid ""
+"Le nom d'utilisateur ne doit pas contenir de caractères de soulignement "
+"\"_\"."
+msgstr "The username must not contain underscore characters \"_\"."
+
+msgid "Le nom d'utilisateur ne doit pas contenir de caractère \"@\"."
+msgstr "The username must not contain the \"@\" character."
+
+msgid "Le nom d'utilisateur ne peut pas dépasser 12 caractères."
+msgstr "The username cannot exceed 12 characters."
+
+msgid "Tableau de bord – Contests"
+msgstr "Dashboard – Contests"
+
+msgid "Événements"
+msgstr "Events"
+
+msgid "Permanents"
+msgstr "Permanent"
+
+msgid "Passés"
+msgstr "Past"
+
+msgid "Filtrer par salle :"
+msgstr "Filter by gym:"
+
+msgid "Toutes les salles"
+msgstr "All gyms"
+
+msgid "Aucun contest trouvé pour ce filtre."
+msgstr "No contest found for this filter."
+
+msgid "Actif"
+msgstr "Active"
+
+msgid "Inactif"
+msgstr "Inactive"
+
+msgid "Salle :"
+msgstr "Gym:"
+
+msgid "Début :"
+msgstr "Start:"
+
+msgid "Fin :"
+msgstr "End:"
+
+msgid "Inscriptions :"
+msgstr "Registrations:"
+
+msgid "Voir les participants"
+msgstr "View participants"
+
+msgid "Aucun contest trouvé."
+msgstr "No contest found."
+
+msgid "Fréquentation de l'application"
+msgstr "Application attendance"
+
+msgid "Taux de rétention à 1 an"
+msgstr "1-year retention rate"
+
+msgid ""
+"\n"
+"                    (%(retention_stats.retained)s pour "
+"%(retention_stats.total)s utilisateurs inscrits depuis plus d’un an)\n"
+"                    "
+msgstr ""
+"\n"
+"                    (%(retention_stats.retained)s out of "
+"%(retention_stats.total)s users registered for more than one year)\n"
+"                    "
+
+msgid "Aucune donnée disponible pour le moment."
+msgstr "No data available at the moment."
+
+msgid "Fréquentation toutes salles confondues"
+msgstr "Overall attendance (all gyms)"
+
+msgid "Fréquentation par salle"
+msgstr "Attendance by gym"
+
+msgid "Connexion Direction"
+msgstr "Management login"
+
+msgid "Merci de patienter…"
+msgstr "Please wait…"
+
+msgid "Calcul en cours."
+msgstr "Processing."
+
+msgid "Choisir la langue"
+msgstr "Choose language"
+
+msgid "Se connecter"
+msgstr "Sign in"
+
+msgid "Participants – %(contest.name)s"
+msgstr "Participants – %(contest.name)s"
+
+msgid "Retour au tableau de bord"
+msgstr "Back to dashboard"
+
+msgid "Nom d’utilisateur"
+msgstr "Username"
+
+msgid "Date d'inscription"
+msgstr "Registration date"
+
+msgid "Aucun participant pour ce contest."
+msgstr "No participants for this contest."
+
+msgid "Aucun classement disponible aujourd’hui."
+msgstr "No ranking available today."
+
+msgid "Grimpeur"
+msgstr "Climber"
+
+msgid "Salle"
+msgstr "Gym:"
+
+msgid "Classement mis à jour quotidiennement."
+msgstr "Ranking updated daily."
+
+msgid "Défilement automatique"
+msgstr "Automatic scrolling"
+
+msgid "Taille du texte"
+msgstr "Text size"
+
+msgid "Aucune équipe."
+msgstr "No team."
+
+msgid "Aucun participant."
+msgstr "No participant."
+
+msgid "Aucune participante."
+msgstr "No female participant."
+
+msgid "Contests en cours"
+msgstr "Ongoing contests"
+
+msgid "Jusqu’au"
+msgstr "Until"
+
+msgid "Équipe"
+msgstr "Team"
+
+msgid "Individuel"
+msgstr "Individual"
+
+msgid "Aucun contest en cours."
+msgstr "No ongoing contest."
+
+msgid "Contests terminés"
+msgstr "Finished contests"
+
+msgid "Terminé le"
+msgstr "Finished on"
+
+msgid "Aucun contest terminé récemment."
+msgstr "No contest finished recently."
+
+msgid "Mot de passe réinitialisé"
+msgstr "Password reset"
+
+msgid "Votre mot de passe a bien été réinitialisé."
+msgstr "Your password has been successfully reset."
+
+msgid "Nouveau mot de passe"
+msgstr "New password"
+
+msgid "Saisissez votre nouveau mot de passe."
+msgstr "Enter your new password."
+
+msgid "Message envoyé"
+msgstr "Message sent"
+
+msgid ""
+"Si un compte est associé à cette adresse e-mail, vous avez reçu un message "
+"contenant les instructions pour réinitialiser votre mot de passe."
+msgstr ""
+"If an account is associated with this email address, you have received a "
+"message containing instructions to reset your password."
+
+msgid "Réinitialiser votre mot de passe"
+msgstr "Reset your password"
+
+msgid "Saisissez votre adresse e-mail."
+msgstr "Enter your email address."
+
+msgid "Guide d'installation"
+msgstr "Installation guide"
+
+msgid "En seulement deux étapes !"
+msgstr "In just two steps!"
+
+msgid "Appuie sur l’icône"
+msgstr "Tap the icon"
+
+msgid "en bas de ton écran"
+msgstr "at the bottom of your screen"
+
+msgid "Fais défiler le menu et sélectionne"
+msgstr "Scroll through the menu and select"
+
+msgid "Maintenance"
+msgstr "Maintenance"
+
+msgid ""
+"Nous travaillons activement pour rétablir l'accès le plus rapidement "
+"possible. Merci de votre patience et de votre compréhension."
+msgstr ""
+"We are actively working to restore access as quickly as possible. Thank you "
+"for your patience and understanding."
+
+msgid ""
+"Si vous avez des questions, n’hésitez pas à nous contacter à l’adresse "
+"suivante :"
+msgstr ""
+"If you have any questions, feel free to contact us at the following address:"
+
+msgid "Grimpeurs actifs – 30 derniers jours"
+msgstr "Active climbers – last 30 days"
+
+msgid "⚠️ Cette liste est mise à jour une fois par jour."
+msgstr "⚠️ This list is updated once per day."
+
+msgid "Pseudo"
+msgstr "Username"
+
+msgid "Niveau actuel"
+msgstr "Current level"
+
+msgid "Dernier passage"
+msgstr "Last visit"
+
+msgid "Aucun grimpeur actif sur les 30 derniers jours."
+msgstr "No active climbers in the last 30 days."
+
+msgid "Progression du niveau"
+msgstr "Progression"
+
+msgid "Aucune donnée de progression disponible."
+msgstr "No data available at the moment."
+
+msgid "Connexion Staff"
+msgstr "Staff login"
+
+msgid "Mes contests"
+msgstr "My contests"
+
+msgid "Date de début"
+msgstr "Start date"
+
+msgid "Date de fin"
+msgstr "End date"
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Inscriptions"
+msgstr "Registrations"
+
+msgid "Supprimer"
+msgstr "Delete"
+
+msgid "Aucun contest créé pour l’instant."
+msgstr "No contest created yet."
+
+msgid "Détail des ouvertures – %(contest.name)s"
+msgstr "Route details – %(contest.name)s"
+
+msgid "Nombre total d'ouvertures : %(ouvertures_data|length)s"
+msgstr "Total number of routes: %(ouvertures_data|length)s"
+
+msgid "Ouverture"
+msgstr "Route"
+
+msgid "Réussites"
+msgstr "Successes"
+
+msgid "Points (prochaine)"
+msgstr "Points (next)"
+
+msgid "Aucune ouverture définie pour ce contest."
+msgstr "No route defined for this contest."
+
+msgid "Créer un contest"
+msgstr "Create a contest"
+
+msgid "Ouvertures disponibles"
+msgstr "Available routes"
+
+msgid "Ouvertures sélectionnées"
+msgstr "Selected routes"
+
+msgid "Créer"
+msgstr "Create"
+
+msgid "Espace staff"
+msgstr "Staff area"
+
+msgid ""
+"\n"
+"            Connecté en tant que <strong>%(username)s</strong>\n"
+"            "
+msgstr ""
+"\n"
+"                Logged in as <strong>%(username)s</strong>\n"
+"                "
+
+msgid "Créer un nouveau contest"
+msgstr "Create a new contest"
+
+msgid ""
+"Lancez un contest dans votre salle pour animer l'activité et motiver les "
+"grimpeurs."
+msgstr "Launch a contest in your gym to boost activity and motivate climbers."
+
+msgid "Voir mes contests"
+msgstr "View my contests"
+
+msgid "Consultez, modifiez ou supprimez les contests que vous avez créés."
+msgstr "View, edit or delete the contests you have created."
+
+msgid "Accéder"
+msgstr "Access"
+
+msgid "Contests permanents"
+msgstr "Permanent contests"
+
+msgid ""
+"Activez ou désactivez les contests permanents (voie/bloc) dans votre salle."
+msgstr "Enable or disable permanent contests (routes/boulders) in your gym."
+
+msgid "Suivi d'entraînement"
+msgstr "Training tracking"
+
+msgid ""
+"Accédez aux grimpeurs qui ont autorisé votre salle à consulter leurs séances."
+msgstr "Access climbers who have allowed your gym to view their sessions."
+
+msgid "Voir les grimpeurs"
+msgstr "View participants"
+
+msgid "Fréquentation"
+msgstr "Attendance"
+
+msgid "Consultez la fréquentation de votre salle sur les dernières semaines."
+msgstr "View your gym attendance over the past weeks."
+
+msgid "Voir la fréquentation"
+msgstr "Attendance"
+
+msgid "Statistiques des ouvertures"
+msgstr "Route statistics"
+
+msgid ""
+"Analysez l’utilisation des voies et blocs : essais, réussites et ratios."
+msgstr ""
+"Analyze the use of routes and boulders: attempts, successes and ratios."
+
+msgid "Voir les stats"
+msgstr "View stats"
+
+msgid "Grimpeurs actifs"
+msgstr "Active climbers"
+
+msgid "Identifiez les grimpeurs réellement actifs et leur niveau actuel."
+msgstr "Identify truly active climbers and their current level."
+
+msgid "Paramètres de la salle"
+msgstr "Gym settings"
+
+msgid ""
+"Activez ou désactivez certaines options comme le masquage des cotations "
+"récentes."
+msgstr "Enable or disable options such as hiding recent grades."
+
+msgid "⚠️ Toute modification peut prendre jusqu'à"
+msgstr "⚠️ Any change may take up to"
+
+msgid "pour être visible sur l'ensemble des appareils."
+msgstr "to be visible on all devices."
+
+msgid "Supprimer le contest"
+msgstr "Delete contest"
+
+msgid "Êtes-vous sûr de vouloir supprimer <strong>%(contest.name)s</strong> ?"
+msgstr "Are you sure you want to delete <strong>%(contest.name)s</strong>?"
+
+msgid "Confirmer la suppression"
+msgstr "Confirm deletion"
+
+msgid "Modifier un contest"
+msgstr "Edit contest"
+
+msgid "Enregistrer les modifications"
+msgstr "Save changes"
+
+msgid "Inscriptions au contest : %(contest.name)s"
+msgstr "Registrations for contest: %(contest.name)s"
+
+msgid "Total :"
+msgstr "Total:"
+
+msgid "Validés :"
+msgstr "Approved:"
+
+msgid "En attente :"
+msgstr "Pending:"
+
+msgid "Refusés :"
+msgstr "Rejected:"
+
+msgid "Quota :"
+msgstr "Quota:"
+
+msgid "Places restantes : %(remaining_slots)s"
+msgstr "Remaining spots: %(remaining_slots)s"
+
+msgid "illimité"
+msgstr "unlimited"
+
+msgid "Tous"
+msgstr "All"
+
+msgid "Validés"
+msgstr "Approved"
+
+msgid "En attente"
+msgstr "Pending"
+
+msgid "Refusés"
+msgstr "Rejected"
+
+msgid "Utilisateur"
+msgstr "User"
+
+msgid "Statut"
+msgstr "Status"
+
+msgid "Action"
+msgstr "Action"
+
+msgid "Validé"
+msgstr "Approved"
+
+msgid "Refusé"
+msgstr "Rejected"
+
+msgid "Quota atteint"
+msgstr "Quota reached"
+
+msgid "Valider"
+msgstr "Approve"
+
+msgid "Refuser"
+msgstr "Reject"
+
+msgid "Aucune inscription enregistrée pour ce contest."
+msgstr "No registrations recorded for this contest."
+
+msgid "Gestion des équipes – %(contest.name)s"
+msgstr "Team management – %(contest.name)s"
+
+msgid "Équipes existantes"
+msgstr "Existing teams"
+
+msgid "Supprimer cette équipe ?"
+msgstr "Delete this team?"
+
+msgid "Aucune équipe créée pour le moment."
+msgstr "No teams created yet."
+
+msgid "Inscrits sans équipe"
+msgstr "Participants without a team"
+
+msgid "Créer une nouvelle équipe"
+msgstr "Create a new team"
+
+msgid "Nom de l’équipe"
+msgstr "Team name"
+
+msgid "Membres de l’équipe"
+msgstr "Team members"
+
+msgid "Grimpeurs – détail ouverture"
+msgstr "Climbers – route details"
+
+msgid "Essais"
+msgstr "Attempts"
+
+msgid "Aucun grimpeur n’a encore essayé cette ouverture."
+msgstr "No climber has completed this route yet."
+
+msgid "Ouvertures – statistiques d’utilisation"
+msgstr "Routes – usage statistics"
+
+msgid "Global"
+msgstr "Global"
+
+msgid "Aujourd’hui"
+msgstr "Today"
+
+msgid "Toutes"
+msgstr "All"
+
+msgid "Voies"
+msgstr "Route"
+
+msgid "Tous degrés"
+msgstr "All grades"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Relais / Secteur"
+msgstr "Sector"
+
+msgid "Ratio"
+msgstr "Grade"
+
+msgid "Contest :"
+msgstr "Contest:"
+
+msgid ""
+"\n"
+"                %(count)s grimpeur a réussi cette ouverture.\n"
+"            "
+msgid_plural ""
+"\n"
+"                %(count)s grimpeurs ont réussi cette ouverture.\n"
+"            "
+msgstr[0] ""
+"\n"
+"                %(count)s climber has completed this route.\n"
+"            "
+msgstr[1] ""
+"\n"
+"                %(count)s climbers have completed this route.\n"
+"            "
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Montées"
+msgstr "Ascents"
+
+msgid "Montées en tête"
+msgstr "Lead ascents"
+
+msgid "Réussites en tête"
+msgstr "Lead ascents"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "%(seance.degaines_reached)s dégaines"
+msgstr "%(seance.degaines_reached)s quickdraws"
+
+msgid "Aucun grimpeur n’a encore réussi cette ouverture."
+msgstr "No climber has completed this route yet."
+
+msgid "Résultats de <strong>%(participant.username)s</strong>"
+msgstr "Results for <strong>%(participant.username)s</strong>"
+
+msgid "%(item.degaines_reached)s dégaines"
+msgstr "%(item.degaines_reached)s quickdraws"
+
+msgid "Aucune réussite pour ce participant."
+msgstr "No successful attempts for this participant."
+
+msgid "Activez ou désactivez les contests permanents pour votre salle."
+msgstr "Enable or disable permanent contests for your gym."
+
+msgid "Masquer les cotations des ouvertures de moins d'une semaine"
+msgstr "Hide grades for routes opened less than one week ago"
+
+msgid ""
+"⚠️ Ce paramètre n'affecte que l'affichage côté client. Les cotations sont "
+"toujours enregistrées dans la base."
+msgstr ""
+"⚠️ This setting only affects the client-side display. Grades are always "
+"stored in the database."
+
+msgid "Position"
+msgstr "Position"
+
+msgid "Score"
+msgstr "Score"
+
+msgid "Mois précédent"
+msgstr "Previous month"
+
+msgid "Mois suivant"
+msgstr "Next month"
+
+msgid "Voir les séances du jour"
+msgstr "View stats"
+
+msgid "Aucune séance"
+msgstr "No team."
+
+msgid "Séance enregistrée"
+msgstr "session recorded"
+
+msgid "Détails de la séance du"
+msgstr "Session details for"
+
+msgid "essais"
+msgstr "Message"
+
+msgid "tops"
+msgstr "tops"
+
+msgid "Aucune séance ce jour-là."
+msgstr "No sessions recorded"
+
+msgid "Aucun grimpeur n’a autorisé cette salle pour le suivi."
+msgstr "No climber has completed this route yet."
+
+msgid "Salle inconnue"
+msgstr "Sign in"
+
+msgid "L"
+msgstr "M"
+
+msgid "M"
+msgstr "T"
+
+msgid "J"
+msgstr "T"
+
+msgid "V"
+msgstr "F"
+
+msgid "S"
+msgstr "S"
+
+msgid "D"
+msgstr "S"
+
+msgid "French"
+msgstr "French"
+
+msgid "Espace Direction"
+msgstr "Management area"
+
+msgid "Déconnexion"
+msgstr "Logout"
+
+msgid "Un instant…"
+msgstr "Just a moment…"
+
+msgid "My Climbing List – Staff"
+msgstr "My Climbing List – Staff"
+
+msgid "Toggle navigation"
+msgstr "Toggle navigation"
+
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Améliorez votre expérience"
+msgstr "Improve your experience"
+
+msgid ""
+"Pour une utilisation optimale, nous vous recommandons d’installer cette "
+"application via votre navigateur."
+msgstr ""
+"For optimal use, we recommend installing this application via your browser."
+
+msgid "Pour cela :"
+msgstr "To do this:"
+
+msgid ""
+"Ouvrez le menu du navigateur (souvent une icône à trois points en haut à "
+"droite)"
+msgstr "Open the browser menu (often a three-dot icon at the top right)"
+
+msgid "Sélectionnez 'Installer l'application' ou 'Ajouter à l'écran d'accueil'"
+msgstr "Select “Install app” or “Add to home screen”"
+
+msgid ""
+"Si vous avez installé l'application via le Play Store, il est conseillé de "
+"la désinstaller et de la réinstaller via le navigateur afin de ne plus voir "
+"ce message."
+msgstr ""
+"If you installed the app via the Play Store, it is recommended to uninstall "
+"it and reinstall it via the browser to stop seeing this message."
+
+msgid "Les séances du jour sont prises en compte une fois la journée terminée."
+msgstr "Today's sessions are taken into account once the day is over."
+
+msgid "dalle"
+msgstr "slab"
+
+msgid "vertical"
+msgstr "vertical"
+
+msgid "dévers"
+msgstr "overhang"
+
+msgid "dièdre"
+msgstr "dihedral"
+
+msgid "toit"
+msgstr "roof"
+
+msgid "conti"
+msgstr "stamina"
+
+msgid "rési"
+msgstr "p-endur"
+
+msgid "bloc"
+msgstr "cruxy"
+
+msgid "classic"
+msgstr "classic"
+
+msgid "coordo"
+msgstr "coordination"
+
+msgid "physic"
+msgstr "physical"
+
+msgid "technic"
+msgstr "technical"
+
+msgid "tricky"
+msgstr "tricky"
+
+msgid "Blanc"
+msgstr "White"
+
+msgid "Bleu"
+msgstr "Blue"
+
+msgid "Bois"
+msgstr "Wood"
+
+msgid "Gris"
+msgstr "Grey"
+
+msgid "Jaune"
+msgstr "Yellow"
+
+msgid "Marron"
+msgstr "Brown"
+
+msgid "Mauve"
+msgstr "Purple"
+
+msgid "Noir"
+msgstr "Black"
+
+msgid "Orange"
+msgstr "Orange"
+
+msgid "Rose"
+msgstr "Pink"
+
+msgid "Rouge"
+msgstr "Red"
+
+msgid "Vert"
+msgstr "Green"
+
+msgid "Jan"
+msgstr "Jan"
+
+msgid "Feb"
+msgstr "Feb"
+
+msgid "Mar"
+msgstr "Mar"
+
+msgid "Apr"
+msgstr "Apr"
+
+msgid "May"
+msgstr "May"
+
+msgid "Jun"
+msgstr "Jun"
+
+msgid "Jul"
+msgstr "Jul"
+
+msgid "Aug"
+msgstr "Aug"
+
+msgid "Sep"
+msgstr "Sep"
+
+msgid "Oct"
+msgstr "Oct"
+
+msgid "Nov"
+msgstr "Nov"
+
+msgid "Dec"
+msgstr "Dec"
+
+msgid "Niveau de difficulté homogène"
+msgstr "Consistent difficulty level"
+
+msgid "Plusieurs sections soutenues séparées par des repos modérés"
+msgstr "Several sustained sections separated by moderate rests"
+
+msgid "Une ou deux sections très exigeantes entrecoupées de bon repos"
+msgstr "One or two very demanding sections with good resting points"
+
+msgid "Mouvements classiques et lignes intuitives"
+msgstr "Classic movements and intuitive lines"
+
+msgid "Équilibre et/ou placements"
+msgstr "Balance and/or precise foot placements"
+
+msgid "Puissance et intensité"
+msgstr "Power and intensity"
+
+msgid "Mouvements dynamiques et timing précis"
+msgstr "Dynamic movements requiring precise timing"
+
+msgid "Séquences complexes nécessitant une lecture minutieuse"
+msgstr "Complex sequences requiring careful route reading"
+
+msgid "<strong>Montée</strong> : un essai<br><strong>Top</strong> : essai sans chute<br><strong>Flash</strong> : premier essai sans chute"
+msgstr "<strong>Attempt</strong>: one try<br><strong>Top</strong>: a clean attempt<br><strong>Flash</strong>: clean first attempt"
+
+msgid "Voies essayées mais pas enchaînées<br><strong>Astuce</strong> : glissez vers la gauche pour supprimer un projet"
+msgstr "Routes tried but not topped<br><strong>Tip</strong>: swipe left to remove a project"
+
+msgid "Blocs essayés mais pas enchaînés<br><strong>Astuce</strong> : glissez vers la gauche pour supprimer un projet"
+msgstr "Boulders tried but not topped<br><strong>Tip</strong>: swipe left to remove a project"

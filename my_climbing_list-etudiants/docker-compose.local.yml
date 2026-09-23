@@ -1,0 +1,80 @@
+# Autonome : ne pas combiner avec le Compose historique.
+x-local-environment: &local-environment
+  DJANGO_SETTINGS_MODULE: config.settings_local
+  DJANGO_ENV: ${DJANGO_ENV:?Copier .env.example vers .env}
+  DEBUG: ${DEBUG:?DEBUG doit valoir True}
+  MCL_COMPOSE_PROJECT: ${COMPOSE_PROJECT_NAME}
+  LOCAL_DB_HOST: db
+  LOCAL_DB_NAME: ${LOCAL_DB_NAME:?}
+  LOCAL_DB_USER: ${LOCAL_DB_USER:?}
+  LOCAL_DB_PASSWORD: ${LOCAL_DB_PASSWORD:?}
+  LOCAL_SECRET_KEY: ${LOCAL_SECRET_KEY:?}
+
+x-local-app: &local-app
+  image: mcl-local-app
+  build:
+    context: ./app
+    dockerfile: Dockerfile.local
+  environment: *local-environment
+  networks: [local]
+  init: true
+
+services:
+  db:
+    image: postgres:16-bookworm
+    environment:
+      POSTGRES_DB: ${LOCAL_DB_NAME:?}
+      POSTGRES_USER: ${LOCAL_DB_USER:?}
+      POSTGRES_PASSWORD: ${LOCAL_DB_PASSWORD:?}
+    volumes:
+      - postgres_local:/var/lib/postgresql/data
+    networks: [local]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  init:
+    <<: *local-app
+    command: [python, manage.py, bootstrap_local]
+    depends_on:
+      db:
+        condition: service_healthy
+  web:
+    <<: *local-app
+    command: [python, manage.py, runserver, "0.0.0.0:8000"]
+    depends_on:
+      init:
+        condition: service_completed_successfully
+  # Docker Desktop ne publie pas les ports d'un réseau uniquement interne.
+  # Seule la terminaison TLS possède une interface externe ; Django et db restent isolés.
+  proxy:
+    image: nginx:stable-alpine
+    volumes:
+      - ./nginx/nginx.local.conf:/etc/nginx/nginx.conf:ro
+      - type: bind
+        source: ./.local/certs/localhost.pem
+        target: /etc/nginx/local-certs/localhost.pem
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./.local/certs/localhost-key.pem
+        target: /etc/nginx/local-certs/localhost-key.pem
+        read_only: true
+        bind:
+          create_host_path: false
+    ports:
+      - "127.0.0.1:8443:8443"
+      - "[::1]:8443:8443"
+    networks: [local, http]
+    depends_on:
+      web:
+        condition: service_started
+
+networks:
+  local:
+    internal: true
+  http:
+volumes:
+  postgres_local:

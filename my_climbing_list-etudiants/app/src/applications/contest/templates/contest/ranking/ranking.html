@@ -1,0 +1,176 @@
+{% extends 'base/app_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block page_name %}{% trans "Alti Ligue" %}{% endblock %}
+
+{% block head %}
+{{ block.super }}
+<style>
+    /* --------------------------------------------------
+       Sous-titre / Icône
+    -------------------------------------------------- */
+    .salle-icon-wrap {
+      width: 100px;
+      height: 60px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: radial-gradient(120% 120% at 20% 20%, #ebf1ff 0%, #dfe7ff 40%, #f8fafc 100%);
+      border: 1px solid #e5e7eb;
+      margin: 0 auto 10px;
+      box-shadow: 0 8px 24px rgb(58 82 158 / 40%);
+    }
+    .salle-icon-wrap i {
+      font-size: 1.5rem;
+      color: #39529E;
+    }
+
+    .alti-ligue-subtitle {
+        font-size: clamp(0.85rem, 3vw, 0.95rem);
+        opacity: 0.75;
+        text-align: center;
+    }
+
+    /* --------------------------------------------------
+       Menu Voie / Bloc
+    -------------------------------------------------- */
+    .menu-bar {
+        width: 45%;
+        margin: 2.5svh auto !important;
+        border: 1px solid #39529E;
+        border-radius: 5px;
+        font-size: .9rem;
+        line-height: 1.25;
+    }
+
+    .menu-bar .menu-item {
+        padding: 2px 0;
+        text-align: center;
+        font-size: .9rem;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .menu-bar .menu-item.selected {
+        background-color: #39529E;
+        color: white;
+    }
+
+    @media (max-width: 576px) {
+        .menu-bar {
+            width: 85%;
+        }
+    }
+
+    /* --------------------------------------------------
+       Niveau / Elo
+    -------------------------------------------------- */
+    .level-badge {
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        padding: 0.35rem 0.6rem;
+        border-radius: 0.5rem;
+        color: #fff;
+        display: inline-block;
+        min-width: 3.2rem;
+        text-align: center;
+    }
+
+    .elo-trend {
+        display: inline-block;
+        width: 1em;              /* espace réservé constant */
+        text-align: center;
+        font-size: 0.9em;
+        margin-left: 4px;
+    }
+
+    .elo-trend.up {
+        color: #198754; /* vert */
+    }
+
+    .elo-trend.down {
+        color: #dc3545; /* rouge */
+    }
+
+    /* --------------------------------------------------
+       Mobile cards
+    -------------------------------------------------- */
+    .climber-card {
+        border-radius: 0.75rem;
+        box-shadow: 0 8px 24px rgb(2 6 23 / 5%);
+    }
+    .climber-card.active {
+        background-color: rgb(238 127 0 / 20%);
+    }
+
+    /* --------------------------------------------------
+       Mono / chiffres
+    -------------------------------------------------- */
+    .mono {
+        font-variant-numeric: tabular-nums;
+    }
+</style>
+{% endblock %}
+
+{% block template-content %}
+
+<div class="container-fluid py-4">
+
+    <!-- ==================================================
+         HEADER
+    ================================================== -->
+    <div class="mb-4">
+        <div class="salle-icon-wrap mb-4">
+            <i class="fa-solid fa-trophy"></i>
+        </div>
+        <div class="alti-ligue-subtitle">
+            {% trans "Classement du jour" %}
+            •
+            {{ date|date:"d/m/Y" }}
+        </div>
+    </div>
+
+    <!-- ==================================================
+         TOGGLE VOIE / BLOC
+    ================================================== -->
+    <div class="menu-bar row">
+        <div class="menu-item col-6{% if not bloc %} selected{% endif %}"
+             data-key="voie">
+            {% trans "Voie" %}
+        </div>
+        <div class="menu-item col-6{% if bloc %} selected{% endif %}"
+             data-key="bloc">
+            {% trans "Bloc" %}
+        </div>
+    </div>
+
+    {{ ranking_html }}
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    document.querySelectorAll(".menu-bar .menu-item").forEach(item => {
+        item.addEventListener("click", () => {
+            const key = item.dataset.key;
+
+            // On repart toujours de l'URL courante
+            const url = new URL(window.location.href);
+
+            if (key === "bloc") {
+                url.searchParams.set("bloc", "1");
+            } else {
+                // voie → on enlève le paramètre
+                url.searchParams.delete("bloc");
+            }
+
+            window.location.href = url.toString();
+        });
+    });
+})();
+</script>
+{% endblock %}

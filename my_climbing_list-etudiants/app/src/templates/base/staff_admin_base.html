@@ -1,0 +1,143 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <!-- En-tête classique -->
+    <meta charset="UTF-8">
+    <title>{% trans "My Climbing List" %}</title>
+
+    <!-- Mute log (doit-être le premier script importé) -->
+    <script>const LOG = {{ PROD|yesno:"false,true" }};</script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'base/media/fav/fav.svg' %}">
+
+    <!-- CSS de base -->
+    <link rel="stylesheet" href="{% static 'base/css/main/reset.css' %}">
+
+    <!-- Bootstrap v5 -->
+    <link rel="stylesheet" href="{% static 'base/css/bootstrap/bootstrap.min.css' %}">
+    <script src="{% static 'base/js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Font Awesome Pro v6.1.2 -->
+    <link rel="stylesheet" href="{% static 'base/icon_fa/css/all.css' %}" />
+
+    {# Plotly v2.34.0 #}
+    <script src="{% static 'base/js/plotly/plotly-2.34.0.min.js' %}"></script>
+
+    <!-- Ajouts spécifiques -->
+    {% block head %}{% endblock %}
+</head>
+
+<body>  {# pour laisser de la place sous la navbar fixe #}
+
+<!-- Barre de navigation fixe -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'staff_admin:dashboard' %}">
+            {% trans "My Climbing List – Staff" %}
+        </a>
+
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="{% trans 'Toggle navigation' %}">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'staff_admin:dashboard' %}">
+                        {% trans "Dashboard" %}
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'staff_admin:logout' %}">
+                        {% trans "Déconnexion" %}
+                    </a>
+                </li>
+
+                <!-- Sélecteur de langue -->
+                <li class="nav-item ms-lg-3">
+                    <form id="language-form"
+                          action="{% url 'set_language' %}"
+                          method="post"
+                          class="d-flex">
+                        {% csrf_token %}
+                        <input type="hidden"
+                               name="next"
+                               id="language-next"
+                               value="{{ request.get_full_path }}">
+                        <select name="language"
+                                id="language-select"
+                                class="form-select form-select-sm bg-dark text-light border-secondary"
+                                aria-label="{% trans 'Choisir la langue' %}">
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% get_available_languages as LANGUAGES %}
+                            {% for lang_code, lang_name in LANGUAGES %}
+                                <option value="{{ lang_code }}"
+                                        {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>
+                                    {{ lang_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{% if not is_dashboard %}
+    <a href="{% block backLink %}{% url 'staff_admin:dashboard' %}{% endblock %}"
+       class="btn btn-outline-secondary mt-3 ms-3">
+        {% trans "Retour" %}
+    </a>
+{% endif %}
+
+<!-- Contenu principal -->
+{% block content %}{% endblock %}
+
+<!-- Scripts additionnels -->
+{% block scripts %}{% endblock %}
+
+<!-- ======================= -->
+<!-- JS : changement langue -->
+<!-- ======================= -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const langSelect = document.getElementById("language-select");
+    const langForm   = document.getElementById("language-form");
+    const nextInput  = document.getElementById("language-next");
+
+    if (!langSelect || !langForm || !nextInput) return;
+
+    function swapLangPrefix(path, newLang) {
+        const re = /^\/([a-z]{2})(\/|$)/i;
+        if (re.test(path)) {
+            return path.replace(re, `/${newLang}$2`);
+        }
+        return `/${newLang}${path.startsWith('/') ? '' : '/'}${path}`;
+    }
+
+    langSelect.addEventListener("change", function () {
+        const chosen  = this.value;
+        const current = nextInput.value || window.location.pathname + window.location.search;
+
+        nextInput.value = swapLangPrefix(current, chosen);
+        langForm.submit();
+    });
+});
+</script>
+
+</body>
+</html>

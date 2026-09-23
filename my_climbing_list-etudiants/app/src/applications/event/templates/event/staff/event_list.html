@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des événements</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+</head>
+<body>
+    <h1>Gestion des événements</h1>
+
+    <p>
+        <a href="{% url 'event:staff_home' %}">Retour à l’espace staff</a> |
+        <a href="{% url 'event:staff_event_create' %}">Créer un événement</a> |
+        <a href="{% url 'event:staff_logout' %}">Se déconnecter</a>
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Salle</th>
+                <th>Début</th>
+                <th>Actif</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.name }}</td>
+                    <td>{{ event.salle.nom }}</td>
+                    <td>{{ event.date }}</td>
+                    <td>
+                        <a href="{% url 'event:staff_event_update' slug=event.slug %}">Modifier</a> |
+                        <a href="{% url 'event:staff_team_list' slug=event.slug %}">Équipes</a> |
+                        <a href="{% url 'event:staff_route_list' slug=event.slug %}">Topo</a> |
+                        <a href="{% url 'event:staff_ranking' slug=event.slug %}">Classement</a> |
+                        <a href="{% url 'event:staff_event_delete' slug=event.slug %}">Supprimer</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">Aucun événement.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

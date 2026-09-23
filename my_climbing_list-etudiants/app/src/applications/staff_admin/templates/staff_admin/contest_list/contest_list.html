@@ -1,0 +1,134 @@
+{% extends "base/staff_admin_base.html" %}
+{% load i18n %}
+
+{% block backLink %}{% url 'staff_admin:dashboard' %}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">{% trans "Mes contests" %}</h1>
+
+    {# Onglets = navigation GET #}
+    {% with request.GET.tab|default:"evenement" as active_tab %}
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div class="btn-group" role="group">
+            <a href="?tab=evenement"
+               class="btn btn-outline-primary {% if active_tab == 'evenement' %}active{% endif %}">
+                {% trans "Événements" %}
+            </a>
+            <a href="?tab=permanent"
+               class="btn btn-outline-primary {% if active_tab == 'permanent' %}active{% endif %}">
+                {% trans "Permanents" %}
+            </a>
+            <a href="?tab=passe"
+               class="btn btn-outline-primary {% if active_tab == 'passe' %}active{% endif %}">
+                {% trans "Passés" %}
+            </a>
+        </div>
+    </div>
+
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>{% trans "Nom" %}</th>
+                <th class="col-start-date">{% trans "Date de début" %}</th>
+                <th class="col-end-date">{% trans "Date de fin" %}</th>
+                <th>{% trans "Actions" %}</th>
+                <th>{% trans "Classement" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contest in contests %}
+                <tr class="contest-row"
+                    data-is-permanent="{{ contest.is_permanent|yesno:'1,0' }}"
+                    data-is-enabled="{{ contest.is_permanent_enabled|yesno:'1,0' }}"
+                    data-end="{% if contest.end_date %}{{ contest.end_date|date:'Y-m-d H:i:s' }}{% endif %}">
+
+                    <td>{{ contest.name }}</td>
+
+                    {% if not contest.is_permanent %}
+                        <td class="col-start-date">{{ contest.start_date|date:"d/m/Y H:i" }}</td>
+                        <td class="col-end-date">{{ contest.end_date|date:"d/m/Y H:i" }}</td>
+                    {% else %}
+                        <td class="col-start-date"></td>
+                        <td class="col-end-date"></td>
+                    {% endif %}
+
+                    <td>
+                        {% if not contest.is_permanent %}
+                            <a href="{% url 'staff_admin:edit_contest' contest.pk %}?tab={{ active_tab }}"
+                               class="btn btn-sm btn-outline-primary me-2">
+                                {% trans "Modifier" %}
+                            </a>
+                        {% endif %}
+
+                        <a href="{% url 'staff_admin:contest_ouvertures' contest.pk %}?tab={{ active_tab }}"
+                           class="btn btn-sm btn-outline-success me-2">
+                            {% trans "Détails" %}
+                        </a>
+
+                        <a href="{% url 'staff_admin:inscriptions' contest.pk %}?tab={{ active_tab }}"
+                           class="btn btn-sm btn-outline-secondary me-2">
+                            {% trans "Inscriptions" %}
+                        </a>
+
+                        {% if not contest.is_permanent %}
+                            <a href="{% url 'staff_admin:delete_contest' contest.pk %}?tab={{ active_tab }}"
+                               class="btn btn-sm btn-outline-danger">
+                                {% trans "Supprimer" %}
+                            </a>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <a href="{% url 'staff_admin:show_classement' contest.pk %}?tab={{ active_tab }}"
+                           class="btn btn-sm btn-outline-dark w-100">
+                            <i class="fa-solid fa-ranking-star me-1"></i>
+                            {% trans "Voir" %}
+                        </a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">
+                        {% trans "Aucun contest créé pour l’instant." %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endwith %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const rows = document.querySelectorAll(".contest-row");
+    const startCols = document.querySelectorAll(".col-start-date");
+    const endCols = document.querySelectorAll(".col-end-date");
+
+    const activeTab = new URLSearchParams(window.location.search).get("tab") || "evenement";
+
+    function getType(row) {
+        const isPermanent = row.dataset.isPermanent === "1";
+        const isEnabled = row.dataset.isEnabled === "1";
+        const endDateStr = row.dataset.end;
+        const now = new Date();
+
+        if (isPermanent) return isEnabled ? "permanent" : "hidden";
+        if (!endDateStr) return "evenement";
+
+        return new Date(endDateStr) < now ? "passe" : "evenement";
+    }
+
+    rows.forEach(row => {
+        row.style.display = getType(row) === activeTab ? "" : "none";
+    });
+
+    if (activeTab === "permanent") {
+        startCols.forEach(c => c.style.display = "none");
+        endCols.forEach(c => c.style.display = "none");
+    }
+});
+</script>
+{% endblock %}

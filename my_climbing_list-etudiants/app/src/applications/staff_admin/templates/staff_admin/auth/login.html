@@ -1,0 +1,150 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Connexion Staff" %} – {% trans "My Climbing List" %}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'base/media/fav/fav.svg' %}">
+
+    <!-- CSS de base -->
+    <link rel="stylesheet" href="{% static 'base/css/main/reset.css' %}">
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="{% static 'base/css/bootstrap/bootstrap.min.css' %}">
+    <script src="{% static 'base/js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'base/icon_fa/css/all.css' %}" />
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card {
+            width: 100%;
+            max-width: 400px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Sélecteur de langue global -->
+<form id="language-form"
+      action="{% url 'set_language' %}"
+      method="post"
+      class="position-fixed top-0 end-0 m-3"
+      style="z-index: 1050;">
+    {% csrf_token %}
+    <input type="hidden"
+           name="next"
+           id="language-next"
+           value="{{ request.get_full_path }}">
+    <select name="language"
+            id="language-select"
+            class="form-select form-select-sm"
+            aria-label="{% trans 'Choisir la langue' %}">
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% for lang_code, lang_name in LANGUAGES %}
+            <option value="{{ lang_code }}"
+                    {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>
+                {{ lang_name }}
+            </option>
+        {% endfor %}
+    </select>
+</form>
+
+<div class="login-container">
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h2 class="mb-4 text-center">
+                {% trans "Connexion Staff" %}
+            </h2>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="username" class="form-label">
+                        {% trans "Nom d'utilisateur" %}
+                    </label>
+                    <input type="text"
+                           name="username"
+                           id="username"
+                           class="form-control"
+                           autocomplete="username"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">
+                        {% trans "Mot de passe" %}
+                    </label>
+                    <input type="password"
+                           name="password"
+                           id="password"
+                           class="form-control"
+                           autocomplete="current-password"
+                           required>
+                </div>
+
+                {% if messages %}
+                    <div class="mb-3">
+                        {% for message in messages %}
+                            <div class="alert alert-danger mb-2" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <button type="submit" class="btn btn-primary w-100">
+                    {% trans "Se connecter" %}
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ======================= -->
+<!-- JS : changement langue -->
+<!-- ======================= -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const langSelect = document.getElementById("language-select");
+    const langForm   = document.getElementById("language-form");
+    const nextInput  = document.getElementById("language-next");
+
+    if (!langSelect || !langForm || !nextInput) return;
+
+    function swapLangPrefix(path, newLang) {
+        const re = /^\/([a-z]{2})(\/|$)/i;
+        if (re.test(path)) {
+            return path.replace(re, `/${newLang}$2`);
+        }
+        return `/${newLang}${path.startsWith('/') ? '' : '/'}${path}`;
+    }
+
+    langSelect.addEventListener("change", function () {
+        const chosen  = this.value;
+        const current = nextInput.value || window.location.pathname + window.location.search;
+
+        nextInput.value = swapLangPrefix(current, chosen);
+        langForm.submit();
+    });
+});
+</script>
+
+</body>
+</html>

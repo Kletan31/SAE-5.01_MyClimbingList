@@ -1,0 +1,52 @@
+.primaryColor {
+    fill: #e54617;
+}
+
+.primaryColor.active {
+    fill: #39529E;
+}
+
+.bgGray {
+    fill: #ccc;
+}
+
+.bgWhite {
+    fill: #fff;
+}
+
+.bgVert {
+    fill: #95c11f;
+}
+
+.largeStroke {
+    stroke-width: 6px;
+}
+
+.regularStroke {
+    stroke-width: 3px;
+}
+
+.blackStroke {
+    stroke: #000;
+}
+
+.grayStroke {
+    stroke: #ccc;
+}
+
+.dotGray {
+    stroke-dasharray: 3 14;
+}
+
+.dotBlack {
+    stroke-dasharray: 3 9;
+}
+
+.roundStroke {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.fillNone {
+    fill: none;
+}

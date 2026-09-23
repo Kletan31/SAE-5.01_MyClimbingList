@@ -1,0 +1,171 @@
+body {
+    margin: 24px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: #172039;
+    background: #f7f3ea;
+}
+
+h1 {
+    margin-bottom: 12px;
+}
+
+a {
+    color: #172039;
+    font-weight: 600;
+}
+
+.staff-nav {
+    margin-bottom: 24px;
+    line-height: 1.8;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    font-size: 0.95rem;
+}
+
+th,
+td {
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    vertical-align: top;
+    text-align: left;
+}
+
+th {
+    background: #172039;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background: #f4efe5;
+}
+
+.team-member + .team-member {
+    margin-top: 12px;
+}
+
+.team-email {
+    display: block;
+    margin-top: 2px;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.payment-valid {
+    color: #1f7a3a;
+    font-weight: 700;
+}
+
+.payment-pending {
+    color: #b45a00;
+    font-weight: 700;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+button,
+.action-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 11px;
+    border: none;
+    border-radius: 999px;
+    background: #172039;
+    color: white;
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.action-link {
+    background: #ea6411;
+}
+
+.danger-button {
+    background: #8b1e1e;
+}
+
+form {
+    margin: 0;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.row-action-message {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 0;
+    color: #1f7a3a;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+@media (max-width: 900px) {
+    body {
+        margin: 12px;
+    }
+
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tr {
+        margin-bottom: 14px;
+        border: 1px solid #ddd;
+        background: white;
+    }
+
+    td {
+        border: none;
+        border-bottom: 1px solid #eee;
+    }
+
+    td::before {
+        display: block;
+        margin-bottom: 4px;
+        font-weight: 800;
+        color: #172039;
+    }
+
+    td:nth-child(1)::before {
+        content: "Créneau";
+    }
+
+    td:nth-child(2)::before {
+        content: "Duo";
+    }
+
+    td:nth-child(3)::before {
+        content: "Type";
+    }
+
+    td:nth-child(4)::before {
+        content: "Paiement";
+    }
+
+    td:nth-child(5)::before {
+        content: "Actions";
+    }
+}

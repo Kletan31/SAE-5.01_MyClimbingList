@@ -1,0 +1,25 @@
+/* ## VARIABLES ## */
+/* Hauteur du volet */
+:root {
+    --dropdown-height: calc(3*.25rem + 1.25*.65rem + (1.25*.625rem + 2*2px) + 2px);
+}
+
+/* ## Titre ## */
+.session-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.25;
+}
+
+/* ## Graphiques ## */
+.chart-container {
+    position: relative;
+    padding: 0 5px;
+}
+
+/* ## Liste ## */
+.scrollable-container {
+    background-color: #e6e6e6;
+    border-top: 2px solid #969696;
+}

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="180" viewBox="0 0 1100 180"><rect width="1100" height="180" fill="white"/>
+<rect x="5" y="15" width="300" height="110" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="155.0" y="52" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Essais sans top tête</text>
+<text x="155.0" y="83" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Ouverture active</text>
+<text x="155.0" y="110" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Projet visible</text>
+<rect x="400" y="15" width="300" height="110" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="550.0" y="52" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Top en moulinette</text>
+<text x="550.0" y="83" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Réussite au topo</text>
+<text x="550.0" y="110" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Objectif tête encore ouvert</text>
+<rect x="795" y="15" width="300" height="110" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="945.0" y="52" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Top en tête</text>
+<text x="945.0" y="83" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Objectif atteint</text>
+<line x1="305" y1="70" x2="400" y2="70" stroke="#2F6B9A" stroke-width="2"/><polygon points="400,70 390.0950818741206,74.78462087522354 390.0950818741206,65.21537912477646" fill="#2F6B9A"/>
+<line x1="700" y1="70" x2="795" y2="70" stroke="#2F6B9A" stroke-width="2"/><polygon points="795,70 785.0950818741205,74.78462087522354 785.0950818741205,65.21537912477646" fill="#2F6B9A"/>
+<text x="550" y="165" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Exemple de voie éligible à la tête ; masquage traité séparément.</text>
+</svg>

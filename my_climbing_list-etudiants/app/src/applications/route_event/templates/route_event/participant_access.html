@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ event.name }} - Accès participant</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'route_event/css/route_event.css' %}">
+    <script src="{% static 'route_event/js/participant_access.js' %}" defer></script>
+</head>
+<body>
+    <main class="event-page">
+        <header class="event-header">
+            <img class="event-logo" src="{% static 'route_event/media/logo_20.svg' %}" alt="Contest voie">
+        </header>
+
+        <section class="event-card">
+            <h2 class="event-card-title">Votre inscription</h2>
+
+            <div class="event-meta">
+                <p class="event-meta-item">
+                    <strong>Participant :</strong><br>
+                    {{ participant }}
+                </p>
+
+                <p class="event-meta-item">
+                    <strong>Créneau :</strong><br>
+                    {{ participant.phase.name }}
+                </p>
+
+                <p class="event-meta-item">
+                    <strong>Catégorie :</strong><br>
+                    {{ participant.get_gender_display }}
+                </p>
+            </div>
+        </section>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="event-message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        {% if is_waiting_validation %}
+            <section class="event-card">
+                <h2 class="event-card-title">Inscription en attente</h2>
+
+                <p>Votre inscription est bien enregistrée.</p>
+                <p>Le paiement est en attente de validation par l’équipe staff.</p>
+                <p>Le topo et la saisie des résultats seront accessibles après validation.</p>
+            </section>
+        {% else %}
+            <div class="event-actions">
+                <a class="event-link-button" href="{% url 'route_event:participant_ranking' token=participant.access_token %}">
+                    Classement
+                </a>
+
+                <a class="event-link-button" href="{% url 'route_event:participant_route_rankings' token=participant.access_token %}">
+                    Détails
+                </a>
+            </div>
+
+            <section class="event-alert">
+                {% if is_phase_open %}
+                    <p>
+                        La saisie est ouverte pour votre créneau :
+                        <strong>{{ participant.phase.start_time }} – {{ participant.phase.end_time }}</strong>.
+                    </p>
+                {% else %}
+                    <p>La saisie est actuellement fermée.</p>
+                    <p>
+                        Les performances ne peuvent être modifiées qu’entre
+                        <strong>{{ participant.phase.start_time }}</strong> et
+                        <strong>{{ participant.phase.end_time }}</strong>.
+                    </p>
+                {% endif %}
+            </section>
+
+            <h2 class="event-section-title">Topo et saisie des résultats</h2>
+
+            {% if route_rows %}
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="route-list">
+                        {% for row in route_rows %}
+                            <article class="route-card participant-route-card">
+                                <div class="route-card-header">
+                                    <div>
+                                        <h3 class="route-title">
+                                            Relais {{ row.route.ouverture.relais }}
+                                            · {{ row.route.ouverture.niveau }}
+                                            · {{ row.route.ouverture.couleur }}
+                                        </h3>
+
+                                        {% if row.route.ouverture.nom %}
+                                            <p class="route-details">
+                                                {{ row.route.ouverture.nom }}
+                                            </p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="participant-score-row">
+                                    <div class="participant-score-field">
+                                        <label>
+                                            Prise atteinte
+                                        </label>
+
+                                        <div class="hold-counter">
+                                            <button
+                                                class="hold-button"
+                                                type="button"
+                                                data-action="decrease"
+                                            >
+                                                −
+                                            </button>
+
+                                            <input
+                                                class="participant-score-input"
+                                                type="number"
+                                                min="0"
+                                                inputmode="none"
+                                                name="route_{{ row.route.id }}_hold_number"
+                                                value="{% if row.performance %}{{ row.performance.hold_number }}{% else %}0{% endif %}"
+                                                readonly
+                                                {% if not is_phase_open %}disabled{% endif %}
+                                            >
+
+                                            <button
+                                                class="hold-button"
+                                                type="button"
+                                                data-action="increase"
+                                            >
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="participant-plus-field">
+                                        <label>
+                                            +
+                                        </label>
+
+                                        <input
+                                            type="checkbox"
+                                            name="route_{{ row.route.id }}_hold_plus"
+                                            {% if row.performance and row.performance.hold_plus %}checked{% endif %}
+                                            {% if not is_phase_open %}disabled{% endif %}
+                                        >
+                                    </div>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+
+                    {% if is_phase_open %}
+                        <div class="sticky-save-bar">
+                            <button
+                                class="event-button event-button-primary sticky-save-button"
+                                type="submit"
+                            >
+                                Enregistrer les résultats
+                            </button>
+                        </div>
+                    {% endif %}
+                </form>
+            {% else %}
+                <section class="event-card empty-state">
+                    <p>Le topo n’est pas encore disponible.</p>
+                </section>
+            {% endif %}
+        {% endif %}
+    </main>
+</body>
+</html>

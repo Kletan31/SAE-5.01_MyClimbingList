@@ -1,0 +1,242 @@
+{% extends "base/staff_admin_base.html" %}
+{% load i18n %}
+
+{% block head %}
+<style>
+    tbody tr {
+        height: 40px;
+    }
+
+    .clickable-row {
+        cursor: pointer;
+    }
+
+    .clickable-row:hover {
+        background-color: #f8f9fa;
+    }
+
+    .staff-table td,
+    .staff-table th {
+        vertical-align: middle;
+    }
+
+    .staff-table th {
+        user-select: none;
+    }
+
+    .level-badge {
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        padding: 0.35rem 0.6rem;
+        border-radius: 0.5rem;
+        color: #fff;
+        display: inline-block;
+        min-width: 3.2rem;
+        text-align: center;
+    }
+
+    .mono {
+        font-variant-numeric: tabular-nums;
+    }
+
+    .elo-value {
+        font-size: 0.85em;
+        opacity: 0.75;
+    }
+
+    .elo-trend {
+        display: inline-block;
+        width: 1em;              /* espace réservé constant */
+        text-align: center;
+        font-size: 0.9em;
+        margin-left: 4px;
+    }
+
+    .elo-trend.up {
+        color: #198754; /* vert */
+    }
+
+    .elo-trend.down {
+        color: #dc3545; /* rouge */
+    }
+</style>
+{% endblock %}
+
+{% block backLink %}{% url 'staff_admin:dashboard' %}{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center my-2 flex-wrap gap-2">
+        <div>
+            <h1 class="mb-1">
+                {% trans "Grimpeurs actifs – 30 derniers jours" %}
+            </h1>
+
+            <p class="text-muted mb-2">
+                {% trans "Salle" %} : <strong>{{ salle.nom }}</strong>
+            </p>
+
+            <p class="text-muted small mb-3 fst-italic">
+                {% trans "⚠️ Cette liste est mise à jour une fois par jour." %}
+            </p>
+
+            <!-- Toggle Bloc / Voie -->
+            <ul class="nav nav-pills mb-3" id="discipline-toggle">
+                <li class="nav-item">
+                    <a class="nav-link {% if not bloc %}active{% endif %}"
+                       href="{% url 'staff_admin:active_climbers' %}"
+                       data-discipline="voie">
+                        {% trans "Voie" %}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if bloc %}active{% endif %}"
+                       href="{% url 'staff_admin:active_climbers' %}?bloc=1"
+                       data-discipline="bloc">
+                        {% trans "Bloc" %}
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Navigation par date -->
+            <div class="d-flex align-items-center gap-2 mb-3">
+
+                {% if prev_date %}
+                    <a class="btn btn-outline-secondary btn-sm"
+                       href="?{% if bloc %}bloc=1&{% endif %}date={{ prev_date|date:'Y-m-d' }}">
+                        ←
+                    </a>
+                {% else %}
+                    <span class="btn btn-outline-secondary btn-sm disabled">←</span>
+                {% endif %}
+
+                <strong class="mono">
+                    {{ selected_date|date:"d/m/Y" }}
+                </strong>
+
+                {% if next_date %}
+                    <a class="btn btn-outline-secondary btn-sm"
+                       href="?{% if bloc %}bloc=1&{% endif %}date={{ next_date|date:'Y-m-d' }}">
+                        →
+                    </a>
+                {% else %}
+                    <span class="btn btn-outline-secondary btn-sm disabled">→</span>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+        <table class="table table-sm table-hover staff-table align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-center" style="width: 40px;">#</th>
+                    <th>{% trans "Pseudo" %}</th>
+                    <th class="text-center">{% trans "Niveau actuel" %}</th>
+                    <th class="text-end">{% trans "Dernier passage" %}</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for climber in climbers %}
+                    <tr class="clickable-row"
+                        data-href="{% url 'staff_admin:climber_progression' climber.user.id %}?{% if bloc %}bloc=1&{% endif %}{% if selected_date %}date={{ selected_date|date:'Y-m-d' }}&{% endif %}next={{ request.get_full_path|urlencode }}">
+
+                        <!-- Rang -->
+                        <td class="text-center mono fw-bold">
+                            {{ forloop.counter }}
+                        </td>
+
+                        <!-- Pseudo -->
+                        <td>
+                            {{ climber.user.username }}
+                        </td>
+
+                        <!-- Niveau + ELO + tendance -->
+                        <td class="text-center">
+                            {% if climber.level and climber.level != "-" %}
+                                <span class="level-badge"
+                                      style="background-color: {{ climber.color }};">
+                                    {{ climber.level }}
+                                </span>
+
+                                <span class="text-muted mono ms-1 elo-value">
+                                    ({{ climber.elo|floatformat:"0" }})
+                                </span>
+
+                                <span class="elo-trend
+                                    {% if climber.elo_trend == 'up' %}up{% elif climber.elo_trend == 'down' %}down{% endif %}">
+                                    {% if climber.elo_trend == "up" %}
+                                        ▲
+                                    {% elif climber.elo_trend == "down" %}
+                                        ▼
+                                    {% endif %}
+                                </span>
+                            {% else %}
+                                <span class="text-muted">–</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Dernier passage -->
+                        <td class="text-end mono">
+                            {{ climber.last_passage|date:"d/m/Y" }}
+                        </td>
+
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-4">
+                            {% trans "Aucun grimpeur actif sur les 30 derniers jours." %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    const toggle = document.getElementById("discipline-toggle");
+    if (!toggle) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const currentDate = params.get("date");
+
+    if (!currentDate) return;
+
+    toggle.querySelectorAll("a[data-discipline]").forEach(link => {
+        const url = new URL(link.href, window.location.origin);
+
+        // Conserver la date actuelle
+        url.searchParams.set("date", currentDate);
+
+        link.href = url.toString();
+    });
+})();
+</script>
+<script>
+(function () {
+    document.querySelectorAll("tr.clickable-row[data-href]")
+        .forEach(row => {
+            row.addEventListener("click", (event) => {
+                // Empêcher les clics accidentels sur un lien/bouton futur
+                const tag = event.target.tagName.toLowerCase();
+                if (["a", "button", "input"].includes(tag)) return;
+
+                window.location.href = row.dataset.href;
+            });
+        });
+})();
+</script>
+{% endblock %}

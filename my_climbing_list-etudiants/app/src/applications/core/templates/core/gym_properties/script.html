@@ -1,0 +1,13 @@
+{% load static %}
+<script type="module">
+import { enableToggleType } from "{% static 'core/js/gym_properties/toggleType.js' %}";
+import { enableToggleButton } from "{% static 'core/js/gym_properties/toggleButton.js' %}";
+import { displayGraph } from "{% static 'core/js/gym_properties/refreshGraph.js' %}";
+
+// Initialisez toutes les fonctions une fois le DOM chargé
+document.addEventListener('DOMContentLoaded', () => {
+    enableToggleType();
+    enableToggleButton(".style-profil");
+    displayGraph();
+});
+</script>

@@ -1,0 +1,134 @@
+/* Élément sélectionné dans la bar inférieure de navigation */
+.fa-solid.fa-circle-plus {
+    display: block;
+    color: #EE7f00;
+}
+
+.fa-light.fa-circle-plus {
+    display: none;
+}
+
+/* CHART CONTAINER */
+
+.chart-container {
+    padding: 0 5px;
+    width: 100%;
+}
+
+/* DATA CONTAINER */
+
+#profil-data-container {
+    margin: auto 0;
+}
+
+#style-data-container{
+    margin: auto 0;
+}
+
+/* ## Visuel pour les totaux ## */
+
+.total span, .total-lead span {
+    border-radius: 5px;
+    color: #FFF;
+    min-width: 2.6rem;
+    line-height: 1.25;
+}
+
+.total span{
+    background-color: #39529E;
+}
+
+.total-lead span {
+    background-color: #b0d54b;
+}
+
+/* ## Visuel pour profil-style ## */
+
+.margin-col {
+    width: 1rem;
+}
+
+@media (max-width: 425px) {
+    .margin-col {
+        width: 0;
+    }
+}
+
+.style-profil {
+    background-color: #fff;
+    color: #333;
+    border: solid 1px #333;
+    margin: .1rem 0;
+    width: 4.1rem;
+}
+
+.style-profil.selected {
+    background-color: #333;
+    color: white;
+}
+
+.style-conti, .style-classic {
+    color: blue;
+    border: solid 1px blue;
+    background-color: white;
+}
+
+.style-conti.selected, .style-classic.selected {
+    background-color: blue;
+}
+
+.style-resi, .style-technic {
+    color: red;
+    border: solid 1px red;
+    background-color: white;
+}
+
+.style-resi.selected, .style-technic.selected {
+    background-color: red;
+}
+
+.style-bloc, .style-physic {
+    color: purple;
+    border: solid 1px purple;
+    background-color: white;
+}
+
+.style-bloc.selected, .style-physic.selected {
+    background-color: purple;
+}
+
+.style-tricky {
+    color: hotpink;
+    border: solid 1px hotpink;
+    background-color: white;
+}
+
+.style-tricky.selected {
+    background-color: hotpink;
+}
+
+.style-coordo {
+    color: orange;
+    border: solid 1px orange;
+    background-color: white;
+}
+
+.style-coordo.selected {
+    background-color: orange;
+}
+
+/* ## Texte en bas de page ## */
+
+.bottom-info {
+    margin: auto 0 5px 0;
+    padding: .65rem 0;
+    font-weight: bold;
+    font-size: 0.65rem;
+}
+
+/* Cacher cet élément pour les appareils avec une hauteur réduite */
+@media (max-height: 700px) {
+    .bottom-info {
+        display: none;
+    }
+}

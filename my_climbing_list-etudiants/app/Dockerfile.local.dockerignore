@@ -1,0 +1,20 @@
+# S'applique uniquement à Dockerfile.local (contexte ./app).
+**
+!src/
+!src/**
+src/.env*
+src/config/settings.py
+src/custom_migrations/
+src/certs/
+src/node_modules/
+src/cache/
+src/staticfiles/
+src/applications/*/migrations/
+**/__pycache__/
+**/*.pyc
+**/*.log
+**/.DS_Store
+**/.idea/
+**/*.pem
+**/*.key
+**/*.der

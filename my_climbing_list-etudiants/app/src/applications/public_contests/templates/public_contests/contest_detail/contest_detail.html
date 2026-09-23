@@ -1,0 +1,459 @@
+{% extends "base/public_contests_base.html" %}
+{% load i18n %}
+
+{% block head %}
+<style>
+    :root {
+        --accent-main: #EE7F00;
+        --accent-soft: #FFB514;
+        --primary-blue: #39529E;
+        --accent-purple: #951B95;
+        --accent-green: #A5B622;
+        --text-dark: #1D1D1B;
+        --classement-font-size: 1rem;
+    }
+
+    body {
+        color: var(--text-dark);
+    }
+
+    /* Titre */
+    .contest-title {
+        color: var(--primary-blue);
+        font-weight: 600;
+    }
+
+    /* Sous-menu */
+    .classement-tab {
+        border-color: var(--primary-blue);
+        color: var(--primary-blue);
+    }
+
+    .classement-tab.active {
+        background-color: var(--primary-blue);
+        border-color: var(--primary-blue);
+        color: #fff;
+    }
+
+    .btn:hover {
+        border-color: var(--primary-blue);
+    }
+
+    /* Badges score */
+    .score-badge {
+        background-color: var(--accent-purple);
+        color: #fff;
+        font-weight: 600;
+    }
+
+    /* Rang */
+    .rank {
+        font-weight: 700;
+    }
+
+    /* Auto-scroll discret */
+    .auto-scroll-toggle {
+        font-size: 0.75rem;
+        color: var(--text-dark);
+        opacity: 0.8;
+    }
+
+    .auto-scroll-toggle:hover {
+        opacity: 0.9;
+    }
+
+    /* List items */
+    .classement-list .list-group-item {
+        border-color: rgba(0,0,0,0.05);
+    }
+
+    /* Appliqué uniquement aux listes de classement */
+    .classement-list {
+        font-size: var(--classement-font-size);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <!-- Bouton retour -->
+        <a href="{% url "public_contests:contest_list" %}"
+           class="btn btn-sm btn-outline-secondary">
+            ← {% trans "Retour" %}
+        </a>
+
+        <!-- Sélecteur de langue -->
+        <form action="{% url 'set_language' %}" method="post"
+              class="d-flex gap-2 mb-0">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+
+            {% if LANGUAGE_CODE != 'fr' %}
+                <button name="language" value="fr"
+                        class="btn btn-sm btn-outline-secondary">
+                    FR
+                </button>
+            {% endif %}
+            {% if LANGUAGE_CODE != 'en' %}
+                <button name="language" value="en"
+                        class="btn btn-sm btn-outline-secondary">
+                    EN
+                </button>
+            {% endif %}
+        </form>
+
+    </div>
+
+    <!-- Titre -->
+    <h1 class="h4 text-center mb-1 contest-title">
+        {{ contest.name }}
+    </h1>
+
+    {% if contest.description_courte %}
+        <p class="text-muted text-center mb-2">
+            {{ contest.description_courte }}
+        </p>
+    {% endif %}
+
+    <!-- Toggle auto-scroll discret -->
+    <div class="text-center mb-3">
+        <label for="auto-scroll-toggle"
+               class="auto-scroll-toggle d-inline"
+               style="cursor: pointer;">
+            <input type="checkbox"
+                   id="auto-scroll-toggle"
+                   class="form-check-input me-1"
+                   checked>
+            {% trans "Défilement automatique" %}
+        </label>
+    </div>
+
+    <!-- Contrôle taille texte -->
+    <div class="text-center mb-3">
+        <span class="text-muted small me-2">
+            {% trans "Taille du texte" %}
+        </span>
+
+        <button type="button"
+                class="btn btn-sm btn-outline-secondary px-2"
+                id="font-smaller">−</button>
+
+        <button type="button"
+                class="btn btn-sm btn-outline-secondary px-2"
+                id="font-bigger">+</button>
+    </div>
+
+    <!-- Sous-menu classement -->
+    <div class="btn-group w-100 mb-3" role="group" id="classement-switcher">
+
+        {% if contest.is_team_contest %}
+        <button type="button"
+                class="btn classement-tab active"
+                data-target="teams">
+            {% trans "Équipes" %}
+        </button>
+        {% endif %}
+
+        <button type="button"
+                class="btn classement-tab {% if not contest.is_team_contest %}active{% endif %}"
+                data-target="general">
+            {% trans "Général" %}
+        </button>
+
+        <button type="button"
+                class="btn classement-tab"
+                data-target="femme">
+            {% trans "Femmes" %}
+        </button>
+
+        <button type="button"
+                class="btn classement-tab"
+                data-target="homme">
+            {% trans "Hommes" %}
+        </button>
+    </div>
+
+    <!-- ========================= -->
+    <!-- CLASSEMENT ÉQUIPES -->
+    <!-- ========================= -->
+    {% if contest.is_team_contest %}
+    <ul class="list-group classement-list" id="classement-teams">
+        {% for team in classement_teams %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="rank">{{ team.rank }}.</span>
+                    {{ team.team_name }}
+                </div>
+                <span class="badge score-badge rounded-pill">
+                    {{ team.score }}
+                </span>
+            </li>
+        {% empty %}
+            <li class="list-group-item text-center text-muted">
+                {% trans "Aucune équipe." %}
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <!-- ========================= -->
+    <!-- CLASSEMENT GÉNÉRAL -->
+    <!-- ========================= -->
+    <ul class="list-group classement-list {% if contest.is_team_contest %}d-none{% endif %}"
+        id="classement-general">
+        {% for user in classement_general %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="rank">{{ user.rank }}.</span>
+                    {{ user.username }}
+                </div>
+                <span class="badge score-badge rounded-pill">
+                    {{ user.score }}
+                </span>
+            </li>
+        {% empty %}
+            <li class="list-group-item text-center text-muted">
+                {% trans "Aucun participant." %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- ========================= -->
+    <!-- CLASSEMENT FEMMES -->
+    <!-- ========================= -->
+    <ul class="list-group classement-list d-none" id="classement-femme">
+        {% for user in classement_femme %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="rank">{{ user.rank }}.</span>
+                    {{ user.username }}
+                </div>
+                <span class="badge score-badge rounded-pill">
+                    {{ user.score }}
+                </span>
+            </li>
+        {% empty %}
+            <li class="list-group-item text-center text-muted">
+                {% trans "Aucune participante." %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- ========================= -->
+    <!-- CLASSEMENT HOMMES -->
+    <!-- ========================= -->
+    <ul class="list-group classement-list d-none" id="classement-homme">
+        {% for user in classement_homme %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="rank">{{ user.rank }}.</span>
+                    {{ user.username }}
+                </div>
+                <span class="badge score-badge rounded-pill">
+                    {{ user.score }}
+                </span>
+            </li>
+        {% empty %}
+            <li class="list-group-item text-center text-muted">
+                {% trans "Aucun participant." %}
+            </li>
+        {% endfor %}
+    </ul>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const buttons = document.querySelectorAll(".classement-tab");
+    const lists = document.querySelectorAll(".classement-list");
+
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            buttons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            lists.forEach(list => list.classList.add("d-none"));
+            const target = document.getElementById(`classement-${btn.dataset.target}`);
+            if (target) {
+                target.classList.remove("d-none");
+            }
+        });
+    });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const buttons = Array.from(document.querySelectorAll(".classement-tab"));
+    const lists = document.querySelectorAll(".classement-list");
+    const toggle = document.getElementById("auto-scroll-toggle");
+
+    if (!buttons.length) return;
+
+    const INTERVAL_MS = 8000; // 8 secondes par classement
+    const STORAGE_SCROLL_KEY = "public_contests_auto_scroll";
+    const STORAGE_TAB_KEY = "public_contests_active_tab";
+
+    let intervalId = null;
+
+    // ------------------------
+    // Onglet actif (restauration)
+    // ------------------------
+    let currentIndex = buttons.findIndex(b => b.classList.contains("active"));
+    if (currentIndex === -1) currentIndex = 0;
+
+    const savedIndex = localStorage.getItem(STORAGE_TAB_KEY);
+    if (savedIndex !== null) {
+        const parsed = parseInt(savedIndex, 10);
+        if (!isNaN(parsed) && parsed >= 0 && parsed < buttons.length) {
+            currentIndex = parsed;
+        }
+    }
+
+    // ------------------------
+    // Fonctions utilitaires
+    // ------------------------
+    function showTab(index) {
+        buttons.forEach(b => b.classList.remove("active"));
+        lists.forEach(l => l.classList.add("d-none"));
+
+        const btn = buttons[index];
+        btn.classList.add("active");
+
+        const target = document.getElementById(`classement-${btn.dataset.target}`);
+        if (target) {
+            target.classList.remove("d-none");
+        }
+
+        currentIndex = index;
+        localStorage.setItem(STORAGE_TAB_KEY, String(index));
+    }
+
+    function nextTab() {
+        const nextIndex = (currentIndex + 1) % buttons.length;
+        showTab(nextIndex);
+    }
+
+    function startAutoScroll() {
+        stopAutoScroll();
+        intervalId = setInterval(nextTab, INTERVAL_MS);
+    }
+
+    function stopAutoScroll() {
+        if (intervalId) {
+            clearInterval(intervalId);
+            intervalId = null;
+        }
+    }
+
+    // ------------------------
+    // Initialisation affichage
+    // ------------------------
+    showTab(currentIndex);
+
+    // ------------------------
+    // Clic manuel
+    // ------------------------
+    buttons.forEach((btn, index) => {
+        btn.addEventListener("click", () => {
+            showTab(index);
+        });
+    });
+
+    // ------------------------
+    // Toggle auto-scroll
+    // ------------------------
+    function loadPreference() {
+        const saved = localStorage.getItem(STORAGE_SCROLL_KEY);
+        return saved === null ? true : saved === "true";
+    }
+
+    function savePreference(value) {
+        localStorage.setItem(STORAGE_SCROLL_KEY, String(value));
+    }
+
+    const autoEnabled = loadPreference();
+    toggle.checked = autoEnabled;
+
+    if (autoEnabled) {
+        startAutoScroll();
+    }
+
+    toggle.addEventListener("change", () => {
+        const enabled = toggle.checked;
+        savePreference(enabled);
+
+        if (enabled) {
+            startAutoScroll();
+        } else {
+            stopAutoScroll();
+        }
+    });
+
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const root = document.documentElement;
+    const btnMinus = document.getElementById("font-smaller");
+    const btnPlus = document.getElementById("font-bigger");
+
+    if (!btnMinus || !btnPlus) return;
+
+    const STORAGE_KEY = "public_contests_font_size";
+
+    const MIN = 0.2;
+    const MAX = 5;
+    const STEP = 0.1;
+
+    function getFontSize() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? parseFloat(saved) : 1;
+    }
+
+    function setFontSize(value) {
+        const clamped = Math.min(MAX, Math.max(MIN, value));
+        root.style.setProperty("--classement-font-size", clamped + "rem");
+        localStorage.setItem(STORAGE_KEY, String(clamped));
+    }
+
+    // Initialisation
+    let currentSize = getFontSize();
+    setFontSize(currentSize);
+
+    btnPlus.addEventListener("click", () => {
+        currentSize += STEP;
+        setFontSize(currentSize);
+    });
+
+    btnMinus.addEventListener("click", () => {
+        currentSize -= STEP;
+        setFontSize(currentSize);
+    });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const buttons = document.querySelectorAll(".classement-tab");
+    if (!buttons.length) return;
+
+    const INTERVAL_MS = 8000; // même valeur que l'auto-scroll
+    const NB_TABS = buttons.length;
+
+    const totalDuration = INTERVAL_MS * NB_TABS;
+
+    // Recharge systématique après un cycle complet
+    setTimeout(() => {
+        window.location.reload();
+    }, totalDuration);
+
+});
+</script>
+{% endblock %}

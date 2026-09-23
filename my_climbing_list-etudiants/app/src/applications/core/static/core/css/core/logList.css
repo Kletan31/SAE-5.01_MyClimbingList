@@ -1,0 +1,62 @@
+/* ## Autoriser le défilement vertical ## */
+.scrollable-container {
+    overflow-y: auto;
+}
+
+/* ## Visuel de la liste ## */
+.main-row {
+    line-height: 1.25;
+    background-color: white;
+}
+
+.details-row {
+    height: 0;
+    overflow: hidden;
+    background-color: #f9f9f9;
+    box-shadow: inset 0 1px 0 0 #e6e6e6;
+    border-bottom: 2px solid #e6e6e6;
+    line-height: 1.25;
+    transition: height .3s ease;
+}
+
+.list-container.scrollable .details-row:last-of-type {
+    border: none;
+}
+
+.details-row.open {
+    height: var(--dropdown-height);
+}
+
+.details-row p {
+    font-size: 0.65rem;
+}
+
+/* ## Visuel Nom de l'ouverture ## */
+.nom-ouverture{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ## Visuel pour profil-style ## */
+.style-profil {
+    font-size: .625rem;
+}
+
+/* ## Visuel Cotation ## */
+.circle-cotation {
+    width: 40px;
+    height: 40px;
+    font-size: .9rem;
+    border: 3px solid;
+}
+
+/* Styles spécifiques pour 100vw < 384px */
+@media (max-width: 384px) {
+    .circle-cotation {
+        max-width: 29px;
+        max-height: 29px;
+        font-size: .65rem;
+        border: 2px solid;
+    }
+}

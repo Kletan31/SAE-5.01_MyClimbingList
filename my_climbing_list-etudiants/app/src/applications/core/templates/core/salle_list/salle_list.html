@@ -1,0 +1,75 @@
+{% extends 'base/app_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'core/css/salle_list/salle_list.css' %}">
+{% endblock %}
+
+{% block page_name %}{% trans "Les salles" %}{% endblock %}
+
+{% block template-content %}
+{% for salle_id, name, progression_bloc, progression_voie, image_path, total_bloc, total_voies, _, _, _ in salles %}
+    <a class="salle-row" href="{% url 'core:guidebook' %}?salle_id={{ salle_id }}&map_display=True">
+        <div class="salle-image">
+            {% if MCL_LOCAL and salle_id >= 9001 and salle_id <= 9003 %}
+            <img src="{% static 'local_demo/salle.svg' %}" alt="Salle fictive de démonstration">
+            {% else %}
+            <img src="{% static image_path %}" alt="{% trans 'Image de la salle' %}">
+            {% endif %}
+        </div>
+        <div class="salle-details">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex gap-2">
+                    <h5>{{ name }}</h5>
+                    <span class="favorite-toggle"
+                          data-salle-id="{{ salle_id }}"
+                          title="{% trans 'Définir comme salle favorite' %}"
+                          style="cursor:pointer;">
+                        {% if request.user.profile.favorite_salle and request.user.profile.favorite_salle.id == salle_id %}
+                            <i class="fa-solid fa-star text-warning" style="font-size: .9rem;"></i>
+                        {% else %}
+                            <i class="fa-regular fa-star text-secondary" style="font-size: .9rem;"></i>
+                        {% endif %}
+                    </span>
+                </div>
+                <i class="fa-regular fa-chart-simple"
+                   data-salle-id="{{ salle_id }}"
+                   style="cursor: pointer; font-size: 1.25rem;">
+                </i>
+            </div>
+
+            {% if total_voies != 0 %}
+            <!-- Barre de progression pour Voie -->
+            <div class="progress-container">
+                <span class="progress-text">
+                    {% trans "Voie" %}&nbsp;: {{ progression_voie }}%
+                </span>
+                <div class="progress">
+                    <div class="progress-bar bg-secondary" role="progressbar" style="width: {{ progression_voie }}%;">
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if total_bloc != 0 %}
+            <!-- Barre de progression pour Bloc -->
+            <div class="progress-container">
+                <span class="progress-text">
+                    {% trans "Bloc" %}&nbsp;: {{ progression_bloc }}%
+                </span>
+                <div class="progress">
+                    <div class="progress-bar bg-secondary" role="progressbar" style="width: {{ progression_bloc }}%;">
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </a>
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+{% include 'core/salle_list/script.html' %}
+{% endblock %}

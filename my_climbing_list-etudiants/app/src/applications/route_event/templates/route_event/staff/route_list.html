@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Route Event</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'route_event/css/staff_routes.css' %}">
+    <script src="{% static 'route_event/js/staff_routes.js' %}" defer></script>
+</head>
+<body>
+    <h1>Voies — {{ event.name }}</h1>
+
+    <p>
+        <a href="{% url 'route_event:staff_event_update' slug=event.slug %}">Retour événement</a> |
+        <a href="{% url 'route_event:staff_home' %}">Accueil staff</a>
+    </p>
+
+    <div class="route-admin-layout">
+        <section class="route-admin-panel">
+            <h2>Ajouter des voies</h2>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Relais</th>
+                            <th>Nom</th>
+                            <th>Niveau</th>
+                            <th>Couleur</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for ouverture in available_routes %}
+                            <tr>
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        name="ouvertures"
+                                        value="{{ ouverture.id }}"
+                                    >
+                                </td>
+                                <td>{{ ouverture.relais }}</td>
+                                <td>{{ ouverture.nom }}</td>
+                                <td>{{ ouverture.niveau }}</td>
+                                <td>{{ ouverture.couleur }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5">
+                                    Toutes les voies disponibles sont déjà associées.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <p>
+                    <button type="submit">Ajouter les voies sélectionnées</button>
+                </p>
+            </form>
+        </section>
+
+        <section class="route-admin-panel" id="routes-associated">
+            <h2>Ordre des voies</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ordre</th>
+                        <th>Actions</th>
+                        <th>Relais</th>
+                        <th>Nom</th>
+                        <th>Niveau</th>
+                        <th>Couleur</th>
+                        <th>Supprimer</th>
+                    </tr>
+                </thead>
+
+                <tbody id="route-order-body">
+                    {% for route in routes %}
+                        <tr id="route-{{ route.id }}" data-route-id="{{ route.id }}">
+                            <td data-order-cell>{{ route.display_order }}</td>
+
+                            <td class="route-order-actions">
+                                <a
+                                    href="{% url 'route_event:staff_move_route_up' route_id=route.id %}"
+                                    data-route-move
+                                    data-direction="up"
+                                >
+                                    ↑
+                                </a>
+
+                                <a
+                                    href="{% url 'route_event:staff_move_route_down' route_id=route.id %}"
+                                    data-route-move
+                                    data-direction="down"
+                                >
+                                    ↓
+                                </a>
+                            </td>
+
+                            <td>{{ route.ouverture.relais }}</td>
+                            <td>{{ route.ouverture.nom }}</td>
+                            <td>{{ route.ouverture.niveau }}</td>
+                            <td>{{ route.ouverture.couleur }}</td>
+
+                            <td>
+                                <form method="post" action="{% url 'route_event:staff_delete_route' route_id=route.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="7">Aucune voie associée.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+</body>
+</html>

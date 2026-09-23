@@ -1,0 +1,18 @@
+{% extends "base/staff_admin_base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container py-4">
+    <h2>Fréquentation – {{ salle.nom }}</h2>
+    <div class="graph-container">
+        {{ graph_salle_html|safe }}
+    </div>
+
+    <hr>
+
+    <h2>Fréquentation – Vue globale</h2>
+    <div class="graph-container">
+        {{ graph_global_html|safe }}
+    </div>
+</div>
+{% endblock %}

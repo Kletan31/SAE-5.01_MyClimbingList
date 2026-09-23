@@ -1,0 +1,201 @@
+{% extends 'base/app_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'core/css/settings/settings.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/core/banner.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/settings/delete_account_popup.css' %}">
+{% endblock %}
+
+{% block page_name %}{% trans "Paramètres" %}{% endblock %}
+
+{% block template-content %}
+{% include "core/settings/delete_account_popup.html" %}
+
+<!-- Titre -->
+<div class="text-center my-3 w-100">
+    <span id="settings-title">{% trans "Données Personnelles" %}</span>
+    <p class="mt-1" style="font-size: .9rem;">
+        {% trans "Membre depuis le" %} : {{ user.date_joined|date:"d M Y" }}
+    </p>
+</div>
+
+<!-- Formulaire -->
+<form method="POST" action="{% url 'core:settings' %}" class="w-100">
+{% csrf_token %}
+    <div class="form-container">
+        <!-- Email -->
+        <div class="mx-3 mb-3">
+            <!-- Affichage -->
+            <div class="d-flex align-items-center">
+                <p class="input-title m-0 me-2 fw-bold">{% trans "Adresse e-mail" %}</p>
+                <div class="d-flex justify-content-center align-items-center" style="width: 20px">
+                    <i class="fa-regular fa-pen fa-sm" id="edit-email"></i>
+                </div>
+            </div>
+
+            <!-- Input -->
+            <div class="d-flex align-items-center">
+                <p class="m-0 me-auto fst-italic" id="email-display">{{ user.email }}</p>
+                <input
+                    type="text"
+                    class="form-control me-2 d-none"
+                    id="email-input"
+                    name="email"
+                    autocomplete="off"
+                    value="{{ user.email }}">
+                <i
+                    data-bs-toggle="tooltip"
+                    title="{% trans 'Utilisée pour réinitialiser votre mot de passe' %}"
+                    class="fa-regular fa-circle-info me-2">
+                </i>
+            </div>
+        </div>
+
+        <!-- Nom d'utilisateur -->
+        <div class="mx-3 mb-3">
+            <div class="d-flex align-items-center">
+                <p class="input-title m-0 me-2 fw-bold">{% trans "Nom d'utilisateur" %}</p>
+                <div class="d-flex justify-content-center align-items-center" style="width: 20px">
+                    <i class="fa-regular fa-pen fa-sm" id="edit-username"></i>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <p class="m-0 me-auto fst-italic" id="username-display">{{ user.username }}</p>
+                <input
+                    type="text"
+                    class="form-control me-2 d-none"
+                    id="username-input"
+                    name="username"
+                    autocomplete="off"
+                    value="{{ user.username }}">
+                <i
+                    data-bs-toggle="tooltip"
+                    title="{% trans 'Le nom qui sera affiché lors des contests' %}"
+                    class="fa-regular fa-circle-info me-2">
+                </i>
+            </div>
+        </div>
+
+        <!-- Nom -->
+        <div class="mx-3 mb-3">
+            <div class="d-flex align-items-center">
+                <p class="input-title m-0 me-2 fw-bold">{% trans "Nom" %}</p>
+                <div class="d-flex justify-content-center align-items-center" style="width: 20px">
+                    <i class="fa-regular fa-pen fa-sm" id="edit-last-name"></i>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <p class="m-0 me-auto fst-italic" id="last-name-display">{{ user.last_name }}</p>
+                <input
+                    type="text"
+                    class="form-control me-2 d-none"
+                    id="last-name-input"
+                    name="last_name"
+                    autocomplete="off"
+                    value="{{ user.last_name }}">
+                <i
+                    data-bs-toggle="tooltip"
+                    title="{% trans 'Permet au staff de vous identifier lors des contests' %}"
+                    class="fa-regular fa-circle-info me-2">
+                </i>
+            </div>
+        </div>
+
+        <!-- Prénom -->
+        <div class="mx-3 mb-3">
+            <div class="d-flex align-items-center">
+                <p class="input-title m-0 me-2 fw-bold">{% trans "Prénom" %}</p>
+                <div class="d-flex justify-content-center align-items-center" style="width: 20px">
+                    <i class="fa-regular fa-pen fa-sm" id="edit-first-name"></i>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <p class="m-0 me-auto fst-italic" id="first-name-display">{{ user.first_name }}</p>
+                <input
+                    type="text"
+                    class="form-control me-2 d-none"
+                    id="first-name-input"
+                    name="first_name"
+                    autocomplete="off"
+                    value="{{ user.first_name }}">
+                <i
+                    data-bs-toggle="tooltip"
+                    title="{% trans 'Permet au staff de vous identifier lors des contests' %}"
+                    class="fa-regular fa-circle-info me-2">
+                </i>
+            </div>
+        </div>
+
+        <!-- Genre -->
+        <div class="mx-3 mb-3">
+            <div class="d-flex align-items-center">
+                <p class="input-title m-0 me-2 fw-bold">{% trans "Genre" %}</p>
+                <div class="d-flex justify-content-center align-items-center" style="width: 20px">
+                    <i class="fa-regular fa-pen fa-sm" id="edit-gender"></i>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center" style="height: 38px;">
+                <div id="gender-display" class="d-flex align-items-center me-auto">
+                    <i class="fa-regular fa-venus{% if profile.gender != 'F' %} d-none{% endif %}" data-value="F"></i>
+                    <i class="fa-regular fa-mars{% if profile.gender != 'M' %} d-none{% endif %}" data-value="M"></i>
+                    <i class="fa-regular fa-genderless{% if profile.gender != 'N' %} d-none{% endif %}" data-value="N"></i>
+                </div>
+
+                <div id="gender-input" class="me-auto d-flex align-items-center d-none">
+                    <i class="fa-regular fa-venus me-4{% if profile.gender == 'F' %} selected{% endif %}" data-value="F"></i>
+                    <i class="fa-regular fa-mars me-4{% if profile.gender == 'M' %} selected{% endif %}" data-value="M"></i>
+                    <i class="fa-regular fa-genderless me-4{% if profile.gender == 'N' %} selected{% endif %}" data-value="N"></i>
+                </div>
+
+                <input type="hidden" id="gender-value" name="gender" value="{{ profile.gender }}">
+
+                <i
+                    data-bs-toggle="tooltip"
+                    title="{% trans 'Permet un classement par genre lors des contests' %}"
+                    class="fa-regular fa-circle-info me-2">
+                </i>
+            </div>
+        </div>
+
+        <!-- Message Confidentialité -->
+        <div id="confidentiality-msg" {% if error or success %}class="d-none"{% endif %}>
+            <p class="message">
+                {% trans "Données nécessaires à l'organisation des contests." %}<br>
+                {% trans "Aucune exploitation commerciale." %}
+            </p>
+        </div>
+
+        <!-- Message Succès / Erreur -->
+        <div id="error-msg" class="w-100 d-flex justify-content-center">
+            {% if error %}
+                <p class="banner error-banner">{{ error }}</p>
+            {% elif success %}
+                <p class="banner success-banner">{{ success }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Bouton de sauvegarde -->
+        <div id="settings-save-button" class="text-center d-none mt-3">
+            <button type="submit" class="btn btn-secondary">{% trans "Sauvegarder" %}</button>
+        </div>
+    </div>
+</form>
+
+<!-- Suppression du compte -->
+<div class="suppress-account-container">
+    <span class="text-decoration-underline" style="font-size: .6rem;" id="trigger-account-delete">
+        {% trans "Suppression du compte" %}
+    </span>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% include 'core/settings/script.html' %}
+{% endblock %}

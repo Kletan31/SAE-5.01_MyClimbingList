@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="345" viewBox="0 0 1100 345"><rect width="1100" height="345" fill="white"/>
+<rect x="140" y="10" width="340" height="75" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="310.0" y="47" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Web et PWA</text>
+<rect x="620" y="10" width="340" height="75" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="790.0" y="47" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Mobile éventuel</text>
+<rect x="210" y="135" width="680" height="75" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="550.0" y="172" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">API et permissions communes</text>
+<line x1="310" y1="85" x2="420" y2="135" stroke="#2F6B9A" stroke-width="2"/><polygon points="420,135 409.0030043706552,135.25707416862022 412.96278478172,126.54555726427763" fill="#2F6B9A"/>
+<line x1="790" y1="85" x2="680" y2="135" stroke="#2F6B9A" stroke-width="2"/><polygon points="680,135 687.0372152182799,126.54555726427762 690.9969956293448,135.25707416862022" fill="#2F6B9A"/>
+<rect x="5" y="250" width="670" height="75" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="340.0" y="287" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Catalogue • Pratique • Progression • Compétitions</text>
+<rect x="740" y="250" width="350" height="75" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="915.0" y="287" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">PostgreSQL</text>
+<line x1="550" y1="210" x2="340" y2="250" stroke="#2F6B9A" stroke-width="2"/><polygon points="340,250 348.83472257489086,243.44655227954675 350.62524356972597,252.846787502431" fill="#2F6B9A"/>
+<line x1="675" y1="288" x2="740" y2="288" stroke="#2F6B9A" stroke-width="2"/><polygon points="740,288 730.0950818741205,292.78462087522354 730.0950818741205,283.21537912477646" fill="#2F6B9A"/>
+</svg>

@@ -1,0 +1,22 @@
+.contests-select {
+    color: #EE7f00;
+}
+
+.tab-button {
+    padding: 0 2px;
+    font-size: .75rem;
+}
+
+.badge-done {
+  background-color: #1a8754 !important;
+  color: #fff !important;
+}
+
+.list-group-item {
+    border: none!important;
+    border-bottom: 1px #dee2e6 solid !important;
+}
+
+.list-group-item:last-child {
+    border-bottom: none !important;
+}

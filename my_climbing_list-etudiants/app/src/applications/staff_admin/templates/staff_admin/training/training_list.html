@@ -1,0 +1,48 @@
+{% extends "base/staff_admin_base.html" %}
+{% load i18n %}
+
+{% block backLink %}{% url 'staff_admin:dashboard' %}{% endblock %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <h4 class="mb-3">
+        {% trans "Suivi d'entraînement" %}
+        — {{ salle.nom }}
+    </h4>
+
+    {% if error %}
+        <div class="alert alert-warning">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    {% if profiles %}
+        <div class="list-group">
+
+            {% for profile in profiles %}
+                <a href="{% url 'staff_admin:training_calendar' profile.user.id %}"
+                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <strong>{{ profile.user.username }}</strong><br>
+                        <small class="text-muted">
+                            {{ profile.user.first_name }} {{ profile.user.last_name }}
+                        </small>
+                    </div>
+
+                    <i class="fa-solid fa-chevron-right text-muted"></i>
+                </a>
+            {% endfor %}
+
+        </div>
+    {% else %}
+        <div class="text-muted text-center py-4">
+            {% trans "Aucun grimpeur n’a autorisé cette salle pour le suivi." %}
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

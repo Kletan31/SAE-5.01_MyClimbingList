@@ -1,0 +1,27 @@
+{% load i18n %}
+
+<div id="installPopup" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered m-3">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header justify-content-center">
+                <h5 class="modal-title">{% trans "Améliorez votre expérience" %}</h5>
+            </div>
+            <div class="modal-body">
+                <div class="text-body" style="white-space: pre-line; line-height: 1.25;">
+                    <p class="m-0">{% trans "Pour une utilisation optimale, nous vous recommandons d’installer cette application via votre navigateur." %}</p>
+                    <p class="m-0">{% trans "Pour cela :" %}</p>
+                    <p class="m-0 ms-3">{% trans "Ouvrez le menu du navigateur (souvent une icône à trois points en haut à droite)" %}</p>
+                    <p class="m-0 ms-3">{% trans "Sélectionnez 'Installer l'application' ou 'Ajouter à l'écran d'accueil'" %}</p>
+                    <p class="m-0 mt-4 text-muted" style="font-size: .9rem;">
+                        {% trans "Si vous avez installé l'application via le Play Store, il est conseillé de la désinstaller et de la réinstaller via le navigateur afin de ne plus voir ce message." %}
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button id="popup-install-dismiss" class="btn btn-outline-secondary btn-sm" type="button">
+                    {% trans "Fermer" %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

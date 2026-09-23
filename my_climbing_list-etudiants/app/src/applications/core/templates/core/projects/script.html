@@ -1,0 +1,12 @@
+{% load static %}
+<script type="module">
+import { toggleMenu } from "{% static 'core/js/projects/toggleMenu.js' %}";
+import { swipeToDelete } from "{% static 'core/js/projects/swipeToDelete.js' %}";
+
+document.addEventListener('DOMContentLoaded', () => {
+    initTooltips();
+    initializeRowContainerListeners();      // Initialiser les animations liées aux volets
+    toggleMenu();
+    swipeToDelete();
+});
+</script>

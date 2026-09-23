@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="390" viewBox="0 0 1100 390"><rect width="1100" height="390" fill="white"/>
+<rect x="10" y="10" width="310" height="100" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="165.0" y="47" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Catalogue</text>
+<text x="165.0" y="78" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Import historique ou</text>
+<text x="165.0" y="105" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">initialisation synthétique</text>
+<rect x="395" y="10" width="310" height="100" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="550.0" y="47" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Pratique</text>
+<text x="550.0" y="78" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Faits déclarés</text>
+<text x="550.0" y="105" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">par le grimpeur</text>
+<rect x="780" y="10" width="310" height="100" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="935.0" y="47" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Décisions</text>
+<text x="935.0" y="78" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Visibilité des projets</text>
+<text x="935.0" y="105" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">et partage de suivi</text>
+<rect x="190" y="175" width="310" height="95" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="345.0" y="212" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Carnet et projets</text>
+<text x="345.0" y="243" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Consultation des données</text>
+<rect x="610" y="175" width="310" height="95" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="765.0" y="212" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Calculs dérivés</text>
+<text x="765.0" y="243" font-family="Helvetica Neue,Arial,sans-serif" font-size="20" font-weight="400" text-anchor="middle" fill="#233447">Statistiques et niveaux</text>
+<line x1="165" y1="110" x2="345" y2="175" stroke="#2F6B9A" stroke-width="2"/><polygon points="345,175 334.05882063903294,176.13604321711287 337.30896062212133,167.1356555716373" fill="#2F6B9A"/>
+<line x1="550" y1="110" x2="345" y2="175" stroke="#2F6B9A" stroke-width="2"/><polygon points="345,175 352.9955491360159,167.44545209734193 355.88779370696733,176.56714651341952" fill="#2F6B9A"/>
+<line x1="550" y1="110" x2="765" y2="175" stroke="#2F6B9A" stroke-width="2"/><polygon points="765,175 754.1342801345738,176.71351446042436 756.9035182323283,167.5537269063135" fill="#2F6B9A"/>
+<line x1="935" y1="110" x2="345" y2="175" stroke="#2F6B9A" stroke-width="2"/><polygon points="345,175 354.32140109090477,169.1594964512913 355.3692994318338,178.6711890843392" fill="#2F6B9A"/>
+<rect x="110" y="305" width="370" height="65" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="295.0" y="342" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Performances de compétition</text>
+<rect x="640" y="305" width="370" height="65" rx="5" fill="#E5F0F8" stroke="#2F6B9A"/>
+<text x="825.0" y="342" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" font-weight="700" text-anchor="middle" fill="#233447">Classement selon règlement</text>
+<line x1="480" y1="337" x2="640" y2="337" stroke="#2F6B9A" stroke-width="2"/><polygon points="640,337 630.0950818741205,341.78462087522354 630.0950818741205,332.21537912477646" fill="#2F6B9A"/>
+</svg>

@@ -1,0 +1,13 @@
+{% load static %}
+<script type="module">
+import { initializeCharts } from "{% static 'core/js/details/displayGraph.js' %}";
+import { FetchSessionData } from "{% static 'core/js/details/fetchSessionData.js' %}";
+import { sendPostRequest } from "{% static 'core/js/details/sendPostRequest.js' %}";
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeCharts();
+    initializeRowContainerListeners();
+    FetchSessionData();
+    sendPostRequest();
+});
+</script>

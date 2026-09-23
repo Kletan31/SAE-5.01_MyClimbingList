@@ -1,0 +1,185 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ event.name }} - Accès équipe</title>
+    <link rel="icon" href="{% static 'base/automatic_request/icon/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'event/css/event.css' %}">
+</head>
+<body>
+    <main class="event-page">
+        <header class="event-header">
+            <img class="event-logo" src="{% static 'event/media/big_air.png' %}" alt="Big Air">
+        </header>
+
+        <section class="event-card">
+            <h2 class="event-card-title">Votre équipe</h2>
+
+            <div class="event-meta">
+                <p class="event-meta-item">
+                    <strong>Duo :</strong><br>
+                    {{ team.participant_1 }} / {{ team.participant_2 }}
+                </p>
+
+                <p class="event-meta-item">
+                    <strong>Créneau :</strong><br>
+                    {{ team.phase.name }} — {{ team.phase.start_time }} / {{ team.phase.end_time }}
+                </p>
+
+                <p class="event-meta-item">
+                    <strong>Type :</strong>
+                    <span class="event-badge">{{ team.get_team_type_display }}</span>
+                </p>
+            </div>
+        </section>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="event-message">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if is_waiting_validation %}
+            <section class="event-card">
+                <h2 class="event-card-title">Inscription en attente</h2>
+
+                <p>Votre inscription est bien enregistrée.</p>
+                <p>Le paiement est en attente de validation par l’équipe staff.</p>
+                <p>Le topo et la saisie des résultats seront accessibles après validation.</p>
+            </section>
+        {% else %}
+            <div class="event-actions">
+                <a class="event-link-button" href="{% url 'event:team_ranking' token=team.access_token %}">
+                    Voir le classement
+                </a>
+            </div>
+
+            <section class="event-alert">
+                {% if is_phase_open %}
+                    <p>
+                        La saisie est ouverte pour votre créneau :
+                        <strong>{{ team.phase.start_time }} – {{ team.phase.end_time }}</strong>.
+                    </p>
+                {% else %}
+                    <p>
+                        La saisie est actuellement fermée.
+                    </p>
+                    <p>
+                        Les performances ne peuvent être modifiées qu’entre
+                        <strong>{{ team.phase.start_time }}</strong> et
+                        <strong>{{ team.phase.end_time }}</strong>.
+                    </p>
+                {% endif %}
+            </section>
+
+            <h2 class="event-section-title">Topo et résultats</h2>
+
+            {% if route_rows %}
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="route-list">
+                        {% for row in route_rows %}
+                            <article class="route-card">
+                                <div class="route-card-header">
+                                    <div>
+                                        <h3 class="route-title">
+                                            {{ row.route.ouverture.nom }}
+                                        </h3>
+                                        <p class="route-details">
+                                            Secteur {{ row.route.ouverture.relais }}
+                                            · {{ row.route.ouverture.niveau }}
+                                            · {{ row.route.ouverture.couleur }}
+                                        </p>
+                                        {% if row.route.has_zone %}
+                                            <span class="event-badge">Zone</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="route-order">
+                                        {{ row.route.display_order }}
+                                    </div>
+                                </div>
+
+                                <div class="participant-block">
+                                    <p class="participant-name">{{ team.participant_1 }}</p>
+
+                                    <div class="score-buttons {% if not row.route.has_zone %}one-button{% endif %}">
+                                        {% if row.route.has_zone %}
+                                            <label class="score-toggle">
+                                                <input
+                                                    type="checkbox"
+                                                    name="participant_{{ team.participant_1.id }}_route_{{ row.route.id }}_zone"
+                                                    {% if row.participant_1_performance.zone %}checked{% endif %}
+                                                    {% if not is_phase_open %}disabled{% endif %}
+                                                >
+                                                <span class="score-label">Zone</span>
+                                            </label>
+                                        {% endif %}
+
+                                        <label class="score-toggle">
+                                            <input
+                                                type="checkbox"
+                                                name="participant_{{ team.participant_1.id }}_route_{{ row.route.id }}_top"
+                                                {% if row.participant_1_performance.top %}checked{% endif %}
+                                                {% if not is_phase_open %}disabled{% endif %}
+                                            >
+                                            <span class="score-label">Top</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="participant-block">
+                                    <p class="participant-name">{{ team.participant_2 }}</p>
+
+                                    <div class="score-buttons {% if not row.route.has_zone %}one-button{% endif %}">
+                                        {% if row.route.has_zone %}
+                                            <label class="score-toggle">
+                                                <input
+                                                    type="checkbox"
+                                                    name="participant_{{ team.participant_2.id }}_route_{{ row.route.id }}_zone"
+                                                    {% if row.participant_2_performance.zone %}checked{% endif %}
+                                                    {% if not is_phase_open %}disabled{% endif %}
+                                                >
+                                                <span class="score-label">Zone</span>
+                                            </label>
+                                        {% endif %}
+
+                                        <label class="score-toggle">
+                                            <input
+                                                type="checkbox"
+                                                name="participant_{{ team.participant_2.id }}_route_{{ row.route.id }}_top"
+                                                {% if row.participant_2_performance.top %}checked{% endif %}
+                                                {% if not is_phase_open %}disabled{% endif %}
+                                            >
+                                            <span class="score-label">Top</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+
+                    {% if is_phase_open %}
+                        <div class="save-bar">
+                            <div class="save-bar-inner">
+                                <button class="event-button event-button-primary" type="submit">
+                                    Enregistrer les résultats
+                                </button>
+                            </div>
+                        </div>
+                    {% endif %}
+                </form>
+            {% else %}
+                <section class="event-card empty-state">
+                    <p>Le topo n’est pas encore disponible.</p>
+                </section>
+            {% endif %}
+        {% endif %}
+    </main>
+</body>
+</html>

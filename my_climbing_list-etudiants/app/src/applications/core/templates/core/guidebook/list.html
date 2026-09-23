@@ -1,0 +1,128 @@
+{% load static %}
+{% load i18n %}
+{% load ouverture_translate %}
+{% load core_extras %}
+<!-- En-tête voies -->
+<div id="voie-head" class="w-100 d-flex table-head{% if bloc %} d-none{% endif %}">
+    <div class="status-column"></div>
+    <div class="fw-bold py-2 title-column{% if map_display %} map-display{% endif %}">
+        {% trans "Propriétés" %}
+    </div>
+    <div class="fw-bold py-2 title-column toggle-column{% if map_display %} d-none map-display{% endif %}">
+        <span class="sortable-header">{% trans "Relais" %}</span>
+    </div>
+    <div class="fw-bold py-2 title-column{% if map_display %} map-display{% endif %}">
+        <span class="sortable-header">{% trans "Cotation" %}</span>
+    </div>
+    <div class="fw-bold py-2 title-column{% if map_display %} map-display{% endif %}">
+        {% trans "Couleur" %}
+    </div>
+</div>
+
+<!-- En-tête bloc -->
+<div id="bloc-head" class="w-100 d-flex table-head{% if not bloc %} d-none{% endif %}">
+    <div style="width: 10%;"></div>
+    <div class="fw-bold py-2 title-column{% if map_display %} map-display{% endif %}">
+        {% trans "Propriétés" %}
+    </div>
+    <div class="fw-bold py-2 title-column toggle-column{% if map_display %} d-none map-display{% endif %}">
+        <span class="sortable-header">{% trans "Secteur" %}</span>
+    </div>
+    <div class="fw-bold py-2 title-column{% if map_display %} map-display{% endif %}">
+        <span class="sortable-header">{% trans "Cotation" %}</span>
+    </div>
+    <div class="fw-bold py-2 title-column{% if map_display %} map-display{% endif %}">
+        {% trans "Couleur" %}
+    </div>
+</div>
+
+<!-- Wrapper pour les deux tables (Voies et Blocs) -->
+<div class="scrollable-container">
+    <!-- Tableau des voies -->
+    <div class="voie-table{% if bloc %} d-none{% endif %}">
+        <table class="table table-striped table-scrollable m-0">
+            <tbody>
+                {% for ouverture in voies_ouvertures %}
+                    <tr class="selectable-row{% if map_display %} d-none{% endif %}" data-id="{{ ouverture.id }}">
+                        <td class="status-column{% if map_display %} map-display{% endif %}">
+                            {% if ouverture.id in projets_ids %}
+                            <i class="fa-regular fa-square fa-lg" style="color: #39529E;" title="{% trans 'Projet' %}"></i>
+                            {% elif ouverture.id in ouvertures_reussies_ids %}
+                            <i class="fa-solid fa-square-check fa-lg" style="color: #32A852;" title="{% trans 'Réussie' %}"></i>
+                            {% elif ouverture.id in ouvertures_recentes_ids %}
+                            <i class="fa-solid fa-sparkles fa-lg" style="color: #FFB514;" title="{% trans 'Nouvelle' %}"></i>
+                            {% endif %}
+                            <i class="fa-solid fa-xmark fa-lg" title="{% trans 'Retirer' %}"></i>
+                        </td>
+                        <td class="{% if map_display %}map-display{% endif %}">
+                            <div class="style-profil-container">
+                                {% if ouverture.style %}
+                                <span class="style-profil fst-italic style-{{ ouverture.style|slugify }}">{{ ouverture.style|ouverture_style }}</span>
+                                {% endif %}
+                                {% if ouverture.profil %}
+                                <span class="style-profil fw-bold" style="background-color: #333;">{{ ouverture.profil|ouverture_profile }}</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td id="R{{ ouverture.relais }}" class="toggle-column{% if map_display %} d-none map-display{% endif %}">{{ ouverture.relais }}</td>
+                        <td class="{% if map_display %}map-display{% endif %}">
+                        {% if ouverture.id in ouvertures_recentes_ids and hide_cotation %}
+                            <i class="fa-solid fa-question" title="{% trans 'Cotation masquée' %}"></i>
+                        {% else %}
+                            <div class="circle-cotation" style="border-color: {{ ouverture.niveau_couleur }}">
+                                {{ ouverture.niveau }}
+                            </div>
+                        {% endif %}
+                        </td>
+                        <td class="fst-italic{% if map_display %} map-display{% endif %}">{{ ouverture.couleur|ouverture_color }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Tableau des blocs -->
+    <div class="bloc-table{% if not bloc %} d-none{% endif %}">
+        <table class="table table-striped table-scrollable m-0">
+            <tbody>
+                {% for ouverture in blocs_ouvertures %}
+                    <tr class="selectable-row{% if map_display %} d-none{% endif %}" data-id="{{ ouverture.id }}">
+                        <td class="status-column{% if map_display %} map-display{% endif %}">
+                            {% if ouverture.id in ouvertures_reussies_ids %}
+                            <i class="fa-solid fa-square-check fa-lg" style="color: #32A852;" title="{% trans 'Réussie' %}"></i>
+                            {% elif ouverture.id in projets_ids %}
+                            <i class="fa-regular fa-square fa-lg" style="color: #39529E;" title="{% trans 'Projet' %}"></i>
+                            {% elif ouverture.id in ouvertures_recentes_ids %}
+                            <i class="fa-solid fa-sparkles fa-lg" style="color: #FFB514;" title="{% trans 'Nouveau' %}"></i>
+                            {% endif %}
+                            <i class="fa-solid fa-xmark fa-lg" title="{% trans 'Retirer' %}"></i>
+                        </td>
+                        <td class="{% if map_display %}map-display{% endif %}">
+                            <div class="style-profil-container">
+                                {% if ouverture.style %}
+                                <span class="style-profil fst-italic style-{{ ouverture.style|slugify }}">{{ ouverture.style|ouverture_style }}</span>
+                                {% endif %}
+                                {% if ouverture.profil %}
+                                <span class="style-profil fw-bold" style="background-color: #333;">{{ ouverture.profil|ouverture_profile }}</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td id="S{{ ouverture.relais }}" class="toggle-column{% if map_display %} d-none map-display{% endif %}">{{ ouverture.relais }}</td>
+                        <td class="{% if map_display %}map-display{% endif %}">
+                        {% if ouverture.id in ouvertures_recentes_ids and hide_cotation %}
+                            <div class="circle-cotation" style="border-color: #607d8b">
+                                <i class="fa-solid fa-question" title="{% trans 'Cotation masquée' %}"></i>
+                            </div>
+                        {% else %}
+                            <div class="circle-cotation" style="border-color: {{ ouverture.niveau_couleur }}">
+                                {{ ouverture.niveau }}
+                            </div>
+                        {% endif %}
+                        </td>
+                        <td class="fst-italic{% if map_display %} map-display{% endif %}">{{ ouverture.couleur|ouverture_color }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

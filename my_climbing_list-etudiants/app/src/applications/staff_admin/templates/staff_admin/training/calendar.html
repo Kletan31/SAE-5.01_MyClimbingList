@@ -1,0 +1,372 @@
+{% extends "base/staff_admin_base.html" %}
+{% load i18n %}
+
+{% block head %}
+{{ block.super }}
+
+<style>
+/* =====================================
+   HEADER
+===================================== */
+
+.training-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.training-user {
+    text-align: center;
+    flex: 1;
+}
+
+.training-user strong {
+    font-size: 1.1rem;
+}
+
+.training-user small {
+    display: block;
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+
+.month-nav {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid #dee2e6;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #495057;
+    text-decoration: none;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.month-nav:hover {
+    background-color: #f1f3f5;
+}
+
+/* =====================================
+   CALENDAR
+===================================== */
+
+.calendar-wrapper {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.calendar-header {
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+/* =====================================
+   DAYS
+===================================== */
+
+.calendar-day {
+    height: 54px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.95rem;
+    color: #495057;
+}
+
+.calendar-day.empty {
+    background: transparent;
+}
+
+/* Week-end */
+.calendar-day.weekend {
+    background-color: #dfe0e1;
+}
+
+/* Séance présente */
+.calendar-day.has-seance {
+    background-color: #e7f1ff;
+    border: 1px solid #0d6efd;
+    color: #0d6efd;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* Jour courant */
+.calendar-day.today {
+    border: 1px solid #EE7F00;
+    font-weight: 700;
+}
+
+/* Hover */
+.calendar-day.has-seance:hover {
+    background-color: #d6e7ff;
+}
+
+/* Jour sélectionné */
+.calendar-day.selected {
+    background-color: #951B95;
+    color: #ffffff;
+    font-weight: 700;
+    border: 1px solid #951B95;
+}
+
+/* Survol du jour sélectionné */
+.calendar-day.selected:hover {
+    background-color: #7e157e;
+}
+
+/* =====================================
+   LEGEND
+===================================== */
+
+.calendar-legend {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.legend-box {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+.legend-box.has-seance {
+    background-color: #e7f1ff;
+    border-color: #0d6efd;
+}
+
+.legend-box.today {
+    border: 1px solid #EE7F00;
+    background: transparent;
+}
+</style>
+{% endblock %}
+
+{% block backLink %}{% url 'staff_admin:training_list' %}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <!-- ===========================
+         HEADER
+    ============================ -->
+    <div class="training-header">
+
+        <a class="month-nav"
+           href="?year={{ prev_year }}&month={{ prev_month }}"
+           aria-label="{% trans 'Mois précédent' %}">
+            ‹
+        </a>
+
+        <div class="training-user d-flex flex-column justify-content-between" style="height: 3.5vh;">
+            <div>
+                <strong>{{ climber.username }}</strong>
+            </div>
+            <div>
+                <small>{{ month_label|capfirst }} {{ year }}</small>
+            </div>
+        </div>
+
+
+        <a class="month-nav"
+           href="?year={{ next_year }}&month={{ next_month }}"
+           aria-label="{% trans 'Mois suivant' %}">
+            ›
+        </a>
+
+    </div>
+
+    <!-- ===========================
+         CALENDAR
+    ============================ -->
+    <div class="calendar-wrapper">
+
+        <div class="calendar-grid">
+
+            <!-- Headers -->
+            {% for d in weekdays %}
+                <div class="calendar-header">{{ d }}</div>
+            {% endfor %}
+
+            <!-- Days -->
+            {% for cell in calendar_days %}
+                {% if cell %}
+                    {% if cell.has_seance %}
+                        <a href="?year={{ year }}&month={{ month }}&day={{ cell.day }}"
+                           class="calendar-day
+                                  has-seance
+                                  {% if cell.weekday >= 5 %}weekend{% endif %}
+                                  {% if cell.is_today %}today{% endif %}
+                                  {% if cell.is_selected %}selected{% endif %}"
+                           aria-label="{% trans 'Voir les séances du jour' %} {{ cell.day }}">
+                            {{ cell.day }}
+                        </a>
+                    {% else %}
+                        <div class="calendar-day
+                                    {% if cell.weekday >= 5 %}weekend{% endif %}
+                                    {% if cell.is_today %}today{% endif %}">
+                            {{ cell.day }}
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="calendar-day empty"></div>
+                {% endif %}
+            {% endfor %}
+
+        </div>
+
+        <!-- ===========================
+             LEGEND
+        ============================ -->
+        <div class="calendar-legend">
+            <div class="legend-item">
+                <span class="legend-box"></span>
+                <span>{% trans "Aucune séance" %}</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-box has-seance"></span>
+                <span>{% trans "Séance enregistrée" %}</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-box today"></span>
+                <span>{% trans "Aujourd’hui" %}</span>
+            </div>
+        </div>
+
+    </div>
+
+    {% if selected_date %}
+
+        {% for salle in salles_data %}
+            <h5 class="mt-4">
+                {% trans "Détails de la séance du" %}
+                {{ selected_date|date:"d/m/Y" }}
+                • {{ salle.salle }}
+            </h5>
+
+            {# ========================= VOIES ========================= #}
+            {% if salle.voies %}
+                <h6 class="mt-3 text-primary">
+                    {% trans "Voies" %}
+                </h6>
+
+                {% for s in salle.voies %}
+                    <div class="card mb-2">
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <strong>{{ s.niveau }}</strong>
+                                <small class="text-muted">
+                                    {% trans "Relais" %} {{ s.relais }} · {{ s.couleur }}
+                                </small>
+                            </div>
+
+                            <hr class="my-2">
+
+                            <div>
+                                {% trans "Moulinette" %} :
+                                {{ s.nb_try }} {% trans "essais" %},
+                                {{ s.nb_top }} {% trans "tops" %}
+                                {% if s.flash %}
+                                    ·
+                                    <span class="badge"
+                                          style="background-color:#FFB514;">
+                                        Flash
+                                    </span>
+                                {% endif %}
+                            </div>
+
+                            {% if s.lead_allowed %}
+                                <div class="mt-1">
+                                    {% trans "Tête" %} :
+                                    {{ s.nb_try_lead }} {% trans "essais" %},
+                                    {{ s.nb_top_lead }} {% trans "tops" %}
+                                    {% if s.flash_lead %}
+                                        ·
+                                        <span class="badge"
+                                              style="background-color:#EE7F00;">
+                                            Flash
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {# ========================= BLOCS ========================= #}
+            {% if salle.blocs %}
+                <h6 class="mt-4 text-primary">
+                    {% trans "Blocs" %}
+                </h6>
+
+                {% for s in salle.blocs %}
+                    <div class="card mb-2">
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <strong>{{ s.niveau }}</strong>
+                                <small class="text-muted">
+                                    {% trans "Secteur" %} {{ s.relais }} · {{ s.couleur }}
+                                </small>
+                            </div>
+
+                            <hr class="my-2">
+
+                            <div>
+                                {{ s.nb_try }} {% trans "essais" %},
+                                {{ s.nb_top }} {% trans "tops" %}
+                                {% if s.flash %}
+                                    ·
+                                    <span class="badge"
+                                          style="background-color:#FFB514;">
+                                        Flash
+                                    </span>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+        {% empty %}
+            <p class="text-muted">
+                {% trans "Aucune séance ce jour-là." %}
+            </p>
+        {% endfor %}
+
+    {% endif %}
+
+</div>
+{% endblock %}
