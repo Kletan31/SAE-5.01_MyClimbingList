@@ -1,0 +1,3 @@
+import 'package:flutter/material.dart';
+import '../widgets/poc_card.dart';
+class ProjectsScreen extends StatelessWidget { const ProjectsScreen({super.key}); @override Widget build(BuildContext c) => SafeArea(child: ListView(padding: const EdgeInsets.all(20), children: [Text('Projets', style: Theme.of(c).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800)), const SizedBox(height: 20), const PocCard(title: 'Projet', subtitle: 'Objectif à définir', icon: Icons.flag_outlined), const SizedBox(height: 12), const PocCard(title: 'Projet', subtitle: 'Prototype sans données', icon: Icons.flag_outlined)])); }
