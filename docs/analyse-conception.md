@@ -118,7 +118,7 @@ Le choix d'une application native plutôt que de la conservation d'une web app r
 | Installation | Dépend du navigateur, pas de présence sur les stores | Installation standard via Play Store / App Store |
 | Performances | Dépend du moteur du navigateur mobile | Compilée, plus réactive |
 | Compatibilité terminaux | Hétérogène (l'appli actuelle ne fonctionne pas sur une bonne partie des Android non-Samsung) | Compatibilité large validée dès le développement (cible Android 7.0+) |
-| Visibilité / confiance utilisateur | Moindre, pas de d'affichage dans les stores | Plus grande visibilité |
+| Visibilité / confiance utilisateur | Moindre, pas d'affichage dans les stores | Plus grande visibilité |
 
 Ce choix implique en contrepartie une gestion des licences développeur (Apple/Google) et de la compilation iOS, pour laquelle le projet s'appuie sur une CI GitHub Actions et un accès physique à un Mac pour les premières compilations.
 
