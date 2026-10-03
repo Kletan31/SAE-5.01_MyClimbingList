@@ -32,6 +32,6 @@ Nos objectifs sont :
 
 Voir le dossier [`docs/`](./docs) :
 - [Comptes-rendus de réunion](./docs/comptes-rendus)
-- [Cahiers des charges](./cahier-des-charges)
-- [Informations licences de développement](./MCL-informations-licences-dev.pdf)
+- [Cahiers des charges](./docs/cahier-des-charges)
+- [Informations licences de développement](./docs/MCL-informations-licences-dev.pdf)
 - [Analyse & conception](./docs/analyse-conception.md)
