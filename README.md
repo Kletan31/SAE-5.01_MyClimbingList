@@ -2,14 +2,17 @@
 
 ## Description
 
-Projet étudiant (3e année BUT Informatique, IUT de Blagnac) réalisé pour Altissimo Concept.
-L'objectif est triple :
-1. Analyse détaillée de l'existant (bonnes pratiques, sécurité, documentation technique)
-2. Refactoring éventuel selon les conclusions de l'analyse
-3. Évolution vers une application mobile iOS et Android
+My Climbing List (MCL) est une application développée pour le réseau de salles d'escalade Altissimo.
+Elle permet notamment aux grimpeurs de sauvegarder leurs séances et suivre leur progression.
+La direction et le staff de Altissimo peuvent également consulter les statistiques de leur salles et organiser plus facilement leurs contests.
 
-MCL est une application de suivi de l'escalade indoor et d'organisation de contests,
-utilisée en conditions réelles par le réseau de salles Altissimo.
+Une première version a déjà été réalisée en format WebApp (Django, PostgreSQL et HTML/CSS/JS) par un grimpeur volontaire.
+Ce dernier ne pouvant continuer le développement, le projet est repris par notre équipe étudiante de 3e année de BUT Informatique à l'IUT de Blagnac.
+
+Nos objectifs sont :
+1. Analyser l'existant pour créer un cahier des charges et cadrer les fonctionnalités de MCL ;
+2. Refactorer l'application en conservant son apparence pour la transformer en app mobile (Symfony, MySQL et Flutter) disponible sur les stores ;
+3. Rédiger des documentations pour les éventuels futurs développeurs qui reprendront le projet.
 
 ## Équipe
 
@@ -22,31 +25,13 @@ utilisée en conditions réelles par le réseau de salles Altissimo.
 
 ## Client
 
-- **Société** : Altissimo Concept
-- **Contact/intermédiaire** : Fabrice Pelleau
-
-## État actuel du projet
-
-En cours de cadrage, recueil de besoins en cours avec le client.
-
-## Installation
-
-_À compléter_
-
-## Structure du projet
-
-_À compléter_
+- **Société** : Altissimo
+- **Intermédiaire client** : Fabrice PELLEAU
 
 ## Documentation
 
 Voir le dossier [`docs/`](./docs) :
 - [Comptes-rendus de réunion](./docs/comptes-rendus)
+- [Cahiers des charges](./cahier-des-charges)
+- [Informations licences de développement](./MCL-informations-licences-dev.pdf)
 - [Analyse & conception](./docs/analyse-conception.md)
-
-## Stack technique actuelle (existant, à confirmer)
-
-- Backend : Python / Django
-- Frontend : HTML / CSS / JavaScript (service worker)
-- Base de données : PostgreSQL
-- Conteneurisation : Docker
-- Hébergement : VPS OVH
