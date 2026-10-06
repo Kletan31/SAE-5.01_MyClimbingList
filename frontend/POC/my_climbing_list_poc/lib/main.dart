@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
-import 'screens/topo_screen.dart';
-import 'screens/session_screen.dart';
+import 'screens/contest_screen.dart';
+import 'screens/seance_screen.dart';
 import 'screens/projects_screen.dart';
 import 'screens/profile_screen.dart';
 import 'theme/app_theme.dart';
@@ -42,8 +42,8 @@ class _MainShellState extends State<MainShell> {
 
   final pages = const [
     HomeScreen(),
-    TopoScreen(),
-    SessionScreen(),
+    ContestScreen(),
+    SeanceScreen(),
     ProjectsScreen(),
     ProfileScreen(), // à remplacer par StatsScreen()
   ];

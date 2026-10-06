@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class TopoScreen extends StatelessWidget {
-  const TopoScreen({super.key});
+class ContestScreen extends StatelessWidget {
+  const ContestScreen({super.key});
   @override
   Widget build(BuildContext context) => SafeArea(child: ListView(padding: const EdgeInsets.all(20), children: [
     Text('Topo', style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800)),
