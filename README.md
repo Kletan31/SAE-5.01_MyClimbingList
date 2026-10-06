@@ -23,6 +23,10 @@ Nos objectifs sont :
 | Développeur | Rayan SABOUN |
 | Développeur | Eliot OLIVENCIA |
 
+## Présence de l'IA dans les commits Github
+
+Copilot a été utilisé temporairement pour corriger la configuration d'une Github Action après l'échec du runner. L'IA n'a pas généré de code ni de fonctionnalité dans le projet.
+
 ## Client
 
 - **Société** : Altissimo
