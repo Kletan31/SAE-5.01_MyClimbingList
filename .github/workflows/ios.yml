@@ -9,6 +9,9 @@ jobs:
   build-ios:
     runs-on: macos-latest
     timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: frontend/POC/my_climbing_list_poc
 
     steps:
       - uses: actions/checkout@v4
@@ -27,9 +30,9 @@ jobs:
       - run: flutter build ios --simulator --debug
       - run: |
           cd build/ios/iphonesimulator
-          zip -r "$GITHUB_WORKSPACE/Runner-simulator.zip" Runner.app
+          zip -r Runner-simulator.zip Runner.app
 
       - uses: actions/upload-artifact@v4
         with:
           name: ios-simulator
-          path: Runner-simulator.zip
+          path: frontend/POC/my_climbing_list_poc/build/ios/iphonesimulator/Runner-simulator.zip
