@@ -1,34 +1,39 @@
 name: iOS build
 
 on:
-  workflow_dispatch:        # lancement manuel depuis l'onglet Actions
-  # push:                   # décommente pour builder à chaque push
-  #   branches: [main]
+  workflow_dispatch:
 
 jobs:
   build-ios:
     runs-on: macos-latest
     timeout-minutes: 30
-    defaults:
-      run:
-        working-directory: frontend/POC/my_climbing_list_poc
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Où suis-je ?
+        run: |
+          pwd
+          ls -la
+          ls -la frontend/POC/my_climbing_list_poc
 
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true
 
-      - run: flutter pub get
+      - name: Dépendances
+        working-directory: frontend/POC/my_climbing_list_poc
+        run: flutter pub get
 
-      # Vérifie que l'app compile pour un iPhone, sans signature
-      - run: flutter build ios --release --no-codesign
+      - name: Build iOS sans signature
+        working-directory: frontend/POC/my_climbing_list_poc
+        run: flutter build ios --release --no-codesign
 
-      # Build pour le simulateur (utilisable avec Appetize)
-      - run: flutter build ios --simulator --debug
-      - run: |
+      - name: Build simulateur
+        working-directory: frontend/POC/my_climbing_list_poc
+        run: |
+          flutter build ios --simulator --debug
           cd build/ios/iphonesimulator
           zip -r Runner-simulator.zip Runner.app
 
