@@ -1,7 +1,15 @@
 {
   "salles": [
     {"id": 1, "nom": "Climb Up Toulouse", "image": "https://picsum.photos/seed/salle1/600/400", "localisation": "Toulouse"},
-    {"id": 2, "nom": "Block'Out Blagnac", "image": "https://picsum.photos/seed/salle2/600/400", "localisation": "Blagnac"}
+    {"id": 2, "nom": "Block'Out Blagnac", "image": "https://picsum.photos/seed/salle2/600/400", "localisation": "Blagnac"},
+    {"id": 3, "nom": "Arkose Toulouse", "image": "erreur image", "localisation": "Toulouse"},
+    {"id": 4, "nom": "Vertical'Art Toulouse", "image": "https://picsum.photos/seed/salle4/600/400", "localisation": "Toulouse"},
+    {"id": 5, "nom": "MurMur Toulouse", "image": "https://picsum.photos/seed/salle5/600/400", "localisation": "Toulouse"},
+    {"id": 6, "nom": "Climb Up Bordeaux", "image": "https://picsum.photos/seed/salle6/600/400", "localisation": "Bordeaux"},
+    {"id": 7, "nom": "Block'Out Bordeaux", "image": "https://picsum.photos/seed/salle7/600/400", "localisation": "Bordeaux"},
+    {"id": 8, "nom": "Arkose Bordeaux", "image": "https://picsum.photos/seed/salle8/600/400", "localisation": "Bordeaux"},
+    {"id": 9, "nom": "Vertical'Art Bordeaux", "image": "https://picsum.photos/seed/salle9/600/400", "localisation": "Bordeaux"},
+    {"id": 10, "nom": "MurMur Bordeaux", "image": "https://picsum.photos/seed/salle10/600/400", "localisation": "Bordeaux"}
   ],
   "lignes": [
     {
