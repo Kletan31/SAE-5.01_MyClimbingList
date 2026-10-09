@@ -1,0 +1,37 @@
+{
+  "salles": [
+    {"id": 1, "nom": "Climb Up Toulouse", "image": "https://picsum.photos/seed/salle1/600/400", "localisation": "Toulouse"},
+    {"id": 2, "nom": "Block'Out Blagnac", "image": "https://picsum.photos/seed/salle2/600/400", "localisation": "Blagnac"}
+  ],
+  "lignes": [
+    {
+      "id": 1, "user_id": 1, "salle_id": 1,
+      "type": "bloc", "proprietes": ["dévers", "réglettes"],
+      "cotation": "6A", "couleur": "#E53935",
+      "date_creation": "2026-09-12", "relais": null, "secteur": "Secteur A"
+    },
+    {
+      "id": 2, "user_id": 1, "salle_id": 2,
+      "type": "voie", "proprietes": ["dalle", "technique"],
+      "cotation": "5C", "couleur": "#1E88E5",
+      "date_creation": "2026-09-20", "relais": 2, "secteur": "Mur principal"
+    }
+  ],
+  "users": [
+    {
+      "id": 1, "nom": "Dupont", "prenom": "Léa", "nom_utilisateur": "lea_d",
+      "mot_de_passe": "mock1234", "mail": "lea@example.com",
+      "genre": "F", "date_inscription": "2026-08-01"
+    }
+  ],
+  "suivis": [
+    {"id_utilisateur": 1, "id_salle": 1},
+    {"id_utilisateur": 1, "id_salle": null}
+  ],
+  "contests": [
+    {
+      "id": 1, "nom": "Open d'automne", "id_salles": [1, 2],
+      "date_debut": "2026-11-15", "date_fin": "2026-11-16", "statut": "a_venir"
+    }
+  ]
+}
