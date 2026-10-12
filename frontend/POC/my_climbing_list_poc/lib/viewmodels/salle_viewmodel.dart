@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:my_climbing_list_poc/models/salle.dart';
+import 'package:my_climbing_list_poc/models/salle_model.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
 
 class SalleViewModel extends ChangeNotifier {
