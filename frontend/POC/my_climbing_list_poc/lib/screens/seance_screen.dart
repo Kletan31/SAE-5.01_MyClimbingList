@@ -1,35 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/salle.dart';
 import '../services/api_service.dart';
-import '../services/mock_api_service.dart';
+import '../viewmodels/salle_viewmodel.dart';
 
-class SeanceScreen extends StatefulWidget {
+class SeanceScreen extends StatelessWidget {
   const SeanceScreen({super.key});
+
   @override
-  State<SeanceScreen> createState() => _SeanceScreenState();
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+        // context.read<ApiService>() récupère celui déclaré dans main.dart
+        create: (context) =>
+            SalleViewModel(context.read<ApiService>())..charger(),
+        child: const _SeanceView(),
+      );
 }
 
-class _SeanceScreenState extends State<SeanceScreen> {
-  // POC : instancié en dur ici, à terme injecté via le viewmodel
-  final ApiService _api = MockApiService();
-  late final Future<List<Salle>> _salles = _api.getSalles();
+class _SeanceView extends StatelessWidget {
+  const _SeanceView();
 
   @override
-  Widget build(BuildContext context) => SafeArea(
-        child: FutureBuilder<List<Salle>>(
-          future: _salles,
-          builder: (context, snap) {
-            if (snap.hasError) return Center(child: Text('Erreur : ${snap.error}'));
-            if (!snap.hasData) return const Center(child: CircularProgressIndicator());
-            final salles = snap.data!;
-            return ListView.separated(
-              itemCount: salles.length,
-              separatorBuilder: (_, __) => const Divider(height: 1),
-              itemBuilder: (_, i) => _SalleCard(salle: salles[i]),
-            );
-          },
-        ),
-      );
+  Widget build(BuildContext context) {
+    // watch : l'écran se redessine à chaque notifyListeners() du viewmodel
+    final vm = context.watch<SalleViewModel>();
+
+    return SafeArea(
+      child: vm.chargement
+          ? const Center(child: CircularProgressIndicator())
+          : vm.erreur != null
+              ? Center(child: Text('Erreur : ${vm.erreur}'))
+              : ListView.separated(
+                  itemCount: vm.salles.length,
+                  separatorBuilder: (_, __) => const Divider(height: 1),
+                  itemBuilder: (_, i) => _SalleCard(salle: vm.salles[i]),
+                ),
+    );
+  }
 }
 
 class _SalleCard extends StatelessWidget {
@@ -58,7 +64,8 @@ class _SalleCard extends StatelessWidget {
           ),
           const SizedBox(width: 16),
           Expanded(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(children: [
                 // Nom : vient de l'API
                 Flexible(

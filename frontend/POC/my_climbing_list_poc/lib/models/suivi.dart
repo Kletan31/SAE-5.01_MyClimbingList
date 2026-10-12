@@ -8,4 +8,7 @@ class Suivi {
         idUtilisateur: j['id_utilisateur'],
         idSalle: j['id_salle'],
       );
+
+  Map<String, dynamic> toJson() =>
+      {'id_utilisateur': idUtilisateur, 'id_salle': idSalle};
 }

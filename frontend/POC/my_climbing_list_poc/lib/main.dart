@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:my_climbing_list_poc/services/api_service.dart';
+import 'package:my_climbing_list_poc/services/mock_api_service.dart';
+import 'package:provider/provider.dart';
 import 'screens/home_screen.dart';
 import 'screens/contest_screen.dart';
 import 'screens/seance_screen.dart';
 import 'screens/projects_screen.dart';
 import 'screens/profile_screen.dart';
 import 'theme/app_theme.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'widgets/app_header.dart';
 
 void main() {
-  runApp(const MyClimbingListApp());
+  runApp(
+    Provider<ApiService>(
+      create: (_) => MockApiService(),
+      child: const MyClimbingListApp(),
+    ),
+  );
 }
 
 class MyClimbingListApp extends StatelessWidget {

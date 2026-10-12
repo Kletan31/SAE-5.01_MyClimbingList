@@ -1,40 +1,186 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/services.dart';
+import 'package:my_climbing_list_poc/models/contest.dart';
 import 'package:my_climbing_list_poc/models/ligne.dart';
 import 'package:my_climbing_list_poc/models/salle.dart';
+import 'package:my_climbing_list_poc/models/suivi.dart';
+import 'package:my_climbing_list_poc/models/user.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
-import 'package:my_climbing_list_poc/models/contest.dart';
 
 class MockApiService implements ApiService {
   Map<String, dynamic>? _cache;
 
   Future<Map<String, dynamic>> _data() async {
-    // chargé une seule fois, puis gardé en mémoire
     return _cache ??= jsonDecode(
       await rootBundle.loadString('assets/mock/data.json'),
     ) as Map<String, dynamic>;
   }
 
-  @override
-  Future<List<Salle>> getSalles() async {
+  // ---------- Helpers génériques, communs à toutes les ressources ----------
+
+  // La liste (modifiable) d'une table : "salles", "lignes", ...
+  Future<List<Map<String, dynamic>>> _table(String name) async {
     final d = await _data();
-    return (d['salles'] as List).map((e) => Salle.fromJson(e)).toList();
+    return (d[name] as List).cast<Map<String, dynamic>>();
+  }
+
+  Future<Map<String, dynamic>?> _find(String table, int id) async {
+    final rows = await _table(table);
+    final i = rows.indexWhere((r) => r['id'] == id);
+    return i == -1 ? null : rows[i];
+  }
+
+  // Simule le serveur : attribue l'id (plus grand existant + 1)
+  Future<Map<String, dynamic>> _insert(
+      String table, Map<String, dynamic> json) async {
+    final rows = await _table(table);
+    final id = rows.fold<int>(0, (m, r) => max(m, r['id'] as int)) + 1;
+    final created = {...json, 'id': id};
+    rows.add(created);
+    return created;
+  }
+
+  Future<void> _replace(String table, int id, Map<String, dynamic> json) async {
+    final rows = await _table(table);
+    final i = rows.indexWhere((r) => r['id'] == id);
+    if (i == -1) throw Exception('$table/$id introuvable');
+    rows[i] = json;
+  }
+
+  Future<void> _remove(String table, int id) async =>
+      (await _table(table)).removeWhere((r) => r['id'] == id);
+
+  // ---------- Salles ----------
+  @override
+  Future<List<Salle>> getSalles() async =>
+      (await _table('salles')).map(Salle.fromJson).toList();
+
+  @override
+  Future<Salle?> getSalle(int id) async {
+    final r = await _find('salles', id);
+    return r == null ? null : Salle.fromJson(r);
   }
 
   @override
-  Future<List<Ligne>> getLignes({int? salleId, int? userId}) async {
-    final d = await _data();
-    return (d['lignes'] as List)
-        .map((e) => Ligne.fromJson(e))
-        .where((l) =>
-            (salleId == null || l.salleId == salleId) &&
-            (userId == null || l.userId == userId))
-        .toList();
+  Future<Salle> createSalle(Salle s) async =>
+      Salle.fromJson(await _insert('salles', s.toJson()));
+
+  @override
+  Future<Salle> updateSalle(Salle s) async {
+    await _replace('salles', s.id, s.toJson());
+    return s;
   }
 
   @override
-  Future<List<Contest>> getContests() async {
-    final d = await _data();
-    return (d['contests'] as List).map((e) => Contest.fromJson(e)).toList();
+  Future<void> deleteSalle(int id) => _remove('salles', id);
+
+  // ---------- Lignes ----------
+  @override
+  Future<List<Ligne>> getLignes({int? salleId, int? userId}) async =>
+      (await _table('lignes'))
+          .map(Ligne.fromJson)
+          .where((l) =>
+              (salleId == null || l.salleId == salleId) &&
+              (userId == null || l.userId == userId))
+          .toList();
+
+  @override
+  Future<Ligne?> getLigne(int id) async {
+    final r = await _find('lignes', id);
+    return r == null ? null : Ligne.fromJson(r);
+  }
+
+  @override
+  Future<Ligne> createLigne(Ligne l) async =>
+      Ligne.fromJson(await _insert('lignes', l.toJson()));
+
+  @override
+  Future<Ligne> updateLigne(Ligne l) async {
+    await _replace('lignes', l.id, l.toJson());
+    return l;
+  }
+
+  @override
+  Future<void> deleteLigne(int id) => _remove('lignes', id);
+
+  // ---------- Users, Contests : exactement le même schéma ----------
+  // getUsers / getUser / createUser / updateUser / deleteUser     -> table 'users'
+  // getContests / getContest / createContest / updateContest / deleteContest -> table 'contests'
+
+  // ---------- Suivis (pas d'id, donc pas de helpers) ----------
+  @override
+  Future<List<Suivi>> getSuivis(int userId) async => (await _table('suivis'))
+      .map(Suivi.fromJson)
+      .where((s) => s.idUtilisateur == userId)
+      .toList();
+
+  @override
+  Future<void> addSuivi(Suivi s) async =>
+      (await _table('suivis')).add(s.toJson());
+
+  @override
+  Future<void> removeSuivi(Suivi s) async =>
+      (await _table('suivis')).removeWhere((r) =>
+          r['id_utilisateur'] == s.idUtilisateur && r['id_salle'] == s.idSalle);
+
+  @override
+  Future<Contest> createContest(Contest contest) {
+    // TODO: implement createContest
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<User> createUser(User user) {
+    // TODO: implement createUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteContest(int id) {
+    // TODO: implement deleteContest
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteUser(int id) {
+    // TODO: implement deleteUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Contest?> getContest(int id) {
+    // TODO: implement getContest
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Contest>> getContests() {
+    // TODO: implement getContests
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<User?> getUser(int id) {
+    // TODO: implement getUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<User>> getUsers() {
+    // TODO: implement getUsers
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Contest> updateContest(Contest contest) {
+    // TODO: implement updateContest
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<User> updateUser(User user) {
+    // TODO: implement updateUser
+    throw UnimplementedError();
   }
 }

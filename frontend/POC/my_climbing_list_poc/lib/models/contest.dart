@@ -4,7 +4,13 @@ class Contest {
   final List<int> idSalles;
   final DateTime dateDebut, dateFin;
 
-  Contest({required this.id, required this.nom, required this.statut, required this.idSalles, required this.dateDebut, required this.dateFin});
+  Contest(
+      {required this.id,
+      required this.nom,
+      required this.statut,
+      required this.idSalles,
+      required this.dateDebut,
+      required this.dateFin});
 
   factory Contest.fromJson(Map<String, dynamic> j) => Contest(
         id: j['id'],
@@ -14,4 +20,13 @@ class Contest {
         dateDebut: DateTime.parse(j['date_debut']),
         dateFin: DateTime.parse(j['date_fin']),
       );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'nom': nom,
+        'statut': statut,
+        'id_salles': idSalles,
+        'date_debut': dateDebut.toIso8601String().split('T').first,
+        'date_fin': dateFin.toIso8601String().split('T').first,
+      };
 }
