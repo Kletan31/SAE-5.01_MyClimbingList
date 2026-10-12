@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/salle.dart';
+import '../models/salle_model.dart';
 import '../services/api_service.dart';
 import '../viewmodels/salle_viewmodel.dart';
 

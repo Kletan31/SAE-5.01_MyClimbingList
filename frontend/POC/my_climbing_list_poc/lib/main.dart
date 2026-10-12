@@ -3,7 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
 import 'package:my_climbing_list_poc/services/mock_api_service.dart';
 import 'package:provider/provider.dart';
-import 'screens/home_screen.dart';
+import 'screens/home/home_screen.dart';
 import 'screens/contest_screen.dart';
 import 'screens/seance_screen.dart';
 import 'screens/projects_screen.dart';
