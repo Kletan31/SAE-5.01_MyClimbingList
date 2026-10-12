@@ -1,8 +1,8 @@
-import 'package:my_climbing_list_poc/models/contest.dart';
-import 'package:my_climbing_list_poc/models/ligne.dart';
-import 'package:my_climbing_list_poc/models/salle.dart';
-import 'package:my_climbing_list_poc/models/suivi.dart';
-import 'package:my_climbing_list_poc/models/user.dart';
+import 'package:my_climbing_list_poc/models/contest_model.dart';
+import 'package:my_climbing_list_poc/models/ligne_model.dart';
+import 'package:my_climbing_list_poc/models/salle_model.dart';
+import 'package:my_climbing_list_poc/models/suivi_model.dart';
+import 'package:my_climbing_list_poc/models/user_model.dart';
 
 abstract class ApiService {
   // Salles : GET/POST /salles, GET/PUT/DELETE /salles/{id}
