@@ -104,11 +104,6 @@ class MockApiService implements ApiService {
   @override
   Future<void> deleteLigne(int id) => _remove('lignes', id);
 
-  // ---------- Users, Contests : exactement le même schéma ----------
-  // getUsers / getUser / createUser / updateUser / deleteUser     -> table 'users'
-  // getContests / getContest / createContest / updateContest / deleteContest -> table 'contests'
-
-  // ---------- Suivis (pas d'id, donc pas de helpers) ----------
   @override
   Future<List<Suivi>> getSuivis(int userId) async => (await _table('suivis'))
       .map(Suivi.fromJson)
@@ -124,63 +119,51 @@ class MockApiService implements ApiService {
       (await _table('suivis')).removeWhere((r) =>
           r['id_utilisateur'] == s.idUtilisateur && r['id_salle'] == s.idSalle);
 
+  // ---------- Users ----------
   @override
-  Future<Contest> createContest(Contest contest) {
-    // TODO: implement createContest
-    throw UnimplementedError();
+  Future<List<User>> getUsers() async =>
+      (await _table('users')).map(User.fromJson).toList();
+
+  @override
+  Future<User?> getUser(int id) async {
+    final r = await _find('users', id);
+    return r == null ? null : User.fromJson(r);
   }
 
   @override
-  Future<User> createUser(User user) {
-    // TODO: implement createUser
-    throw UnimplementedError();
+  Future<User> createUser(User u) async =>
+      User.fromJson(await _insert('users', u.toJson()));
+
+  @override
+  Future<User> updateUser(User u) async {
+    await _replace('users', u.id, u.toJson());
+    return u;
   }
 
   @override
-  Future<void> deleteContest(int id) {
-    // TODO: implement deleteContest
-    throw UnimplementedError();
+  Future<void> deleteUser(int id) => _remove('users', id);
+
+  // ---------- Contests ----------
+  @override
+  Future<List<Contest>> getContests() async =>
+      (await _table('contests')).map(Contest.fromJson).toList();
+
+  @override
+  Future<Contest?> getContest(int id) async {
+    final r = await _find('contests', id);
+    return r == null ? null : Contest.fromJson(r);
   }
 
   @override
-  Future<void> deleteUser(int id) {
-    // TODO: implement deleteUser
-    throw UnimplementedError();
+  Future<Contest> createContest(Contest c) async =>
+      Contest.fromJson(await _insert('contests', c.toJson()));
+
+  @override
+  Future<Contest> updateContest(Contest c) async {
+    await _replace('contests', c.id, c.toJson());
+    return c;
   }
 
   @override
-  Future<Contest?> getContest(int id) {
-    // TODO: implement getContest
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<Contest>> getContests() {
-    // TODO: implement getContests
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<User?> getUser(int id) {
-    // TODO: implement getUser
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<User>> getUsers() {
-    // TODO: implement getUsers
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Contest> updateContest(Contest contest) {
-    // TODO: implement updateContest
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<User> updateUser(User user) {
-    // TODO: implement updateUser
-    throw UnimplementedError();
-  }
+  Future<void> deleteContest(int id) => _remove('contests', id);
 }
