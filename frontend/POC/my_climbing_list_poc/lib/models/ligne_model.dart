@@ -1,7 +1,10 @@
+enum TypeLigne { voie, bloc }
+
 class Ligne {
   final int id, userId, salleId;
   final int? relais;
-  final String type, cotation, couleur, secteur;
+  final String? secteur;
+  final String type, cotation, couleur;
   final List<String> proprietes;
   final DateTime dateCreation;
 
