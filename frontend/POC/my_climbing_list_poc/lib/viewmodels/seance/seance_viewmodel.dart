@@ -40,4 +40,12 @@ class SalleViewModel extends ChangeNotifier {
     salles = salles.where((s) => s.id != id).toList();
     notifyListeners();
   }
+
+  void mettreFavori(int salleId) {
+    print("Salle $salleId mise en favori");
+  }
+
+  void afficherStats(int salleId) {
+    print("Affichage stats $salleId");
+  }
 }
