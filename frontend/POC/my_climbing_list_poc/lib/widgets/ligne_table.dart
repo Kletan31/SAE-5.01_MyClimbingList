@@ -12,14 +12,17 @@ class LigneTable extends StatelessWidget {
   final bool afficherRelais;
   final bool Function(int ligneId) estFaite;
   final void Function(int ligneId) onToggle;
+  final bool Function(int ligneId) estSelectionnee;
+  final void Function(int ligneId) onSelect;
 
-  const LigneTable({
-    super.key,
-    required this.lignes,
-    required this.afficherRelais,
-    required this.estFaite,
-    required this.onToggle,
-  });
+  const LigneTable(
+      {super.key,
+      required this.lignes,
+      required this.afficherRelais,
+      required this.estFaite,
+      required this.onToggle,
+      required this.estSelectionnee,
+      required this.onSelect});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class LigneTable extends StatelessWidget {
       Expanded(
         child: ListView.builder(
           itemCount: lignes.length,
-          itemBuilder: (_, i) => _ligne(lignes[i], i),
+          itemBuilder: (context, i) => _ligne(context, lignes[i], i),
         ),
       ),
     ]);
@@ -67,12 +70,16 @@ class LigneTable extends StatelessWidget {
     );
   }
 
-  // --- Une ligne du tableau ---
-  Widget _ligne(Ligne l, int i) => Container(
-        color: i.isEven ? Colors.grey.shade100 : null, // fond alterné
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Row(children: [
-          // Case à cocher (ou l'étincelle si l.nouvelle)
+  Widget _ligne(BuildContext context, Ligne l, int i) => ListTile(
+        selected: estSelectionnee(l.id),
+        selectedTileColor:
+            Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
+        selectedColor: Theme.of(context).colorScheme.onSurface,
+        tileColor: i.isEven ? Colors.grey.shade100 : null,
+        onTap: () => onSelect(l.id),
+        contentPadding: EdgeInsets.zero,
+        minVerticalPadding: 8,
+        title: Row(children: [
           SizedBox(
             width: _largeurCase,
             child: Checkbox(

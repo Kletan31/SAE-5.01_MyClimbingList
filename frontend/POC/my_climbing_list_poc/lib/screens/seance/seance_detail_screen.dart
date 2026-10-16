@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
+import 'package:my_climbing_list_poc/screens/seance/ajout_seance_screen.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
 import 'package:my_climbing_list_poc/viewmodels/seance/seance_detail_viewmodel.dart';
 import 'package:my_climbing_list_poc/widgets/app_header.dart';
@@ -48,13 +49,24 @@ class _SeanceDetailView extends StatelessWidget {
                             vm.vueCarte ? const _VueCarte() : const _VueListe(),
                       ),
                     ]),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: vm.aSelection // null = pas de bouton
+          ? FloatingActionButton.extended(
+              heroTag: null, // évite un conflit d'animation entre pages
+              icon: const Icon(Icons.add),
+              label: Text('Ajouter ma séance (${vm.nbSelection})'),
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) =>
+                      AjoutSeanceScreen(lignes: vm.lignesSelectionnees),
+                ),
+              ),
+            )
+          : null,
     );
   }
 }
 
-// ---------------------------------------------------------------------------
-// Bandeau : double bouton Voie/Bloc + bouton carte/liste
-// ---------------------------------------------------------------------------
 class _BandeauSuperieur extends StatelessWidget {
   const _BandeauSuperieur();
 
@@ -88,9 +100,6 @@ class _BandeauSuperieur extends StatelessWidget {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Vue carte : placeholder 2D + tableau du secteur sélectionné
-// ---------------------------------------------------------------------------
 class _VueCarte extends StatelessWidget {
   const _VueCarte();
 
@@ -115,15 +124,14 @@ class _VueCarte extends StatelessWidget {
           afficherRelais: false,
           estFaite: vm.estFaite,
           onToggle: vm.basculerFait,
+          estSelectionnee: vm.estSelectionnee,
+          onSelect: vm.basculerSelection,
         ),
       ),
     ]);
   }
 }
 
-// ---------------------------------------------------------------------------
-// Vue liste : toutes les lignes de la salle, filtrées voie/bloc
-// ---------------------------------------------------------------------------
 class _VueListe extends StatelessWidget {
   const _VueListe();
 
@@ -136,6 +144,8 @@ class _VueListe extends StatelessWidget {
       afficherRelais: true,
       estFaite: vm.estFaite,
       onToggle: vm.basculerFait,
+      estSelectionnee: vm.estSelectionnee,
+      onSelect: vm.basculerSelection,
     );
   }
 }

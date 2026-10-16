@@ -15,11 +15,18 @@ class SeanceDetailViewModel extends ChangeNotifier {
   TypeLigne type = TypeLigne.voie; // le double bouton
   bool vueCarte = true; // le bouton carte/liste
   String? secteur; // secteur sélectionné (vue carte)
+  final Set<int> _selection = {}; // ids des lignes sélectionnées
+
+  bool estSelectionnee(int ligneId) => _selection.contains(ligneId);
+  bool get aSelection => _selection.isNotEmpty; // pilote l'affichage du bouton
+  int get nbSelection => _selection.length;
 
   List<Ligne> _lignes = [];
   final Set<int> _fait = {}; // ids des lignes cochées
 
-  // --- getters : ce que la vue affiche ---
+  List<Ligne> get lignesSelectionnees =>
+      _lignes.where((l) => _selection.contains(l.id)).toList();
+
   // Vue liste : toute la salle, filtrée voie/bloc
   List<Ligne> get lignesFiltrees =>
       _lignes.where((l) => l.type == type.name).toList();
@@ -83,5 +90,18 @@ class SeanceDetailViewModel extends ChangeNotifier {
     notifyListeners();
     // puis on persiste (écriture dans data.json côté mock, route Symfony plus tard)
     // await _api.enregistrerSuivi(ligneId, _fait.contains(ligneId));
+  }
+
+  void basculerSelection(int ligneId) {
+    // remove() retire l'id et renvoie true s'il était présent.
+    // S'il n'y était pas (false), on l'ajoute : clic sur une ligne
+    // déjà sélectionnée = désélection.
+    if (!_selection.remove(ligneId)) _selection.add(ligneId);
+    notifyListeners(); // redessine l'écran
+  }
+
+  void viderSelection() {
+    _selection.clear();
+    notifyListeners();
   }
 }
