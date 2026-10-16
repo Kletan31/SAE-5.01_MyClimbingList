@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../services/api_service.dart';
-import '../../viewmodels/home_viewmodel.dart';
+import '../../viewmodels/home/home_viewmodel.dart';
 import 'package:intl/intl.dart';
+import '../../widgets/grade_badge.dart';
 import 'session_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -143,7 +144,7 @@ class _SessionTile extends StatelessWidget {
             const SizedBox(height: 40, child: VerticalDivider(width: 24)),
             _Stat(valeur: '${session.tops}', label: 'Top'),
             const SizedBox(width: 20),
-            _MaxBadge(cotation: session.max),
+            GradeBadge(cotation: session.max, label: 'Max'),
           ]),
         ),
       );
@@ -159,27 +160,5 @@ class _Stat extends StatelessWidget {
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
         const SizedBox(height: 4),
         Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
-      ]);
-}
-
-class _MaxBadge extends StatelessWidget {
-  final String? cotation;
-  const _MaxBadge({required this.cotation});
-
-  @override
-  Widget build(BuildContext context) => Column(children: [
-        Container(
-          width: 36,
-          height: 36,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-          ),
-          child: Text(cotation ?? '-',
-              style:
-                  const TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
-        ),
-        const SizedBox(height: 2),
-        const Text('Max', style: TextStyle(fontSize: 11, color: Colors.grey)),
       ]);
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
-import 'package:my_climbing_list_poc/viewmodels/home_viewmodel.dart';
+import 'package:my_climbing_list_poc/viewmodels/home/home_viewmodel.dart';
 
 /// Cotations affichées dans l'histogramme : 5a, 5b, 5c, 6a ... 9c
 final List<String> cotationsHistogramme = [

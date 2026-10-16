@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../viewmodels/home_viewmodel.dart';
-import '../../viewmodels/session_detail_viewmodel.dart';
+import '../../viewmodels/home/home_viewmodel.dart';
+import '../../viewmodels/home/session_detail_viewmodel.dart';
 import '../../widgets/app_header.dart';
+import '../../widgets/grade_badge.dart';
 
 class SessionDetailScreen extends StatelessWidget {
   final Session session;
@@ -95,16 +96,10 @@ class _LigneTile extends StatelessWidget {
       title: Text(vm.libelleRelais(l),
           style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic)),
       subtitle: Text(vm.libelleProprietes(l)),
-      trailing: Container(
-        width: 40,
-        height: 40,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.lightBlue, width: 2),
-        ),
-        child: Text(vm.libelleCotation(l),
-            style: const TextStyle(fontWeight: FontWeight.w700)),
+      trailing: GradeBadge(
+        cotation: vm.libelleCotation(l),
+        size: 40,
+        fontSize: 14,
       ),
     );
   }
