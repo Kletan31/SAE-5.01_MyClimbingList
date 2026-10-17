@@ -11,7 +11,6 @@ import 'screens/seance/seance_screen.dart';
 import 'screens/projects_screen.dart';
 import 'screens/profile_screen.dart';
 import 'theme/app_theme.dart';
-import 'widgets/app_header.dart';
 
 void main() {
   runApp(
