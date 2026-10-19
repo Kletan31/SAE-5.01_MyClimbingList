@@ -1,7 +1,7 @@
 # Document d'analyse et de conception
 ## Refonte de l'application My Climbing List (MCL)
 
-**Équipe :** Ethan JOUSSEIN, Elliot OLIVENCIA, Rayan SABOUN, Axel MOYANO
+**Équipe :** Ethan JOUSSEIN, Eliot OLIVENCIA, Rayan SABOUN, Axel MOYANO
 
 **Client :** Altissimo
 
