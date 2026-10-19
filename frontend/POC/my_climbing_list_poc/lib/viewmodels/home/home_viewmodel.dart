@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:my_climbing_list_poc/models/grimpe_model.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
 
@@ -19,24 +20,31 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       final salles = await _api.getSalles();
-      final noms = {for (final s in salles) s.id: s.nom};
-      final lignes = await _api.getLignes(userId: _userId);
-
-      // Une séance = même salle + même jour + même type
-      final groupes = <String, List<Ligne>>{};
-      for (final l in lignes) {
-        final d = l.dateCreation;
-        groupes
-            .putIfAbsent(
-                '${l.salleId}|${d.year}-${d.month}-${d.day}|${l.type}', () => [])
-            .add(l);
-      }
+      final nomsSalles = {for (final s in salles) s.id: s.nom};
+      final lignes = {for (final l in await _api.getLignes()) l.id: l};
+      final seances = await _api.getSeances(userId: _userId);
+      final grimpes = await _api.getGrimpes();
 
       sessions = [
-        for (final g in groupes.values)
-          Session(
-              nom: noms[g.first.salleId] ?? 'Salle ${g.first.salleId}',
-              lignes: g),
+        for (final s in seances)
+          () {
+            final items = [
+              for (final g in grimpes.where((g) => g.idSeance == s.idSeance))
+                if (lignes[g.idLigne] != null)
+                  LigneGrimpee(ligne: lignes[g.idLigne]!, grimpe: g),
+            ];
+            // Une séance peut toucher plusieurs salles (via ses lignes)
+            final noms = {
+              for (final i in items)
+                nomsSalles[i.ligne.salleId] ?? 'Salle ${i.ligne.salleId}'
+            };
+            return Session(
+              id: s.idSeance,
+              date: s.date,
+              nom: noms.isEmpty ? 'Séance' : noms.join(', '),
+              items: items,
+            );
+          }(),
       ]..sort((a, b) => b.date.compareTo(a.date));
     } catch (e) {
       erreur = e.toString();
@@ -61,18 +69,41 @@ class HomeViewModel extends ChangeNotifier {
       cotationMax(sessionsSemaine.map((s) => s.max).whereType<String>());
 }
 
-/// Séance calculée à partir des [Ligne] de l'API.
-class Session {
-  final String nom;
-  final List<Ligne> lignes;
-  Session({required this.nom, required this.lignes});
+/// Une ligne grimpée pendant une séance (jointure grimpe + ligne).
+class LigneGrimpee {
+  final Ligne ligne;
+  final Grimpe grimpe;
+  LigneGrimpee({required this.ligne, required this.grimpe});
+}
 
-  DateTime get date => lignes.first.dateCreation;
-  bool get estBloc => lignes.first.type.toLowerCase().contains('bloc');
-  int get ascents => lignes.length;
-  // POC : un "top" = ligne dont les propriétés contiennent "top"
-  int get tops => lignes.where((l) => l.proprietes.contains('top')).length;
-  String? get max => cotationMax(lignes.map((l) => l.cotation));
+/// Séance construite à partir de [Seance], [Grimpe] et [Ligne] de l'API.
+class Session {
+  final int id;
+  final DateTime date;
+  final String nom;
+  final List<LigneGrimpee> items;
+  Session(
+      {required this.id,
+      required this.date,
+      required this.nom,
+      required this.items});
+
+  bool get _toutBloc =>
+      items.every((i) => i.ligne.type.toLowerCase().contains('bloc'));
+  bool get _toutVoie =>
+      items.every((i) => !i.ligne.type.toLowerCase().contains('bloc'));
+  String get typeLabel =>
+      items.isEmpty ? '-' : (_toutBloc ? 'Boulder' : (_toutVoie ? 'Route' : 'Mixte'));
+
+  /// Ascent = nombre total de montées
+  int get ascents => items.fold(0, (t, i) => t + i.grimpe.montee);
+
+  /// Top = nombre de lignes réussies
+  int get tops => items.fold(0, (t, i) => t + i.grimpe.top);
+
+  /// Max = cotation la plus haute parmi les lignes réussies
+  String? get max => cotationMax(
+      items.where((i) => i.grimpe.top > 0).map((i) => i.ligne.cotation));
 }
 
 /// "6a" -> 60, "6a+" -> 61, "6b" -> 63 ... inconnu -> -1

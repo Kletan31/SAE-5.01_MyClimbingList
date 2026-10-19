@@ -127,7 +127,7 @@ class _SessionTile extends StatelessWidget {
                           color: Colors.grey.shade200,
                           borderRadius: BorderRadius.circular(6),
                         ),
-                        child: Text(session.estBloc ? 'Boulder' : 'Route',
+                        child: Text(session.typeLabel,
                             style: const TextStyle(
                                 fontSize: 9, color: Colors.black87)),
                       ),

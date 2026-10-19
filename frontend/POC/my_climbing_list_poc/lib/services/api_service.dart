@@ -1,6 +1,8 @@
 import 'package:my_climbing_list_poc/models/contest_model.dart';
+import 'package:my_climbing_list_poc/models/grimpe_model.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
 import 'package:my_climbing_list_poc/models/salle_model.dart';
+import 'package:my_climbing_list_poc/models/seance_model.dart';
 import 'package:my_climbing_list_poc/models/suivi_model.dart';
 import 'package:my_climbing_list_poc/models/user_model.dart';
 
@@ -37,4 +39,18 @@ abstract class ApiService {
   Future<Contest> createContest(Contest contest);
   Future<Contest> updateContest(Contest contest);
   Future<void> deleteContest(int id);
+
+  // Séances (clé : id_seance)
+  Future<List<Seance>> getSeances({int? userId});
+  Future<Seance?> getSeance(int id);
+  Future<Seance> createSeance(Seance seance);
+  Future<Seance> updateSeance(Seance seance);
+  Future<void> deleteSeance(int id);
+
+  // Grimpes (clé : id_grimpe)
+  Future<List<Grimpe>> getGrimpes({int? seanceId, int? ligneId});
+  Future<Grimpe?> getGrimpe(int id);
+  Future<Grimpe> createGrimpe(Grimpe grimpe);
+  Future<Grimpe> updateGrimpe(Grimpe grimpe);
+  Future<void> deleteGrimpe(int id);
 }

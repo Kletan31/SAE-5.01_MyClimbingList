@@ -1,7 +1,7 @@
 enum TypeLigne { voie, bloc }
 
 class Ligne {
-  final int id, userId, salleId;
+  final int id, salleId;
   final int? relais;
   final String? secteur;
   final String type, cotation, couleur;
@@ -10,7 +10,6 @@ class Ligne {
 
   Ligne(
       {required this.id,
-      required this.userId,
       required this.salleId,
       this.relais,
       required this.type,
@@ -22,7 +21,6 @@ class Ligne {
 
   factory Ligne.fromJson(Map<String, dynamic> j) => Ligne(
         id: j['id'],
-        userId: j['user_id'],
         salleId: j['salle_id'],
         relais: j['relais'],
         type: j['type'],
@@ -35,7 +33,6 @@ class Ligne {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'user_id': userId,
         'salle_id': salleId,
         'relais': relais,
         'type': type,
