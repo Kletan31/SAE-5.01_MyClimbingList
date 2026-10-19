@@ -95,7 +95,8 @@ class _LigneTile extends StatelessWidget {
     return ListTile(
       title: Text(vm.libelleRelais(l),
           style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic)),
-      subtitle: Text(vm.libelleProprietes(l)),
+      subtitle: Text('${vm.libelleProprietes(l)}\n${vm.libelleResultat(l)}'),
+      isThreeLine: true,
       trailing: GradeBadge(
         cotation: vm.libelleCotation(l),
         size: 40,

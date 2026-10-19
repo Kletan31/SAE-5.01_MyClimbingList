@@ -13,109 +13,109 @@
   ],
   "lignes": [
     {
-      "id": 1, "user_id": 1, "salle_id": 1,
+      "id": 1, "salle_id": 1,
       "type": "bloc", "proprietes": ["dévers", "réglettes"],
       "cotation": "6A", "couleur": "Rose",
       "date_creation": "2026-09-12", "relais": null, "secteur": "Secteur A"
     },
     {
-      "id": 2, "user_id": 1, "salle_id": 2,
+      "id": 2, "salle_id": 2,
       "type": "voie", "proprietes": ["dalle", "technique"],
       "cotation": "5C", "couleur": "Jaune",
       "date_creation": "2026-09-20", "relais": 2, "secteur": "Mur principal"
     },
     {
-      "id": 3, "user_id": 1, "salle_id": 1,
+      "id": 3, "salle_id": 1,
       "type": "voie", "proprietes": ["dalle", "équilibre"],
       "cotation": "5B", "couleur": "Bleu",
       "date_creation": "2026-09-13", "relais": 1, "secteur": "Secteur A"
     },
     {
-      "id": 4, "user_id": 1, "salle_id": 1,
+      "id": 4, "salle_id": 1,
       "type": "voie", "proprietes": ["vertical", "prises franches"],
       "cotation": "6A", "couleur": "Verte",
       "date_creation": "2026-09-14", "relais": 3, "secteur": "Secteur B"
     },
     {
-      "id": 5, "user_id": 1, "salle_id": 1,
+      "id": 5, "salle_id": 1,
       "type": "voie", "proprietes": ["dévers", "puissance"],
       "cotation": "6B", "couleur": "Orange",
       "date_creation": "2026-09-15", "relais": 4, "secteur": "Secteur B"
     },
     {
-      "id": 6, "user_id": 1, "salle_id": 1,
+      "id": 6, "salle_id": 1,
       "type": "bloc", "proprietes": ["compression", "réglettes"],
       "cotation": "6B", "couleur": "Violet",
       "date_creation": "2026-09-16", "relais": null, "secteur": "Bloc central"
     },
     {
-      "id": 7, "user_id": 1, "salle_id": 1,
+      "id": 7, "salle_id": 1,
       "type": "bloc", "proprietes": ["coordination", "dynamique"],
       "cotation": "6C", "couleur": "Blanc",
       "date_creation": "2026-09-17", "relais": null, "secteur": "Bloc central"
     },
     {
-      "id": 8, "user_id": 1, "salle_id": 2,
+      "id": 8, "salle_id": 2,
       "type": "voie", "proprietes": ["vertical", "réglettes"],
       "cotation": "6A+", "couleur": "Rouge",
       "date_creation": "2026-09-21", "relais": 5, "secteur": "Mur principal"
     },
     {
-      "id": 9, "user_id": 1, "salle_id": 2,
+      "id": 9, "salle_id": 2,
       "type": "voie", "proprietes": ["dévers", "réglette"],
       "cotation": "6B", "couleur": "Verte",
       "date_creation": "2026-09-22", "relais": 6, "secteur": "Mur principal"
     },
     {
-      "id": 10, "user_id": 1, "salle_id": 2,
+      "id": 10, "salle_id": 2,
       "type": "bloc", "proprietes": ["dalle", "équilibre"],
       "cotation": "5C", "couleur": "Bleu",
       "date_creation": "2026-09-23", "relais": null, "secteur": "Zone blocs"
     },
     {
-      "id": 11, "user_id": 1, "salle_id": 2,
+      "id": 11, "salle_id": 2,
       "type": "bloc", "proprietes": ["puissance", "dynamique"],
       "cotation": "6A", "couleur": "Rose",
       "date_creation": "2026-09-24", "relais": null, "secteur": "Zone blocs"
     },
     {
-      "id": 12, "user_id": 1, "salle_id": 2,
+      "id": 12, "salle_id": 2,
       "type": "bloc", "proprietes": ["coordination", "dévers"],
       "cotation": "6B+", "couleur": "Jaune",
       "date_creation": "2026-09-25", "relais": null, "secteur": "Zone blocs"
     },
     {
-      "id": 13, "user_id": 1, "salle_id": 3,
+      "id": 13, "salle_id": 3,
       "type": "voie", "proprietes": ["dalle", "technique"],
       "cotation": "5A", "couleur": "Jaune",
       "date_creation": "2026-09-26", "relais": 7, "secteur": "Grande salle"
     },
     {
-      "id": 14, "user_id": 1, "salle_id": 3,
+      "id": 14, "salle_id": 3,
       "type": "voie", "proprietes": ["vertical", "équilibre"],
       "cotation": "5C", "couleur": "Bleu",
       "date_creation": "2026-09-27", "relais": 8, "secteur": "Grande salle"
     },
     {
-      "id": 15, "user_id": 1, "salle_id": 3,
+      "id": 15, "salle_id": 3,
       "type": "voie", "proprietes": ["dévers", "puissance"],
       "cotation": "6A", "couleur": "Orange",
       "date_creation": "2026-09-28", "relais": 9, "secteur": "Grande salle"
     },
     {
-      "id": 16, "user_id": 1, "salle_id": 3,
+      "id": 16, "salle_id": 3,
       "type": "bloc", "proprietes": ["compression", "réglettes"],
       "cotation": "6A", "couleur": "Violet",
       "date_creation": "2026-09-29", "relais": null, "secteur": "Zone blocs"
     },
     {
-      "id": 17, "user_id": 1, "salle_id": 3,
+      "id": 17, "salle_id": 3,
       "type": "bloc", "proprietes": ["coordination", "dynamique"],
       "cotation": "6B", "couleur": "Rouge",
       "date_creation": "2026-09-30", "relais": null, "secteur": "Zone blocs"
     },
     {
-      "id": 18, "user_id": 1, "salle_id": 3,
+      "id": 18, "salle_id": 3,
       "type": "bloc", "proprietes": ["dalle", "technique"],
       "cotation": "5C", "couleur": "Verte",
       "date_creation": "2026-10-01", "relais": null, "secteur": "Zone blocs"
@@ -137,5 +137,22 @@
       "id": 1, "nom": "Open d'automne", "id_salles": [1, 2],
       "date_debut": "2026-11-15", "date_fin": "2026-11-16", "statut": "a_venir"
     }
+  ],
+  "seance": [
+    {"id_seance" : 1, "id_user" : 1, "date" : "2026-10-16"},
+    {"id_seance" : 2, "id_user" : 1, "date" : "2026-10-17"},
+    {"id_seance" : 3, "id_user" : 1, "date" : "2026-10-19"}
+  ],
+  "grimpe": [
+    {"id_grimpe" : 1, "id_seance" : 1, "id_ligne" : 1, "montee" : 3, "top" : 1, "flash" : true},
+    {"id_grimpe" : 2, "id_seance" : 1, "id_ligne" : 3, "montee" : 1, "top" : 0, "flash" : false},
+    {"id_grimpe" : 3, "id_seance" : 1, "id_ligne" : 4, "montee" : 4, "top" : 1, "flash" : true},
+    {"id_grimpe" : 4, "id_seance" : 1, "id_ligne" : 5, "montee" : 1, "top" : 1, "flash" : false},
+    {"id_grimpe" : 5, "id_seance" : 1, "id_ligne" : 6, "montee" : 8, "top" : 1, "flash" : false},
+    {"id_grimpe" : 6, "id_seance" : 1, "id_ligne" : 7, "montee" : 4, "top" : 0, "flash" : false},
+    {"id_grimpe" : 7, "id_seance" : 2, "id_ligne" : 2, "montee" : 2, "top" : 0, "flash" : false},
+    {"id_grimpe" : 8, "id_seance" : 2, "id_ligne" : 8, "montee" : 1, "top" : 1, "flash" : false},
+    {"id_grimpe" : 9, "id_seance" : 2, "id_ligne" : 9, "montee" : 1, "top" : 1, "flash" : false},
+    {"id_grimpe" : 10, "id_seance" : 3, "id_ligne" : 13, "montee" : 9, "top" : 1, "flash" : false}
   ]
 }

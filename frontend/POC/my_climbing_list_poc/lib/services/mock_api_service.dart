@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:my_climbing_list_poc/models/contest_model.dart';
+import 'package:my_climbing_list_poc/models/grimpe_model.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
 import 'package:my_climbing_list_poc/models/salle_model.dart';
+import 'package:my_climbing_list_poc/models/seance_model.dart';
 import 'package:my_climbing_list_poc/models/suivi_model.dart';
 import 'package:my_climbing_list_poc/models/user_model.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
@@ -25,31 +27,34 @@ class MockApiService implements ApiService {
     return (d[name] as List).cast<Map<String, dynamic>>();
   }
 
-  Future<Map<String, dynamic>?> _find(String table, int id) async {
+  Future<Map<String, dynamic>?> _find(String table, int id,
+      {String idKey = 'id'}) async {
     final rows = await _table(table);
-    final i = rows.indexWhere((r) => r['id'] == id);
+    final i = rows.indexWhere((r) => r[idKey] == id);
     return i == -1 ? null : rows[i];
   }
 
   // Simule le serveur : attribue l'id (plus grand existant + 1)
   Future<Map<String, dynamic>> _insert(
-      String table, Map<String, dynamic> json) async {
+      String table, Map<String, dynamic> json,
+      {String idKey = 'id'}) async {
     final rows = await _table(table);
-    final id = rows.fold<int>(0, (m, r) => max(m, r['id'] as int)) + 1;
-    final created = {...json, 'id': id};
+    final id = rows.fold<int>(0, (m, r) => max(m, r[idKey] as int)) + 1;
+    final created = {...json, idKey: id};
     rows.add(created);
     return created;
   }
 
-  Future<void> _replace(String table, int id, Map<String, dynamic> json) async {
+  Future<void> _replace(String table, int id, Map<String, dynamic> json,
+      {String idKey = 'id'}) async {
     final rows = await _table(table);
-    final i = rows.indexWhere((r) => r['id'] == id);
+    final i = rows.indexWhere((r) => r[idKey] == id);
     if (i == -1) throw Exception('$table/$id introuvable');
     rows[i] = json;
   }
 
-  Future<void> _remove(String table, int id) async =>
-      (await _table(table)).removeWhere((r) => r['id'] == id);
+  Future<void> _remove(String table, int id, {String idKey = 'id'}) async =>
+      (await _table(table)).removeWhere((r) => r[idKey] == id);
 
   // ---------- Salles ----------
   @override
@@ -77,13 +82,26 @@ class MockApiService implements ApiService {
 
   // ---------- Lignes ----------
   @override
-  Future<List<Ligne>> getLignes({int? salleId, int? userId}) async =>
-      (await _table('lignes'))
-          .map(Ligne.fromJson)
-          .where((l) =>
-              (salleId == null || l.salleId == salleId) &&
-              (userId == null || l.userId == userId))
-          .toList();
+  Future<List<Ligne>> getLignes({int? salleId, int? userId}) async {
+    // Lignes grimpées par l'utilisateur : grimpe -> séance -> user
+    Set<int>? ligneIds;
+    if (userId != null) {
+      final seanceIds = (await _table('seance'))
+          .where((s) => s['id_user'] == userId)
+          .map((s) => s['id_seance'] as int)
+          .toSet();
+      ligneIds = (await _table('grimpe'))
+          .where((g) => seanceIds.contains(g['id_seance']))
+          .map((g) => g['id_ligne'] as int)
+          .toSet();
+    }
+    return (await _table('lignes'))
+        .map(Ligne.fromJson)
+        .where((l) =>
+            (salleId == null || l.salleId == salleId) &&
+            (ligneIds == null || ligneIds.contains(l.id)))
+        .toList();
+  }
 
   @override
   Future<Ligne?> getLigne(int id) async {
@@ -166,4 +184,64 @@ class MockApiService implements ApiService {
 
   @override
   Future<void> deleteContest(int id) => _remove('contests', id);
+
+  // ---------- Séances ----------
+  @override
+  Future<List<Seance>> getSeances({int? userId}) async =>
+      (await _table('seance'))
+          .map(Seance.fromJson)
+          .where((s) => userId == null || s.idUser == userId)
+          .toList();
+
+  @override
+  Future<Seance?> getSeance(int id) async {
+    final r = await _find('seance', id, idKey: 'id_seance');
+    return r == null ? null : Seance.fromJson(r);
+  }
+
+  @override
+  Future<Seance> createSeance(Seance s) async => Seance.fromJson(
+      await _insert('seance', s.toJson(), idKey: 'id_seance'));
+
+  @override
+  Future<Seance> updateSeance(Seance s) async {
+    await _replace('seance', s.idSeance, s.toJson(), idKey: 'id_seance');
+    return s;
+  }
+
+  // Suppression en cascade : les grimpes de la séance disparaissent aussi
+  @override
+  Future<void> deleteSeance(int id) async {
+    (await _table('grimpe')).removeWhere((r) => r['id_seance'] == id);
+    await _remove('seance', id, idKey: 'id_seance');
+  }
+
+  // ---------- Grimpes ----------
+  @override
+  Future<List<Grimpe>> getGrimpes({int? seanceId, int? ligneId}) async =>
+      (await _table('grimpe'))
+          .map(Grimpe.fromJson)
+          .where((g) =>
+              (seanceId == null || g.idSeance == seanceId) &&
+              (ligneId == null || g.idLigne == ligneId))
+          .toList();
+
+  @override
+  Future<Grimpe?> getGrimpe(int id) async {
+    final r = await _find('grimpe', id, idKey: 'id_grimpe');
+    return r == null ? null : Grimpe.fromJson(r);
+  }
+
+  @override
+  Future<Grimpe> createGrimpe(Grimpe g) async => Grimpe.fromJson(
+      await _insert('grimpe', g.toJson(), idKey: 'id_grimpe'));
+
+  @override
+  Future<Grimpe> updateGrimpe(Grimpe g) async {
+    await _replace('grimpe', g.idGrimpe, g.toJson(), idKey: 'id_grimpe');
+    return g;
+  }
+
+  @override
+  Future<void> deleteGrimpe(int id) => _remove('grimpe', id, idKey: 'id_grimpe');
 }
