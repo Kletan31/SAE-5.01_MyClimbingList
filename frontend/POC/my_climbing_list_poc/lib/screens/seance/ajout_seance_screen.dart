@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
+import 'package:my_climbing_list_poc/main.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
 import 'package:my_climbing_list_poc/viewmodels/seance/ajout_seance_viewmodel.dart';
 import 'package:my_climbing_list_poc/widgets/app_header.dart';
@@ -67,8 +68,11 @@ Future<void> _enregistrer(BuildContext context, AjoutSeanceViewModel vm) async {
   final ok = await vm.enregistrer();
   if (!context.mounted) return; // l'écran a pu être fermé pendant l'attente
   if (ok) {
-    // Séance enregistrée : on renvoie une liste vide, la sélection est à vider
-    Navigator.pop(context, <Ligne>[]);
+    // Séance enregistrée : retour à l'accueil, premier onglet de MainShell.
+    Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const MainShell()),
+          (route) => false,
+        );
   } else {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(vm.erreur ?? 'Erreur')));
