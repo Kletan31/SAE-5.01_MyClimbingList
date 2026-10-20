@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../screens/account_screen.dart';
+import '../screens/account/account_screen.dart';
 
 class AppHeader extends StatelessWidget implements PreferredSizeWidget {
   final String title;
