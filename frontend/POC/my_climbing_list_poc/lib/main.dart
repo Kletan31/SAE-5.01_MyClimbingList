@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:my_climbing_list_poc/services/api_events.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
 import 'package:my_climbing_list_poc/services/mock_api_service.dart';
 import 'package:my_climbing_list_poc/widgets/tab_navigator.dart';
@@ -14,8 +15,18 @@ import 'theme/app_theme.dart';
 
 void main() {
   runApp(
-    Provider<ApiService>(
-      create: (_) => MockApiService(),
+    MultiProvider(
+      providers: [
+        // À déclarer avant ApiService, qui le reçoit
+        Provider<ApiEvents>(
+          create: (_) => ApiEvents(),
+          dispose: (_, events) => events.dispose(),
+        ),
+        Provider<ApiService>(
+          // Seul endroit qui connaît le mock. Plus tard : HttpApiService(...)
+          create: (context) => MockApiService(context.read<ApiEvents>()),
+        ),
+      ],
       child: const MyClimbingListApp(),
     ),
   );
