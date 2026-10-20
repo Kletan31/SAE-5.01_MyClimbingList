@@ -35,8 +35,7 @@ class MockApiService implements ApiService {
   }
 
   // Simule le serveur : attribue l'id (plus grand existant + 1)
-  Future<Map<String, dynamic>> _insert(
-      String table, Map<String, dynamic> json,
+  Future<Map<String, dynamic>> _insert(String table, Map<String, dynamic> json,
       {String idKey = 'id'}) async {
     final rows = await _table(table);
     final id = rows.fold<int>(0, (m, r) => max(m, r[idKey] as int)) + 1;
@@ -200,8 +199,8 @@ class MockApiService implements ApiService {
   }
 
   @override
-  Future<Seance> createSeance(Seance s) async => Seance.fromJson(
-      await _insert('seance', s.toJson(), idKey: 'id_seance'));
+  Future<Seance> createSeance(Seance s) async =>
+      Seance.fromJson(await _insert('seance', s.toJson(), idKey: 'id_seance'));
 
   @override
   Future<Seance> updateSeance(Seance s) async {
@@ -233,8 +232,8 @@ class MockApiService implements ApiService {
   }
 
   @override
-  Future<Grimpe> createGrimpe(Grimpe g) async => Grimpe.fromJson(
-      await _insert('grimpe', g.toJson(), idKey: 'id_grimpe'));
+  Future<Grimpe> createGrimpe(Grimpe g) async =>
+      Grimpe.fromJson(await _insert('grimpe', g.toJson(), idKey: 'id_grimpe'));
 
   @override
   Future<Grimpe> updateGrimpe(Grimpe g) async {
@@ -243,5 +242,6 @@ class MockApiService implements ApiService {
   }
 
   @override
-  Future<void> deleteGrimpe(int id) => _remove('grimpe', id, idKey: 'id_grimpe');
+  Future<void> deleteGrimpe(int id) =>
+      _remove('grimpe', id, idKey: 'id_grimpe');
 }
