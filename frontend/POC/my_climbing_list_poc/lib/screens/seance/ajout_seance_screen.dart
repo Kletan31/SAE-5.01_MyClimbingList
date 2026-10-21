@@ -8,7 +8,7 @@ import 'package:my_climbing_list_poc/viewmodels/seance/ajout_seance_viewmodel.da
 import 'package:my_climbing_list_poc/widgets/app_header.dart';
 
 class AjoutSeanceScreen extends StatelessWidget {
-  final List<Ligne> lignes; // les lignes choisies sur la page précédente
+  final List<Ligne> lignes; // lignes choisies sur la page précédente
   const AjoutSeanceScreen({super.key, required this.lignes});
 
   @override
@@ -33,7 +33,7 @@ class _AjoutSeanceView extends StatelessWidget {
         const Divider(height: 1),
         Expanded(
           child: ListView.separated(
-            itemCount: vm.entrees.length + 1, // +1 : le bouton "Ajouter"
+            itemCount: vm.entrees.length + 1,
             separatorBuilder: (_, __) => const Divider(height: 1),
             itemBuilder: (_, i) => i == vm.entrees.length
                 ? const _AjouterOuverture()
@@ -68,18 +68,17 @@ Future<void> _enregistrer(BuildContext context, AjoutSeanceViewModel vm) async {
   final ok = await vm.enregistrer();
   if (!context.mounted) return; // l'écran a pu être fermé pendant l'attente
   if (ok) {
-    // Séance enregistrée : retour à l'accueil, premier onglet de MainShell.
+    // retour à l'accueil (premier onglet de MainShell)
     Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const MainShell()),
-          (route) => false,
-        );
+      MaterialPageRoute(builder: (_) => const MainShell()),
+      (route) => false,
+    );
   } else {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(vm.erreur ?? 'Erreur')));
   }
 }
 
-// ---------- Date ----------
 class _DateSelector extends StatelessWidget {
   const _DateSelector();
 
@@ -105,19 +104,17 @@ Future<void> _choisirDate(BuildContext context, AjoutSeanceViewModel vm) async {
     context: context,
     initialDate: vm.date,
     firstDate: DateTime(2020),
-    lastDate: DateTime.now(), // pas de séance dans le futur
+    lastDate: DateTime.now(), // empêche de sélectionner une date future
   );
   if (choisie != null) vm.changerDate(choisie);
 }
 
-// ---------- Une ligne de la séance ----------
 class _LigneSeanceCard extends StatelessWidget {
   final LigneSeance entree;
   const _LigneSeanceCard({super.key, required this.entree});
 
   @override
   Widget build(BuildContext context) {
-    // read : on ne fait qu'appeler des actions, pas besoin d'écouter ici
     final vm = context.read<AjoutSeanceViewModel>();
     final ligne = entree.ligne;
     final titre = ligne.relais != null
@@ -137,14 +134,33 @@ class _LigneSeanceCard extends StatelessWidget {
                     ?.copyWith(fontWeight: FontWeight.bold)),
           ),
           const SizedBox(width: 8),
-          // Nom de la couleur de la ligne, comme sur la maquette : [Jaune]
           Text('[${ligne.couleur}]',
               style:
                   TextStyle(fontSize: 12, color: Theme.of(context).hintColor)),
           const Spacer(),
-          // Infobulle au toucher (par défaut, il faudrait un appui long)
           const Tooltip(
-            message: 'Texte bidon : informations sur la ligne', // POC
+            // message: 'Montée : un essai\nTop : essai sans chute\nFlash : premier essai sans chute', // POC
+            richMessage: TextSpan(children: <TextSpan>[
+              TextSpan(
+                text: 'Montée',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(
+                text: ' : un essai\n',
+              ),
+              TextSpan(
+                text: 'Top',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(
+                text: ' : essai sans chute\n',
+              ),
+              TextSpan(
+                text: 'Flash',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(text: ': premier essai sans chute')
+            ]),
             triggerMode: TooltipTriggerMode.tap,
             child: Padding(
                 padding: EdgeInsets.all(8), child: Icon(Icons.info_outline)),
@@ -154,7 +170,7 @@ class _LigneSeanceCard extends StatelessWidget {
             onPressed: () => vm.retirer(entree),
           ),
         ]),
-        // POC : "Moulinette" et le badge sont en dur, le modèle Ligne n'a que bloc/voie
+        // POC : moulinette et badge sont en dur
         const Row(children: [
           Text('Moulinette'),
           SizedBox(width: 6),
@@ -197,7 +213,6 @@ class _Badge extends StatelessWidget {
       );
 }
 
-// Widget réutilisé deux fois (Montée, Top) : [-] [valeur] [+] avec le libellé dessous
 class _Compteur extends StatelessWidget {
   final String label;
   final int valeur;
@@ -242,7 +257,6 @@ class _Compteur extends StatelessWidget {
       );
 }
 
-// ---------- Ajouter une ouverture ----------
 class _AjouterOuverture extends StatelessWidget {
   const _AjouterOuverture();
 

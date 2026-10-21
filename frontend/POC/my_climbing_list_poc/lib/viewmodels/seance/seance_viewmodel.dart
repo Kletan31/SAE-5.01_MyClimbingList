@@ -25,13 +25,15 @@ class SalleViewModel extends ChangeNotifier {
 
   Future<void> ajouter(Salle s) async {
     final creee = await _api.createSalle(s);
-    salles = [...salles, creee];
+    salles = [...salles, creee]; // opérateur spread : copie de la liste + ajout de l'élément
     notifyListeners();
   }
 
   Future<void> modifier(Salle s) async {
     final maj = await _api.updateSalle(s);
-    salles = [for (final x in salles) x.id == maj.id ? maj : x];
+    salles = salles
+    .map((salle) => salle.id == maj.id ? maj : salle)
+    .toList();
     notifyListeners();
   }
 

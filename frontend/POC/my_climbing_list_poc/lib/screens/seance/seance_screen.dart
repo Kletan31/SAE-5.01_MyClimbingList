@@ -22,7 +22,7 @@ class _SeanceView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // watch : l'écran se redessine à chaque notifyListeners() du viewmodel
+    // l'écran se redessine à chaque notifyListeners() du viewmodel
     final vm = context.watch<SalleViewModel>();
 
     return SafeArea(
@@ -53,7 +53,7 @@ class _SalleCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            // Image : vient de l'API
+            // TEMPORAIRE : image à modifier
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
@@ -75,7 +75,6 @@ class _SalleCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(children: [
-                      // Nom : vient de l'API
                       Flexible(
                         child: Text(salle.nom,
                             overflow: TextOverflow.ellipsis,
@@ -85,7 +84,7 @@ class _SalleCard extends StatelessWidget {
                                 ?.copyWith(fontWeight: FontWeight.w600)),
                       ),
                       const SizedBox(width: 8),
-                      // POC : favori non branché
+                      // POC : favori appelle une méthode vide
                       IconButton(
                           onPressed: () => {
                                 context
@@ -95,7 +94,7 @@ class _SalleCard extends StatelessWidget {
                           icon: Icon(Icons.star_border, size: 22)),
                     ]),
                     const SizedBox(height: 8),
-                    // POC : progressions en dur
+                    // POC : progressions en dur 
                     const _Progression(label: 'Voie', valeur: 0),
                     const SizedBox(height: 10),
                     const _Progression(label: 'Bloc', valeur: 0),
@@ -112,7 +111,8 @@ class _SalleCard extends StatelessWidget {
       );
 }
 
-// POC : widget temporaire, les % viendront des vraies données (suivi des lignes)
+// POC : widget temporaire, les % viendront des vraies données 
+// à refaire une fois l'API intégrée
 class _Progression extends StatelessWidget {
   final String label;
   final double valeur; // entre 0 et 1

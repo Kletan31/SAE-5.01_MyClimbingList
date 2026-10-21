@@ -17,13 +17,12 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        // À déclarer avant ApiService, qui le reçoit
         Provider<ApiEvents>(
           create: (_) => ApiEvents(),
           dispose: (_, events) => events.dispose(),
         ),
         Provider<ApiService>(
-          // Seul endroit qui connaît le mock. Plus tard : HttpApiService(...)
+          // TODO : mock API à remplacer par HttpApiService(...)
           create: (context) => MockApiService(context.read<ApiEvents>()),
         ),
       ],

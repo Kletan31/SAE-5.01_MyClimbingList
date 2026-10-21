@@ -44,7 +44,7 @@ class _SeanceDetailView extends StatelessWidget {
                   : Column(children: [
                       const _BandeauSuperieur(),
                       Expanded(
-                        // carte (mock) ou liste selon le bouton du bandeau
+                        // carte mock ou liste selon le bouton du bandeau
                         child:
                             vm.vueCarte ? const _VueCarte() : const _VueListe(),
                       ),
@@ -77,7 +77,7 @@ class _BandeauSuperieur extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
       child: Row(children: [
-        const SizedBox(width: 48), // équilibre l'icône de droite pour centrer
+        const SizedBox(width: 48),
         Expanded(
           child: Center(
             child: SegmentedButton<TypeLigne>(
@@ -109,7 +109,6 @@ class _VueCarte extends StatelessWidget {
 
     return Column(children: [
       // TODO: remplacer par la carte 2D interactive
-      // (au clic sur un secteur : vm.choisirSecteur(n))
       Expanded(
         flex: 3,
         child: Container(
