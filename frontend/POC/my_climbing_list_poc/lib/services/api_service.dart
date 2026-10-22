@@ -28,7 +28,7 @@ abstract class ApiService {
   Future<User> updateUser(User user);
   Future<void> deleteUser(int id);
 
-  // Suivis (pas d'id : la clé est le couple utilisateur / salle)
+  // Suivis
   Future<List<Suivi>> getSuivis(int userId);
   Future<void> addSuivi(Suivi suivi);
   Future<void> removeSuivi(Suivi suivi);
@@ -40,14 +40,14 @@ abstract class ApiService {
   Future<Contest> updateContest(Contest contest);
   Future<void> deleteContest(int id);
 
-  // Séances (clé : id_seance)
+  // Séances
   Future<List<Seance>> getSeances({int? userId});
   Future<Seance?> getSeance(int id);
   Future<Seance> createSeance(Seance seance);
   Future<Seance> updateSeance(Seance seance);
   Future<void> deleteSeance(int id);
 
-  // Grimpes (clé : id_grimpe)
+  // Grimpes
   Future<List<Grimpe>> getGrimpes({int? seanceId, int? ligneId});
   Future<Grimpe?> getGrimpe(int id);
   Future<Grimpe> createGrimpe(Grimpe grimpe);
