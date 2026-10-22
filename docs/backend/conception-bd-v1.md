@@ -1,4 +1,3 @@
-Todo
 # Base de donnée 
 utilisateur(id (INT), email (VARCHAR(180)), roles (JSON), password (VARCHAR(255)), nom (VARCHAR(100)), prenom (VARCHAR(100)), genre (VARCHAR(1)), langue (VARCHAR(5)), date_inscription (DATETIME), #salle_favorite_id (INT))
 
