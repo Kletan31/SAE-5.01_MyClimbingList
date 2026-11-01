@@ -7,6 +7,8 @@ import 'package:my_climbing_list_poc/services/api_service.dart';
 import 'package:my_climbing_list_poc/viewmodels/seance/ajout_seance_viewmodel.dart';
 import 'package:my_climbing_list_poc/widgets/app_header.dart';
 
+const double _hauteurChamp = 40;
+
 class AjoutSeanceScreen extends StatelessWidget {
   final List<Ligne> lignes; // lignes choisies sur la page précédente
   const AjoutSeanceScreen({super.key, required this.lignes});
@@ -191,6 +193,10 @@ class _LigneSeanceCard extends StatelessWidget {
             onMoins: () => vm.changerTop(entree, -1),
             onPlus: () => vm.changerTop(entree, 1),
           ),
+          _BoutonFlash(
+            actif: entree.flash,
+            onPressed: () => vm.changerFlash(entree),
+          ),
         ]),
       ]),
     );
@@ -229,7 +235,8 @@ class _Compteur extends StatelessWidget {
         icon: Icon(icone),
         onPressed: onPressed,
         padding: EdgeInsets.zero,
-        constraints: const BoxConstraints.tightFor(width: 36, height: 40),
+        constraints:
+            const BoxConstraints.tightFor(width: 36, height: _hauteurChamp),
       );
 
   @override
@@ -240,7 +247,7 @@ class _Compteur extends StatelessWidget {
           Column(children: [
             Container(
               width: 48,
-              height: 40,
+              height: _hauteurChamp,
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 border: Border.all(color: Theme.of(context).dividerColor),
@@ -255,6 +262,38 @@ class _Compteur extends StatelessWidget {
           _bouton(Icons.add, onPlus),
         ],
       );
+}
+
+class _BoutonFlash extends StatelessWidget {
+  final bool actif;
+  final VoidCallback onPressed;
+
+  const _BoutonFlash({required this.actif, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final couleur = actif ? theme.colorScheme.primary : theme.hintColor;
+
+    return InkWell(
+      onTap: onPressed,
+      borderRadius: BorderRadius.circular(8),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: _hauteurChamp,
+              child: Center(child: Icon(Icons.bolt, color: couleur, size: 28)),
+            ),
+            const SizedBox(height: 4),
+            const Text('Flash', style: TextStyle(fontSize: 12)),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class _AjouterOuverture extends StatelessWidget {

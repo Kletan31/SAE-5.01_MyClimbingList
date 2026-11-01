@@ -9,6 +9,7 @@ class LigneSeance {
   final Ligne ligne;
   int montee = 0;
   int top = 0;
+  bool flash = false;
   LigneSeance(this.ligne);
 }
 
@@ -42,7 +43,7 @@ class AjoutSeanceViewModel extends ChangeNotifier {
   void changerMontee(LigneSeance e, int delta) {
     e.montee = max(0, e.montee + delta);
     if (e.montee < e.top) {
-      e.top -=1;
+      e.top -= 1;
     }
     notifyListeners();
   }
@@ -83,7 +84,7 @@ class AjoutSeanceViewModel extends ChangeNotifier {
           idLigne: e.ligne.id,
           montee: e.montee,
           top: e.top,
-          flash: false, // TODO : ajouter flash
+          flash: e.flash,
         ));
       }
       return true;
@@ -94,5 +95,10 @@ class AjoutSeanceViewModel extends ChangeNotifier {
       enregistrement = false;
       notifyListeners();
     }
+  }
+
+  void changerFlash(LigneSeance e) {
+    e.flash = !e.flash;
+    notifyListeners();
   }
 }

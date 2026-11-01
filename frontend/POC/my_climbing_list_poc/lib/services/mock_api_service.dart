@@ -226,9 +226,8 @@ class MockApiService implements ApiService {
   @override
   Future<void> deleteSeance(int id) async {
     (await _table('grimpe')).removeWhere((r) => r['id_seance'] == id);
-     _notifier('grimpe');
+    _notifier('grimpe');
     await _remove('seance', id, idKey: 'id_seance');
-   
   }
 
   // ---------- Grimpes ----------
