@@ -41,11 +41,17 @@ class AjoutSeanceViewModel extends ChangeNotifier {
 
   void changerMontee(LigneSeance e, int delta) {
     e.montee = max(0, e.montee + delta);
+    if (e.montee < e.top) {
+      e.top -=1;
+    }
     notifyListeners();
   }
 
   void changerTop(LigneSeance e, int delta) {
     e.top = max(0, e.top + delta);
+    if (e.top > e.montee) {
+      e.montee += 1;
+    }
     notifyListeners();
   }
 
