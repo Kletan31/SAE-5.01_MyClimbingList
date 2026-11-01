@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_climbing_list_poc/widgets/salle_image.dart';
 import 'package:provider/provider.dart';
 import '../../models/salle_model.dart';
 import '../../services/api_service.dart';
@@ -54,21 +55,7 @@ class _SalleCard extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             // TEMPORAIRE : image à modifier
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                salle.image,
-                width: 110,
-                height: 110,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
-                  width: 110,
-                  height: 110,
-                  color: Colors.grey.shade300,
-                  child: const Icon(Icons.image_not_supported),
-                ),
-              ),
-            ),
+            SalleImage(reference: salle.image,),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
