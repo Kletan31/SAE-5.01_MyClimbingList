@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../models/salle_model.dart';
 import '../../services/api_service.dart';
 import '../../viewmodels/seance/seance_viewmodel.dart';
+import '../../widgets/salle_image.dart';
 import 'seance_detail_screen.dart';
 
 class SeanceScreen extends StatelessWidget {
@@ -22,7 +23,7 @@ class _SeanceView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // watch : l'écran se redessine à chaque notifyListeners() du viewmodel
+    // l'écran se redessine à chaque notifyListeners() du viewmodel
     final vm = context.watch<SalleViewModel>();
 
     return SafeArea(
@@ -32,7 +33,7 @@ class _SeanceView extends StatelessWidget {
               ? Center(child: Text('Erreur : ${vm.erreur}'))
               : ListView.separated(
                   itemCount: vm.salles.length,
-                  separatorBuilder: (_, __) => const Divider(height: 1),
+                  separatorBuilder: (_, __) => const Divider(height: 20),
                   itemBuilder: (_, i) => _SalleCard(salle: vm.salles[i]),
                 ),
     );
@@ -40,8 +41,17 @@ class _SeanceView extends StatelessWidget {
 }
 
 class _SalleCard extends StatelessWidget {
-  final Salle salle;
   const _SalleCard({required this.salle});
+
+  final Salle salle;
+
+  static const double _padding = 5;
+  static const double _espacement = 12;
+
+  // paramètres de taille d'image
+  static const double _imageFraction = 0.40;
+  static const double _imageLargeurMin = 145;
+  static const double _imageLargeurMax = 200;
 
   @override
   Widget build(BuildContext context) => InkWell(
@@ -51,72 +61,117 @@ class _SalleCard extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            // Image : vient de l'API
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                salle.image,
-                width: 110,
-                height: 110,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
-                  width: 110,
-                  height: 110,
-                  color: Colors.grey.shade300,
-                  child: const Icon(Icons.image_not_supported),
-                ),
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          padding: const EdgeInsets.all(_padding),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final imageLargeur = (constraints.maxWidth * _imageFraction)
+                  .clamp(_imageLargeurMin, _imageLargeurMax)
+                  .toDouble();
+
+              // la hauteur de la carte est celle du texte, l'image s'étire à cette hauteur
+              return IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Row(children: [
-                      // Nom : vient de l'API
-                      Flexible(
-                        child: Text(salle.nom,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(fontWeight: FontWeight.w600)),
-                      ),
-                      const SizedBox(width: 8),
-                      // POC : favori non branché
-                      IconButton(
-                          onPressed: () => {
-                                context
-                                    .read<SalleViewModel>()
-                                    .mettreFavori(salle.id)
-                              },
-                          icon: Icon(Icons.star_border, size: 22)),
-                    ]),
-                    const SizedBox(height: 8),
-                    // POC : progressions en dur
-                    const _Progression(label: 'Voie', valeur: 0),
-                    const SizedBox(height: 10),
-                    const _Progression(label: 'Bloc', valeur: 0),
-                  ]),
-            ),
-            const SizedBox(width: 8),
-            IconButton(
-                onPressed: () {
-                  context.read<SalleViewModel>().afficherStats(salle.id);
-                },
-                icon: Icon(Icons.bar_chart, size: 28)),
-          ]),
+                    SalleImage(reference: salle.image, width: imageLargeur),
+                    const SizedBox(width: _espacement),
+                    Expanded(child: _Infos(salle: salle)),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       );
 }
 
-// POC : widget temporaire, les % viendront des vraies données (suivi des lignes)
+// Colonne de texte d'une carte : titre, favori, stats et progressions.
+class _Infos extends StatelessWidget {
+  const _Infos({required this.salle});
+
+  final Salle salle;
+
+  @override
+  Widget build(BuildContext context) {
+    final vm = context.read<SalleViewModel>();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 2,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  Flexible(
+                    child: Text(
+                      salle.nom,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  // POC : favori appelle une méthode vide
+                  _IconeCompacte(
+                    icone: Icons.star_border,
+                    taille: 22,
+                    onPressed: () => vm.mettreFavori(salle.id),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            _IconeCompacte(
+              icone: Icons.bar_chart,
+              taille: 24,
+              onPressed: () => vm.afficherStats(salle.id),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        // POC : progressions en dur
+        const _Progression(label: 'Voie', valeur: 0),
+        const SizedBox(height: 10),
+        const _Progression(label: 'Bloc', valeur: 0),
+      ],
+    );
+  }
+}
+
+class _IconeCompacte extends StatelessWidget {
+  const _IconeCompacte({
+    required this.icone,
+    required this.taille,
+    required this.onPressed,
+  });
+
+  final IconData icone;
+  final double taille;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => IconButton(
+        onPressed: onPressed,
+        padding: EdgeInsets.zero,
+        constraints: const BoxConstraints(),
+        style: IconButton.styleFrom(
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
+        icon: Icon(icone, size: taille),
+      );
+}
+
+// POC : widget temporaire, les % viendront des vraies données
+// à refaire une fois l'API intégrée
 class _Progression extends StatelessWidget {
+  const _Progression({required this.label, required this.valeur});
+
   final String label;
   final double valeur; // entre 0 et 1
-  const _Progression({required this.label, required this.valeur});
 
   @override
   Widget build(BuildContext context) =>
