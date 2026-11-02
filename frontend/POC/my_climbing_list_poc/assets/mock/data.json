@@ -1,15 +1,18 @@
 {
   "salles": [
-    {"id": 1, "nom": "Climb Up Toulouse", "image": "https://picsum.photos/seed/salle1/600/400", "localisation": "Toulouse"},
-    {"id": 2, "nom": "Block'Out Blagnac", "image": "https://picsum.photos/seed/salle2/600/400", "localisation": "Blagnac"},
-    {"id": 3, "nom": "Arkose Toulouse", "image": "erreur image", "localisation": "Toulouse"},
-    {"id": 4, "nom": "Vertical'Art Toulouse", "image": "https://picsum.photos/seed/salle4/600/400", "localisation": "Toulouse"},
-    {"id": 5, "nom": "MurMur Toulouse", "image": "https://picsum.photos/seed/salle5/600/400", "localisation": "Toulouse"},
-    {"id": 6, "nom": "Climb Up Bordeaux", "image": "https://picsum.photos/seed/salle6/600/400", "localisation": "Bordeaux"},
-    {"id": 7, "nom": "Block'Out Bordeaux", "image": "https://picsum.photos/seed/salle7/600/400", "localisation": "Bordeaux"},
-    {"id": 8, "nom": "Arkose Bordeaux", "image": "https://picsum.photos/seed/salle8/600/400", "localisation": "Bordeaux"},
-    {"id": 9, "nom": "Vertical'Art Bordeaux", "image": "https://picsum.photos/seed/salle9/600/400", "localisation": "Bordeaux"},
-    {"id": 10, "nom": "MurMur Bordeaux", "image": "https://picsum.photos/seed/salle10/600/400", "localisation": "Bordeaux"}
+    {"id": 1, "nom": "Montaudran", "image": "3.jpg", "localisation": "Toulouse"},
+    {"id": 2, "nom": "Grabels", "image": "5.jpg", "localisation": "Blagnac"},
+    {"id": 3, "nom": "Albi", "image": "4.jpg", "localisation": "Toulouse"},
+    {"id": 4, "nom": "Saint-Martin", "image": "7.jpg", "localisation": "Toulouse"},
+    {"id": 5, "nom": "Odysseum", "image": "9.jpg", "localisation": "Toulouse"},
+    {"id": 6, "nom": "Marseille", "image": "10.jpg", "localisation": "Bordeaux"},
+    {"id": 7, "nom": "Haut Gazon", "image": "14.jpg", "localisation": "Bordeaux"},
+    {"id": 8, "nom": "Perpignan", "image": "15.jpg", "localisation": "Bordeaux"},
+    {"id": 9, "nom": "Portet", "image": "18.jpg", "localisation": "Bordeaux"},
+    {"id": 10, "nom": "Loisirama", "image": "19.jpg", "localisation": "Bordeaux"},
+    {"id": 10, "nom": "Landes", "image": "20.jpg", "localisation": "Bordeaux"},
+    {"id": 10, "nom": "Lisboa", "image": "100.jpg", "localisation": "Bordeaux"},
+    {"id": 10, "nom": "Nantes", "image": "12.jpg", "localisation": "Bordeaux"}
   ],
   "lignes": [
     {

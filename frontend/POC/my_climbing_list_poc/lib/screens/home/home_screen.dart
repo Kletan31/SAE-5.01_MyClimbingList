@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_climbing_list_poc/services/api_events.dart';
 import 'package:provider/provider.dart';
 import '../../services/api_service.dart';
 import '../../viewmodels/home/home_viewmodel.dart';
@@ -11,8 +12,10 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
-        create: (context) =>
-            HomeViewModel(context.read<ApiService>())..charger(),
+        create: (context) => HomeViewModel(
+          context.read<ApiService>(),
+          context.read<ApiEvents>(),
+        )..charger(),
         child: const _HomeView(),
       );
 }

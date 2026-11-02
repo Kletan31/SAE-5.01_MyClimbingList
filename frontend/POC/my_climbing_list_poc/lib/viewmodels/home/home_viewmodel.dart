@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:my_climbing_list_poc/models/grimpe_model.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
+import 'package:my_climbing_list_poc/services/api_events.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
 
 // POC : pas d'authentification, on prend l'utilisateur 1
@@ -8,16 +9,34 @@ const int _userId = 1;
 
 class HomeViewModel extends ChangeNotifier {
   final ApiService _api;
-  HomeViewModel(this._api);
+  late final void Function() _desabonner;
+  bool _disposed = false;
+
+  HomeViewModel(this._api, ApiEvents events) {
+    // Ce que l'accueil affiche : séances, grimpes, lignes et noms de salles
+    _desabonner = events.ecouter(
+      {Ressource.seance, Ressource.grimpe, Ressource.lignes, Ressource.salles},
+      () => charger(silencieux: true),
+    );
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    _desabonner(); // sans ça, un écran fermé continuerait d'écouter
+    super.dispose();
+  }
 
   List<Session> sessions = [];
   bool chargement = false;
   String? erreur;
 
-  Future<void> charger() async {
-    chargement = true;
-    erreur = null;
-    notifyListeners();
+  Future<void> charger({bool silencieux = false}) async {
+    if (!silencieux) {
+      chargement = true;
+      erreur = null;
+      notifyListeners();
+    }
     try {
       final salles = await _api.getSalles();
       final nomsSalles = {for (final s in salles) s.id: s.nom};
@@ -62,8 +81,7 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   int get nbSessionsSemaine => sessionsSemaine.length;
-  int get ascentsSemaine =>
-      sessionsSemaine.fold(0, (t, s) => t + s.ascents);
+  int get ascentsSemaine => sessionsSemaine.fold(0, (t, s) => t + s.ascents);
   int get topsSemaine => sessionsSemaine.fold(0, (t, s) => t + s.tops);
   String? get maxSemaine =>
       cotationMax(sessionsSemaine.map((s) => s.max).whereType<String>());
@@ -92,8 +110,9 @@ class Session {
       items.every((i) => i.ligne.type.toLowerCase().contains('bloc'));
   bool get _toutVoie =>
       items.every((i) => !i.ligne.type.toLowerCase().contains('bloc'));
-  String get typeLabel =>
-      items.isEmpty ? '-' : (_toutBloc ? 'Boulder' : (_toutVoie ? 'Route' : 'Mixte'));
+  String get typeLabel => items.isEmpty
+      ? '-'
+      : (_toutBloc ? 'Boulder' : (_toutVoie ? 'Route' : 'Mixte'));
 
   /// Ascent = nombre total de montées
   int get ascents => items.fold(0, (t, i) => t + i.grimpe.montee);

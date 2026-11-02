@@ -9,9 +9,15 @@ import 'package:my_climbing_list_poc/models/seance_model.dart';
 import 'package:my_climbing_list_poc/models/suivi_model.dart';
 import 'package:my_climbing_list_poc/models/user_model.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
+import 'package:my_climbing_list_poc/services/api_events.dart';
 
 class MockApiService implements ApiService {
+  final ApiEvents _events;
+  MockApiService(this._events);
   Map<String, dynamic>? _cache;
+
+  void _notifier(String table) =>
+      _events.notifier(Ressource.values.byName(table));
 
   Future<Map<String, dynamic>> _data() async {
     return _cache ??= jsonDecode(
@@ -35,13 +41,13 @@ class MockApiService implements ApiService {
   }
 
   // Simule le serveur : attribue l'id (plus grand existant + 1)
-  Future<Map<String, dynamic>> _insert(
-      String table, Map<String, dynamic> json,
+  Future<Map<String, dynamic>> _insert(String table, Map<String, dynamic> json,
       {String idKey = 'id'}) async {
     final rows = await _table(table);
     final id = rows.fold<int>(0, (m, r) => max(m, r[idKey] as int)) + 1;
     final created = {...json, idKey: id};
     rows.add(created);
+    _notifier(table);
     return created;
   }
 
@@ -51,10 +57,13 @@ class MockApiService implements ApiService {
     final i = rows.indexWhere((r) => r[idKey] == id);
     if (i == -1) throw Exception('$table/$id introuvable');
     rows[i] = json;
+    _notifier(table);
   }
 
-  Future<void> _remove(String table, int id, {String idKey = 'id'}) async =>
-      (await _table(table)).removeWhere((r) => r[idKey] == id);
+  Future<void> _remove(String table, int id, {String idKey = 'id'}) async {
+    (await _table(table)).removeWhere((r) => r[idKey] == id);
+    _notifier(table);
+  }
 
   // ---------- Salles ----------
   @override
@@ -129,13 +138,17 @@ class MockApiService implements ApiService {
       .toList();
 
   @override
-  Future<void> addSuivi(Suivi s) async =>
-      (await _table('suivis')).add(s.toJson());
+  Future<void> addSuivi(Suivi s) async {
+    (await _table('suivis')).add(s.toJson());
+    _notifier('suivis');
+  }
 
   @override
-  Future<void> removeSuivi(Suivi s) async =>
-      (await _table('suivis')).removeWhere((r) =>
-          r['id_utilisateur'] == s.idUtilisateur && r['id_salle'] == s.idSalle);
+  Future<void> removeSuivi(Suivi s) async {
+    (await _table('suivis')).removeWhere((r) =>
+        r['id_utilisateur'] == s.idUtilisateur && r['id_salle'] == s.idSalle);
+    _notifier('suivis');
+  }
 
   // ---------- Users ----------
   @override
@@ -200,8 +213,8 @@ class MockApiService implements ApiService {
   }
 
   @override
-  Future<Seance> createSeance(Seance s) async => Seance.fromJson(
-      await _insert('seance', s.toJson(), idKey: 'id_seance'));
+  Future<Seance> createSeance(Seance s) async =>
+      Seance.fromJson(await _insert('seance', s.toJson(), idKey: 'id_seance'));
 
   @override
   Future<Seance> updateSeance(Seance s) async {
@@ -213,6 +226,7 @@ class MockApiService implements ApiService {
   @override
   Future<void> deleteSeance(int id) async {
     (await _table('grimpe')).removeWhere((r) => r['id_seance'] == id);
+    _notifier('grimpe');
     await _remove('seance', id, idKey: 'id_seance');
   }
 
@@ -233,8 +247,8 @@ class MockApiService implements ApiService {
   }
 
   @override
-  Future<Grimpe> createGrimpe(Grimpe g) async => Grimpe.fromJson(
-      await _insert('grimpe', g.toJson(), idKey: 'id_grimpe'));
+  Future<Grimpe> createGrimpe(Grimpe g) async =>
+      Grimpe.fromJson(await _insert('grimpe', g.toJson(), idKey: 'id_grimpe'));
 
   @override
   Future<Grimpe> updateGrimpe(Grimpe g) async {
@@ -243,5 +257,6 @@ class MockApiService implements ApiService {
   }
 
   @override
-  Future<void> deleteGrimpe(int id) => _remove('grimpe', id, idKey: 'id_grimpe');
+  Future<void> deleteGrimpe(int id) =>
+      _remove('grimpe', id, idKey: 'id_grimpe');
 }
