@@ -99,6 +99,9 @@ class AjoutSeanceViewModel extends ChangeNotifier {
 
   void changerFlash(LigneSeance e) {
     e.flash = !e.flash;
+    if (e.top == 0) {
+      changerTop(e, 1);
+    }
     notifyListeners();
   }
 }
