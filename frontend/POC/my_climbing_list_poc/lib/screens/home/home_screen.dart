@@ -51,6 +51,17 @@ class _HomeView extends StatelessWidget {
                                 _SessionTile(session: vm.sessions[i]),
                           ),
                   ),
+                  const Divider(height: 1, thickness: 1),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: Text(
+                      '${vm.sessions.length} séance${vm.sessions.length > 1 ? 's' : ''} enregistrée${vm.sessions.length > 1 ? 's' : ''}',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
                 ]),
     );
   }
