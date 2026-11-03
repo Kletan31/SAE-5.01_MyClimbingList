@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:my_climbing_list_poc/models/grimpe_model.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
 import 'package:my_climbing_list_poc/models/salle_model.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
+import 'package:my_climbing_list_poc/widgets/ligne_table.dart';
 
 class SeanceDetailViewModel extends ChangeNotifier {
   final ApiService _api;
@@ -11,7 +13,7 @@ class SeanceDetailViewModel extends ChangeNotifier {
   bool chargement = true;
   String? erreur;
   Salle? salle; // pour le nom dans le header
-  TypeLigne type = TypeLigne.voie; 
+  TypeLigne type = TypeLigne.voie;
   bool vueCarte = true;
   String? secteur;
   final Set<int> _selection = {}; // id des lignes sélectionnées
@@ -22,6 +24,7 @@ class SeanceDetailViewModel extends ChangeNotifier {
 
   List<Ligne> _lignes = [];
   final Set<int> _fait = {}; // ids des lignes cochées
+  final Map<int, List<Grimpe>> _grimpesParLigne = {};
 
   List<Ligne> get lignesSelectionnees =>
       _lignes.where((l) => _selection.contains(l.id)).toList();
@@ -31,11 +34,8 @@ class SeanceDetailViewModel extends ChangeNotifier {
       _lignes.where((l) => l.type == type.name).toList();
 
   // Secteurs présents pour le type sélectionné
-  List<String> get secteursDisponibles => lignesFiltrees
-      .map((l) => l.secteur)
-      .whereType<String>()
-      .toSet()
-      .toList();
+  List<String> get secteursDisponibles =>
+      lignesFiltrees.map((l) => l.secteur).whereType<String>().toSet().toList();
 
   List<Ligne> get lignesDuSecteur =>
       lignesFiltrees.where((l) => l.secteur == secteur).toList();
@@ -47,14 +47,27 @@ class SeanceDetailViewModel extends ChangeNotifier {
     secteur = dispo.isEmpty ? null : dispo.first;
   }
 
-  Future<void> charger() async {
+  Future<void> charger({int userId = 1}) async {
     try {
       salle = await _api.getSalle(salleId);
       _lignes = await _api.getLignes(salleId: salleId);
+
+      final seances = await _api.getSeances(userId: userId);
+      final resultats = await Future.wait(
+        seances.map((s) => _api.getGrimpes(seanceId: s.idSeance)),
+      );
+
+      _grimpesParLigne.clear();
+
+      for (final grimpe in resultats.expand((grimpes) => grimpes)) {
+        _grimpesParLigne.putIfAbsent(grimpe.idLigne, () => []).add(grimpe);
+      }
+
       _initSecteur();
     } catch (e) {
       erreur = e.toString();
     }
+
     chargement = false;
     notifyListeners();
   }
@@ -76,7 +89,6 @@ class SeanceDetailViewModel extends ChangeNotifier {
   }
 
   Future<void> basculerFait(int ligneId) async {
-
     _fait.contains(ligneId) ? _fait.remove(ligneId) : _fait.add(ligneId);
     notifyListeners();
     // await _api.enregistrerSuivi(ligneId, _fait.contains(ligneId));
@@ -90,5 +102,21 @@ class SeanceDetailViewModel extends ChangeNotifier {
   void viderSelection() {
     _selection.clear();
     notifyListeners();
+  }
+
+  AffichageCase caseCochee(int ligneId) {
+    final grimpes = _grimpesParLigne[ligneId] ?? [];
+
+    if (grimpes.isEmpty) {
+      return AffichageCase.caseNonCochee;
+    }
+
+    final estTop = grimpes.any((g) => g.top > 0);
+
+    if (estTop) {
+      return AffichageCase.caseCochee;
+    }
+
+    return AffichageCase.vide;
   }
 }
