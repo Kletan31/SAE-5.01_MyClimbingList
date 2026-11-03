@@ -81,7 +81,7 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   int get nbSessionsSemaine => sessionsSemaine.length;
-  int get ascentsSemaine => sessionsSemaine.fold(0, (t, s) => t + s.ascents);
+  int get monteesSemaine => sessionsSemaine.fold(0, (t, s) => t + s.montees);
   int get topsSemaine => sessionsSemaine.fold(0, (t, s) => t + s.tops);
   String? get maxSemaine =>
       cotationMax(sessionsSemaine.map((s) => s.max).whereType<String>());
@@ -114,8 +114,8 @@ class Session {
       ? '-'
       : (_toutBloc ? 'Boulder' : (_toutVoie ? 'Route' : 'Mixte'));
 
-  /// Ascent = nombre total de montées
-  int get ascents => items.fold(0, (t, i) => t + i.grimpe.montee);
+  /// Montée = nombre total de montées
+  int get montees => items.fold(0, (t, i) => t + i.grimpe.montee);
 
   /// Top = nombre de lignes réussies
   int get tops => items.fold(0, (t, i) => t + i.grimpe.top);

@@ -33,9 +33,9 @@ class _HomeView extends StatelessWidget {
           : vm.erreur != null
               ? Center(child: Text('Erreur : ${vm.erreur}'))
               : Column(children: [
-                  _WeeklyOverview(
-                    sessions: vm.nbSessionsSemaine,
-                    ascents: vm.ascentsSemaine,
+                  _ApercuSemaine(
+                    seance: vm.nbSessionsSemaine,
+                    montees: vm.monteesSemaine,
                     tops: vm.topsSemaine,
                     max: vm.maxSemaine,
                   ),
@@ -51,17 +51,28 @@ class _HomeView extends StatelessWidget {
                                 _SessionTile(session: vm.sessions[i]),
                           ),
                   ),
+                  const Divider(height: 1, thickness: 1),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: Text(
+                      '${vm.sessions.length} séance${vm.sessions.length > 1 ? 's' : ''} enregistrée${vm.sessions.length > 1 ? 's' : ''}',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
                 ]),
     );
   }
 }
 
-class _WeeklyOverview extends StatelessWidget {
-  final int sessions, ascents, tops;
+class _ApercuSemaine extends StatelessWidget {
+  final int seance, montees, tops;
   final String? max;
-  const _WeeklyOverview({
-    required this.sessions,
-    required this.ascents,
+  const _ApercuSemaine({
+    required this.seance,
+    required this.montees,
     required this.tops,
     required this.max,
   });
@@ -74,7 +85,7 @@ class _WeeklyOverview extends StatelessWidget {
             color: const Color(0xFF2E2E2E),
             borderRadius: BorderRadius.circular(4),
           ),
-          child: const Text('Weekly overview',
+          child: const Text('Aperçu de la semaine',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 11,
@@ -82,9 +93,11 @@ class _WeeklyOverview extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            _Stat(valeur: '$sessions', label: 'Session'),
-            _Stat(valeur: '$ascents', label: 'Ascent'),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            _Stat(valeur: '$seance', label: seance > 1 ? 'Séances' : 'Séance'),
+            _Stat(
+                valeur: '$montees', label: montees > 1 ? 'Montées' : 'Montée'),
             const SizedBox(height: 32, child: VerticalDivider(width: 1)),
             _Stat(valeur: '$tops', label: 'Top'),
             _Stat(valeur: max ?? '-', label: 'Max'),
@@ -98,7 +111,6 @@ class _SessionTile extends StatelessWidget {
   const _SessionTile({required this.session});
 
   String get _date => DateFormat('dd MMM yyyy').format(session.date);
-
 
   @override
   Widget build(BuildContext context) => InkWell(
@@ -143,7 +155,9 @@ class _SessionTile extends StatelessWidget {
                             fontWeight: FontWeight.w600)),
                   ]),
             ),
-            _Stat(valeur: '${session.ascents}', label: 'Ascent'),
+            _Stat(
+                valeur: '${session.montees}',
+                label: session.montees > 1 ? 'Montées' : 'Montée'),
             const SizedBox(height: 40, child: VerticalDivider(width: 24)),
             _Stat(valeur: '${session.tops}', label: 'Top'),
             const SizedBox(width: 20),
