@@ -122,6 +122,12 @@
       "type": "bloc", "proprietes": ["dalle", "technique"],
       "cotation": "5C", "couleur": "Verte",
       "date_creation": "2026-10-01", "relais": null, "secteur": "Zone blocs"
+    },
+    {
+      "id": 19, "salle_id": 1,
+      "type": "voie", "proprietes": ["rayan", "test"],
+      "cotation": "6A", "couleur": "Rose",
+      "date_creation": "2026-09-12", "relais": null, "secteur": "Secteur A"
     }
   ],
   "users": [
