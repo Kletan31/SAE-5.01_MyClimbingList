@@ -10,7 +10,7 @@ import 'screens/home/home_screen.dart';
 import 'screens/contest_screen.dart';
 import 'screens/seance/seance_screen.dart';
 import 'screens/projects_screen.dart';
-import 'screens/profile_screen.dart';
+import 'screens/account_screen.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -81,7 +81,8 @@ class _MainShellState extends State<MainShell> {
     TabNavigator(
         navigatorKey: _navKeys[4],
         titre: titles[4],
-        racine: const ProfileScreen()), // à remplacer par StatsScreen()
+        racine: const AccountScreen(
+            showHeader: false)), // à remplacer par StatsScreen()
   ];
 
   @override

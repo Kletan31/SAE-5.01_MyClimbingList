@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
+import 'package:my_climbing_list_poc/screens/retour_screen.dart';
+import 'package:my_climbing_list_poc/screens/suivi_screen.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
-import 'package:my_climbing_list_poc/viewmodels/account/account_viewmodel.dart';
+import 'package:my_climbing_list_poc/viewmodels/profile/profile_viewmodel.dart';
 import 'package:my_climbing_list_poc/widgets/app_header.dart';
 import 'package:my_climbing_list_poc/widgets/grade_badge.dart';
 import 'package:provider/provider.dart';
+import '../account_screen.dart';
 
 const _bleu = Color(0xFF3F51A3);
 const _orange = Color(0xFFF08000);
 
-class AccountScreen extends StatelessWidget {
-  const AccountScreen({super.key});
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
@@ -69,15 +72,25 @@ class _BarreActions extends StatelessWidget {
         child: Row(children: [
           // TODO(auth): déconnexion (vider l'utilisateur courant + retour login)
           IconButton(onPressed: () {}, icon: const Icon(Icons.logout)),
-          // TODO: Page Suivie
-          IconButton(onPressed: () {}, icon: const Icon(Icons.fitness_center)),
+          IconButton(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const SuiviScreen())
+              ), 
+              icon: const Icon(Icons.fitness_center)),
           const Spacer(),
           // TODO: choix de la langue (intl : fichiers .arb FR / EN / PT / ES)
-          IconButton(onPressed: () {}, icon: const Icon(Icons.language)),
-          // TODO: formulaire de retour / signalement de bug
-          IconButton(onPressed: () {}, icon: const Icon(Icons.feedback_outlined)),
-          // TODO: écran paramètres (compte, notifications)
-          IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
+          IconButton(
+            onPressed: () {}, icon: const Icon(Icons.language)),
+          IconButton(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const RetourScreen())
+            ), icon: const Icon(Icons.feedback_outlined)),
+          IconButton(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const AccountScreen()),
+            ),
+            icon: const Icon(Icons.settings),
+          ),
         ]),
       );
 }
@@ -141,7 +154,8 @@ class _StatsVoie extends StatelessWidget {
   @override
   Widget build(BuildContext context) => IntrinsicHeight(
         child: Row(children: [
-          Expanded(child: _BlocStats(titre: 'Moulinette', stats: vm.moulinette)),
+          Expanded(
+              child: _BlocStats(titre: 'Moulinette', stats: vm.moulinette)),
           const VerticalDivider(width: 1),
           Expanded(child: _BlocStats(titre: 'Tête', stats: vm.tete)),
         ]),
