@@ -17,7 +17,9 @@ class AjoutSeanceViewModel extends ChangeNotifier {
   final ApiService _api;
 
   AjoutSeanceViewModel(this._api, List<Ligne> lignes)
-      : entrees = lignes.map(LigneSeance.new).toList();
+      : entrees = lignes.map(LigneSeance.new).toList() {
+    chargerMonteesExistantes();
+  }
 
   // POC : id utilisateur codé en dur
   static const _idUtilisateur = 1;
@@ -26,6 +28,8 @@ class AjoutSeanceViewModel extends ChangeNotifier {
   DateTime date = _aujourdhui();
   bool enregistrement = false;
   String? erreur;
+  bool historiquesCharges = false;
+  final Map<int, int> _monteesExistantes = {};
 
   static DateTime _aujourdhui() {
     final n = DateTime.now();
@@ -41,7 +45,8 @@ class AjoutSeanceViewModel extends ChangeNotifier {
   }
 
   void changerMontee(LigneSeance e, int delta) {
-    int maxValue = e.flash == true ? 1 : 0 ; // mettre au minimum 1 montée si flash
+    int maxValue =
+        e.flash == true ? 1 : 0; // mettre au minimum 1 montée si flash
     e.montee = max(maxValue, e.montee + delta);
     if (e.montee < e.top) {
       e.top -= 1;
@@ -60,6 +65,35 @@ class AjoutSeanceViewModel extends ChangeNotifier {
   void retirer(LigneSeance e) {
     entrees.remove(e);
     notifyListeners();
+  }
+
+  Future<void> chargerMonteesExistantes() async {
+    try {
+      final seances = await _api.getSeances(userId: _idUtilisateur);
+      final seanceIds = seances.map((s) => s.idSeance).toSet();
+
+      final historiques = await Future.wait(
+        entrees.map((e) => _api.getGrimpes(ligneId: e.ligne.id)),
+      );
+
+      _monteesExistantes
+        ..clear()
+        ..addEntries(
+          entrees.asMap().entries.map(
+                (entry) => MapEntry(
+                  entry.value.ligne.id,
+                  historiques[entry.key]
+                      .where((g) => seanceIds.contains(g.idSeance))
+                      .fold(0, (total, g) => total + g.montee),
+                ),
+              ),
+        );
+      historiquesCharges = true;
+      notifyListeners();
+    } catch (err) {
+      erreur = err.toString();
+      notifyListeners();
+    }
   }
 
   Future<bool> enregistrer() async {
@@ -104,5 +138,18 @@ class AjoutSeanceViewModel extends ChangeNotifier {
       changerTop(e, 1);
     }
     notifyListeners();
+  }
+
+  bool dejaMontee(LigneSeance e) {
+    if (!historiquesCharges) {
+      return false;
+    }
+
+    final montees = _monteesExistantes[e.ligne.id];
+    if (montees == null) {
+      return false;
+    }
+
+    return montees > 0;
   }
 }

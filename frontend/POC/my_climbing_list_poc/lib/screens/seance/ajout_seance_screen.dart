@@ -193,10 +193,11 @@ class _LigneSeanceCard extends StatelessWidget {
             onMoins: () => vm.changerTop(entree, -1),
             onPlus: () => vm.changerTop(entree, 1),
           ),
-          _BoutonFlash(
-            actif: entree.flash,
-            onPressed: () => vm.changerFlash(entree),
-          ),
+          if (vm.historiquesCharges && !vm.dejaMontee(entree))
+            _BoutonFlash(
+              actif: entree.flash,
+              onPressed: () => vm.changerFlash(entree),
+            ),
         ]),
       ]),
     );
