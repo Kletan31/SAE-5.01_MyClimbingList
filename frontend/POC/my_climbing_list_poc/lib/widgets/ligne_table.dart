@@ -7,22 +7,26 @@ const int _flexRelais = 2;
 const int _flexCotation = 2;
 const int _flexCouleur = 3;
 
+enum AffichageCase {
+  vide,
+  caseNonCochee,
+  caseCochee,
+}
+
 class LigneTable extends StatelessWidget {
   final List<Ligne> lignes;
   final bool afficherRelais;
-  final bool Function(int ligneId) estFaite;
-  final void Function(int ligneId) onToggle;
   final bool Function(int ligneId) estSelectionnee;
   final void Function(int ligneId) onSelect;
+  final AffichageCase Function(int ligneId) affichageCase;
 
   const LigneTable(
       {super.key,
       required this.lignes,
       required this.afficherRelais,
-      required this.estFaite,
-      required this.onToggle,
       required this.estSelectionnee,
-      required this.onSelect});
+      required this.onSelect,
+      required this.affichageCase});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +42,6 @@ class LigneTable extends StatelessWidget {
     ]);
   }
 
-  // --- En-tête : mêmes colonnes que _ligne, mais avec du texte ---
   Widget _entete() {
     const style = TextStyle(fontWeight: FontWeight.bold);
 
@@ -70,6 +73,23 @@ class LigneTable extends StatelessWidget {
     );
   }
 
+  Widget _afficherCase(int ligneId) {
+    switch (affichageCase(ligneId)) {
+      case AffichageCase.vide:
+        return const SizedBox(width: _largeurCase);
+      case AffichageCase.caseNonCochee:
+        return const SizedBox(
+          width: _largeurCase,
+          child: Icon(Icons.check_box_outline_blank),
+        );
+      case AffichageCase.caseCochee:
+        return const SizedBox(
+          width: _largeurCase,
+          child: Icon(Icons.check_box),
+        );
+    }
+  }
+
   Widget _ligne(BuildContext context, Ligne l, int i) => ListTile(
         selected: estSelectionnee(l.id),
         selectedTileColor:
@@ -80,13 +100,7 @@ class LigneTable extends StatelessWidget {
         contentPadding: EdgeInsets.zero,
         minVerticalPadding: 8,
         title: Row(children: [
-          SizedBox(
-            width: _largeurCase,
-            child: Checkbox(
-              value: estFaite(l.id),
-              onChanged: (_) => onToggle(l.id),
-            ),
-          ),
+          _afficherCase(l.id),
           Expanded(
             flex: _flexProprietes,
             child: Padding(

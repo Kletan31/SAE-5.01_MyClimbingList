@@ -121,10 +121,9 @@ class _VueCarte extends StatelessWidget {
         child: LigneTable(
           lignes: vm.lignesDuSecteur,
           afficherRelais: false,
-          estFaite: vm.estFaite,
-          onToggle: vm.basculerFait,
           estSelectionnee: vm.estSelectionnee,
           onSelect: vm.basculerSelection,
+          affichageCase: vm.caseCochee,
         ),
       ),
     ]);
@@ -141,10 +140,9 @@ class _VueListe extends StatelessWidget {
     return LigneTable(
       lignes: vm.lignesFiltrees,
       afficherRelais: true,
-      estFaite: vm.estFaite,
-      onToggle: vm.basculerFait,
       estSelectionnee: vm.estSelectionnee,
       onSelect: vm.basculerSelection,
+      affichageCase: vm.caseCochee,
     );
   }
 }

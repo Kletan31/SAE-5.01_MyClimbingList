@@ -41,7 +41,8 @@ class AjoutSeanceViewModel extends ChangeNotifier {
   }
 
   void changerMontee(LigneSeance e, int delta) {
-    e.montee = max(0, e.montee + delta);
+    int maxValue = e.flash == true ? 1 : 0 ; // mettre au minimum 1 montée si flash
+    e.montee = max(maxValue, e.montee + delta);
     if (e.montee < e.top) {
       e.top -= 1;
     }
