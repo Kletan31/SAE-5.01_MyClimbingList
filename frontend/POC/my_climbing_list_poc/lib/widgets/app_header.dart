@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../screens/account_screen.dart';
+import '../screens/profile/profile_screen.dart';
 
 class AppHeader extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -36,7 +36,7 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
           icon: const Icon(LucideIcons.circleUser),
           iconSize: 28,
           onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => const AccountScreen()),
+            MaterialPageRoute(builder: (_) => const ProfileScreen()),
           ),
         ),
       ],
