@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
+import 'package:my_climbing_list_poc/screens/carnet_screen.dart';
 import 'package:my_climbing_list_poc/screens/retour_screen.dart';
 import 'package:my_climbing_list_poc/screens/suivi_screen.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
@@ -268,7 +269,9 @@ class _BoutonCarnet extends StatelessWidget {
           ),
           // TODO: ouvrir le carnet complet (liste de toutes les séances,
           // filtrable). Aujourd'hui c'est l'onglet Home qui l'affiche.
-          onPressed: () {},
+          onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const CarnetScreen())
+            ),
           child: const Text('Mon Carnet',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
         ),
