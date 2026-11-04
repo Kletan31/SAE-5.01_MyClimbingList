@@ -108,7 +108,7 @@ class SeanceDetailViewModel extends ChangeNotifier {
     final grimpes = _grimpesParLigne[ligneId] ?? [];
 
     if (grimpes.isEmpty) {
-      return AffichageCase.caseNonCochee;
+      return AffichageCase.vide;
     }
 
     final estTop = grimpes.any((g) => g.top > 0);
@@ -117,6 +117,6 @@ class SeanceDetailViewModel extends ChangeNotifier {
       return AffichageCase.caseCochee;
     }
 
-    return AffichageCase.vide;
+    return AffichageCase.caseNonCochee;
   }
 }
