@@ -1,12 +1,14 @@
-# Conception Base de données V2
+# Conception Base de données V3
+
+Les tables traitant de l'elo, des projets, des contests et des évènements ne sont pas encore présentes dans cette version.
 
 ## Relations
 
-- Salle 1:N Ligne
+- Salle 1:N Ouverture
 - Salle 1:N Seance
 - Utilisateur 1:N Seance
 - Seance 1:N Grimpe
-- Ligne 1:N Grimpe
+- Ouverture 1:N Grimpe
 - Utilisateur N:N Salle via Suivi
 - Utilisateur 0:1 Salle favorite
 
@@ -21,8 +23,11 @@ Une salle d'escalade Altissimo
 | id                           | INT PK AUTO_INCREMENT | Non      | Identifiant                    |
 | nom                          | VARCHAR(100)          | Non      | Nom                            |
 | ville                        | VARCHAR(100)          | Oui      | Ville                          |
-| pays                         | CHAR(2)               | Oui      | Code pays ISO                  |
+| pays                         | VARCHAR(2)            | Oui      | Code pays ISO                  |
 | masquer_cotations_recentes   | BOOLEAN               | Non      | Masquer cotations récentes     |
+| image                        | VARCHAR(255)          | Oui      | Nom de l'image ou URL          |
+
+A clarifier : stockage des images. 
 
 ### Utilisateur
 
@@ -36,12 +41,15 @@ Un utilisateur de MCL
 | nom_utilisateur      | VARCHAR(50) UNIQUE    | Non      | Pseudonyme                            |
 | email                | VARCHAR(180) UNIQUE   | Non      | Identifiant connexion                 |
 | password             | VARCHAR(255)          | Non      | Hash du mot de passe                  |
-| genre                | CHAR(1)               | Oui      | Genre                                 |
+| genre                | VARCHAR(1)            | Oui      | Genre                                 |
 | langue               | VARCHAR(5)            | Non      | Langue, ex. fr                        |
 | date_inscription     | DATETIME              | Non      | Inscription                           |
 | salle_favorite_id    | INT FK Salle(id)      | Oui      | Salle favorite                        |
+| roles                | JSON                  | Non      | Rôle                                  |
 
-### Ligne
+A voir pour les salles que la staff peut gérer.
+
+### Ouverture
 
 Bloc ou voie d'escalade
 
@@ -50,15 +58,19 @@ Bloc ou voie d'escalade
 | id              | INT PK AUTO_INCREMENT | Non   | Identifiant                               |
 | salle_id        | INT FK Salle(id)   | Non      | Salle propriétaire                        |
 | type            | VARCHAR(5)         | Non      | bloc, voie…                               |
-| proprietes      | JSON ?             | Oui      | A voir, tableau de liste de propriété ou une autre table |
 | cotation        | VARCHAR(50)        | Non      | Cotation                                  |
 | couleur         | VARCHAR(50)        | Oui      | Couleur textuelle                         |
 | couleur_hex     | VARCHAR(11)        | Oui      | Code hex                                  |
 | date_creation   | DATE               | Non      | Création / ouverture                      |
-| relais          | INT                | Oui      | Identifiant d'un relais (table à confirmer) |
+| relais          | INT                | Oui      | Numéro d'identification du relais         |
 | secteur         | VARCHAR(100)       | Oui      | Secteur                                   |
 | statut          | VARCHAR(10)        | Non      | État                                      |
 | date_demontage  | DATE               | Oui      | Démontage                                 |
+| en_tete         | BOOLEAN            | Non      | Indique si la voie peut être fait en tête |
+| proprietes      | JSON ?             | Oui      | A voir, tableau de liste de propriété ou une autre table |
+
+Réflexion à confirmer avec dump de la BD existante : faire de propriétés 2 colonnes (profil et style), ça serait utile pour les statistiques.
+en_tete en false par défaut, et tjrs faux pour un bloc.
 
 ### Séance
 
@@ -69,26 +81,34 @@ Séance d'escalade d'un utilisateur
 | id                | INT PK AUTO_INCREMENT    | Non      | Identifiant               |
 | utilisateur_id    | INT FK Utilisateur(id)   | Non      | Grimpeur                  |
 | salle_id          | INT FK Salle(id)         | Non      | Salle de séance           |
-| discipline        | VARCHAR(5)               | Non      | Discipline                |
 | date_seance       | DATE                     | Non      | Date                      |
-| cle_idempotence   | CHAR(36)                 | Oui      | Clé anti-doublon API      | /!\ suggéré par une IA, à vérifier avant implémentation
 | cree_le           | DATETIME                 | Non      | Création                  |
 | modifie_le        | DATETIME                 | Non      | Modification              |
+
+Changement de la V3 : suppression Discipline (inutile car Type est dans Ligne) ; suppression clé antidoublon (suggérée par IA).
+Unicité sur (utilisateur_id, salle_id, date_seance) pour éviter les doublons.
 
 ### Grimpe
 
 Détail d'un des lignes grimpée dans une séance
+Grimpe = ligne de pratique du CDC
 
 | Attribut    | Type                | Nullable | Description                 |
 |-------------|---------------------|----------|-----------------------------|
 | id          | INT PK AUTO_INCREMENT | Non    | Identifiant                 |
 | seance_id   | INT FK Seance(id)   | Non      | Séance                      |
-| ligne_id    | INT FK Ligne(id)    | Non      | Ligne grimpée               |
+| ouverture_id    | INT FK Ligne(id)    | Non  | Ouverture grimpée           |
 | montee      | INT                 | Non      | Nombre de montées/essais    |
 | top         | INT                 | Non      | Nombre de tops              |
 | flash       | BOOLEAN             | Non      | Réussite au premier essai   |
+| montee_tete | INT                 | Non      | Nombre de montées/essais (en tête) |
+| top_tete    | INT                 | Non      | Nombre de tops (en tête)    |
+| flash_tete  | BOOLEAN             | Non      | Réussite au premier essai (en tête) |
 | cree_le     | DATETIME            | Non      | Création                    |
 | modifie_le  | DATETIME            | Non      | Modification                |
+
+Unicité sur (seance_id, ligne_id).
+Stats de montées à 0/false par défaut.
 
 ### Suivi
 
@@ -101,11 +121,14 @@ Autorisations accordées à une salle pour consulter les séances d'un utilisate
 | salle_id        | INT FK Salle(id)         | Non      | Salle autorisée        |
 | cree_le         | DATETIME                 | Non      | Création autorisation  |
 
+Unicité sur (utilisateur_id, salle_id).
+
 ## Points à clarifier
 
-- Comment représenter un relais.
-- Propriétés d'une salle : tableau global imposé, table à part ?
+- Propriétés d'une ouverture.
 - Règles de suppression.
+- Staff peut gérer une seule salle (attribut) ou plusieurs (table de jointure) ?
+- en_tete signifie-t-il "peut être faite en tête" ou "doit l’être" ?
 - Direction : accès global autorisé selon ses permissions. 
 - Staff : accès limité à sa salle et aux utilisateurs suivis par cette salle. 
 - Utilisateur : accès à ses propres séances/grimpes.
