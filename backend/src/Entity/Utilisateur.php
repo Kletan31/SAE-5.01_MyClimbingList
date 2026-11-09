@@ -3,13 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
-use App\Entity\Salle;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[ORM\UniqueConstraint(name: 'UNIQ_UTILISATEUR_NOM_UTILISATEUR', fields: ['nomUtilisateur'])]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -19,6 +19,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180)]
     private ?string $email = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $nomUtilisateur = null;
 
     /**
      * @var list<string> The user roles
@@ -42,17 +45,18 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $genre = null;
 
     #[ORM\Column(length: 5)]
-    private ?string $langue = null;
+    private ?string $langue = 'fr';
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $date_inscription = null;
+    private ?\DateTimeImmutable $dateInscription = null;
 
     #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Salle $salleFavorite = null;
 
     public function __construct()
     {
-        $this->date_inscription = new \DateTimeImmutable();
+        $this->dateInscription = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -68,6 +72,18 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getNomUtilisateur(): ?string
+    {
+        return $this->nomUtilisateur;
+    }
+
+    public function setNomUtilisateur(string $nomUtilisateur): static
+    {
+        $this->nomUtilisateur = $nomUtilisateur;
 
         return $this;
     }
@@ -126,7 +142,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $data = (array) $this;
         $data["\0" . self::class . "\0password"] = hash('crc32c', $this->password);
-        
+
         return $data;
     }
 
@@ -186,19 +202,14 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getDateInscription(): ?\DateTimeImmutable
     {
-        return $this->date_inscription;
+        return $this->dateInscription;
     }
 
-    public function setDateInscription(\DateTimeImmutable $date_inscription): static
+    public function setDateInscription(\DateTimeImmutable $dateInscription): static
     {
-        $this->date_inscription = $date_inscription;
+        $this->dateInscription = $dateInscription;
 
         return $this;
-    }
-
-    public function __toString(): string
-    {
-        return trim(($this->prenom ?? '') . ' ' . ($this->nom ?? ''));
     }
 
     public function getSalleFavorite(): ?Salle
@@ -211,5 +222,12 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         $this->salleFavorite = $salleFavorite;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        $nomComplet = trim(($this->prenom ?? '') . ' ' . ($this->nom ?? ''));
+
+        return $nomComplet !== '' ? $nomComplet : (string) $this->nomUtilisateur;
     }
 }

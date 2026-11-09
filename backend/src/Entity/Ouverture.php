@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+use App\Enum\StatutOuverture;
+use App\Enum\TypeOuverture;
 use App\Repository\OuvertureRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OuvertureRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Ouverture
 {
     #[ORM\Id]
@@ -14,11 +17,12 @@ class Ouverture
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 5)]
-    private ?string $discipline = null;
+    #[ORM\ManyToOne(inversedBy: 'ouvertures')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Salle $salle = null;
 
-    #[ORM\Column]
-    private ?int $relais = null;
+    #[ORM\Column(length: 5, enumType: TypeOuverture::class)]
+    private ?TypeOuverture $type = null;
 
     #[ORM\Column(length: 50)]
     private ?string $cotation = null;
@@ -30,21 +34,40 @@ class Ouverture
     private ?string $couleurHex = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
-    private ?\DateTimeImmutable $dateOuverture = null;
+    private ?\DateTimeImmutable $dateCreation = null;
 
-    #[ORM\Column(length: 10)]
-    private ?string $statut = 'actif';
+    #[ORM\Column(nullable: true)]
+    private ?int $relais = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $secteur = null;
+
+    #[ORM\Column(length: 10, enumType: StatutOuverture::class)]
+    private StatutOuverture $statut = StatutOuverture::Actif;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $dateDemontage = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ouvertures')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Salle $salle = null;
+    #[ORM\Column(options: ['default' => false])]
+    private bool $enTete = false;
+
+    //! Provisoire : à remplacer plus tard
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $proprietes = null;
 
     public function __construct()
     {
-        $this->dateOuverture = new \DateTimeImmutable();
+        $this->dateCreation = new \DateTimeImmutable();
+    }
+
+    // Un bloc ne peut jamais être fait en tête
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function normaliserEnTete(): void
+    {
+        if ($this->type === TypeOuverture::Bloc) {
+            $this->enTete = false;
+        }
     }
 
     public function getId(): ?int
@@ -52,26 +75,26 @@ class Ouverture
         return $this->id;
     }
 
-    public function getDiscipline(): ?string
+    public function getSalle(): ?Salle
     {
-        return $this->discipline;
+        return $this->salle;
     }
 
-    public function setDiscipline(string $discipline): static
+    public function setSalle(?Salle $salle): static
     {
-        $this->discipline = $discipline;
+        $this->salle = $salle;
 
         return $this;
     }
 
-    public function getRelais(): ?int
+    public function getType(): ?TypeOuverture
     {
-        return $this->relais;
+        return $this->type;
     }
 
-    public function setRelais(int $relais): static
+    public function setType(TypeOuverture $type): static
     {
-        $this->relais = $relais;
+        $this->type = $type;
 
         return $this;
     }
@@ -112,24 +135,48 @@ class Ouverture
         return $this;
     }
 
-    public function getDateOuverture(): ?\DateTimeImmutable
+    public function getDateCreation(): ?\DateTimeImmutable
     {
-        return $this->dateOuverture;
+        return $this->dateCreation;
     }
 
-    public function setDateOuverture(\DateTimeImmutable $dateOuverture): static
+    public function setDateCreation(\DateTimeImmutable $dateCreation): static
     {
-        $this->dateOuverture = $dateOuverture;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
-    public function getStatut(): ?string
+    public function getRelais(): ?int
+    {
+        return $this->relais;
+    }
+
+    public function setRelais(?int $relais): static
+    {
+        $this->relais = $relais;
+
+        return $this;
+    }
+
+    public function getSecteur(): ?string
+    {
+        return $this->secteur;
+    }
+
+    public function setSecteur(?string $secteur): static
+    {
+        $this->secteur = $secteur;
+
+        return $this;
+    }
+
+    public function getStatut(): StatutOuverture
     {
         return $this->statut;
     }
 
-    public function setStatut(string $statut): static
+    public function setStatut(StatutOuverture $statut): static
     {
         $this->statut = $statut;
 
@@ -148,15 +195,37 @@ class Ouverture
         return $this;
     }
 
-    public function getSalle(): ?Salle
+    public function isEnTete(): bool
     {
-        return $this->salle;
+        return $this->enTete;
     }
 
-    public function setSalle(?Salle $salle): static
+    public function setEnTete(bool $enTete): static
     {
-        $this->salle = $salle;
+        $this->enTete = $enTete;
 
         return $this;
+    }
+
+    public function getProprietes(): ?array
+    {
+        return $this->proprietes;
+    }
+
+    public function setProprietes(?array $proprietes): static
+    {
+        $this->proprietes = $proprietes;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return sprintf(
+            '%s %s%s',
+            $this->type?->value ?? '?',
+            $this->cotation ?? '?',
+            $this->couleur ? ' (' . $this->couleur . ')' : ''
+        );
     }
 }

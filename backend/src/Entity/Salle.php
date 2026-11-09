@@ -24,8 +24,12 @@ class Salle
     #[ORM\Column(length: 2, nullable: true)]
     private ?string $pays = null;
 
-    #[ORM\Column]
-    private ?bool $masquerCotationsRecentes = null;
+    #[ORM\Column(options: ['default' => false])]
+    private bool $masquerCotationsRecentes = false;
+
+    // Nom de fichier ou URL
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
 
     /**
      * @var Collection<int, Ouverture>
@@ -79,7 +83,7 @@ class Salle
         return $this;
     }
 
-    public function isMasquerCotationsRecentes(): ?bool
+    public function isMasquerCotationsRecentes(): bool
     {
         return $this->masquerCotationsRecentes;
     }
@@ -87,6 +91,18 @@ class Salle
     public function setMasquerCotationsRecentes(bool $masquerCotationsRecentes): static
     {
         $this->masquerCotationsRecentes = $masquerCotationsRecentes;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }
@@ -111,11 +127,8 @@ class Salle
 
     public function removeOuverture(Ouverture $ouverture): static
     {
-        if ($this->ouvertures->removeElement($ouverture)) {
-            // set the owning side to null (unless already changed)
-            if ($ouverture->getSalle() === $this) {
-                $ouverture->setSalle(null);
-            }
+        if (($this->ouvertures->removeElement($ouverture)) && ($ouverture->getSalle() === $this)) {
+            $ouverture->setSalle(null);
         }
 
         return $this;
