@@ -25,7 +25,9 @@ class SalleCrudController extends AbstractCrudController
             TextField::new('nom'),
             TextField::new('ville'),
             TextField::new('pays', 'Pays (code à 2 lettres)'),
-            BooleanField::new('masquer_cotations_recentes', 'Masquer les cotations récentes'),
+            BooleanField::new('masquerCotationsRecentes', 'Masquer les cotations récentes'),
+            // Stockage des images à clarifier : champ texte (nom de fichier ou URL) en attendant
+            TextField::new('image', 'Image (nom ou URL)')->hideOnIndex(),
         ];
     }
 }

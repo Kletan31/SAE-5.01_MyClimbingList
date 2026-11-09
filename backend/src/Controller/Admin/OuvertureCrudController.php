@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -34,14 +35,19 @@ class OuvertureCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             AssociationField::new('salle'),
-            ChoiceField::new('discipline')->setChoices(['Voie' => 'voie', 'Bloc' => 'bloc']),
-            IntegerField::new('relais'),
+            // Champs liés à un enum PHP : EasyAdmin détecte l'enum et propose ses cas
+            ChoiceField::new('type'),
             TextField::new('cotation'),
-            TextField::new('couleur'),
-            TextField::new('couleur_hex', 'Couleur (hex)'),
-            DateField::new('date_ouverture', "Date d'ouverture"),
-            ChoiceField::new('statut')->setChoices(['Actif' => 'actif', 'Démonté' => 'demonte']),
-            DateField::new('date_demontage', 'Date de démontage'),
+            TextField::new('couleur')->hideOnIndex(),
+            TextField::new('couleurHex', 'Couleur (hex)')->hideOnIndex(),
+            IntegerField::new('relais')->hideOnIndex(),
+            TextField::new('secteur')->hideOnIndex(),
+            BooleanField::new('enTete', 'Faisable en tête')
+                ->setHelp('Ignoré pour un bloc (toujours non).'),
+            ChoiceField::new('statut'),
+            DateField::new('dateCreation', "Date d'ouverture"),
+            DateField::new('dateDemontage', 'Date de démontage')->hideOnIndex(),
+            // "proprietes" volontairement absent (champ provisoire)
         ];
     }
 }

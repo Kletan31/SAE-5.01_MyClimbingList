@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Ouverture;
 use App\Entity\Salle;
 use App\Entity\Utilisateur;
+use App\Enum\StatutOuverture;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -24,7 +25,7 @@ class DashboardController extends AbstractDashboardController
         return $this->render('admin/dashboard.html.twig', [
             'nbSalles' => $this->em->getRepository(Salle::class)->count([]),
             'nbOuvertures' => $this->em->getRepository(Ouverture::class)->count([]),
-            'nbOuverturesActives' => $this->em->getRepository(Ouverture::class)->count(['statut' => 'actif']),
+            'nbOuverturesActives' => $this->em->getRepository(Ouverture::class)->count(['statut' => StatutOuverture::Actif]),
             'nbUtilisateurs' => $this->em->getRepository(Utilisateur::class)->count([]),
         ]);
     }
@@ -38,8 +39,15 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+
+        yield MenuItem::section('Salles');
         yield MenuItem::linkTo(SalleCrudController::class, 'Salles', 'fas fa-building');
         yield MenuItem::linkTo(OuvertureCrudController::class, 'Ouvertures', 'fas fa-route');
+
+        yield MenuItem::section('Grimpeurs');
         yield MenuItem::linkTo(UtilisateurCrudController::class, 'Utilisateurs', 'fas fa-users');
+        yield MenuItem::linkTo(SeanceCrudController::class, 'Séances', 'fas fa-calendar-check');
+        yield MenuItem::linkTo(GrimpeCrudController::class, 'Grimpes', 'fas fa-mountain');
+        yield MenuItem::linkTo(SuiviCrudController::class, 'Suivis', 'fas fa-eye');
     }
 }
