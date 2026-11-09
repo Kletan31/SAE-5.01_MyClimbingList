@@ -26,7 +26,6 @@ class SeanceCrudController extends AbstractCrudController
             AssociationField::new('utilisateur'),
             AssociationField::new('salle'),
             DateField::new('dateSeance', 'Date'),
-            // Affiche le nombre de grimpes de la séance (liste/détail uniquement)
             AssociationField::new('grimpes', 'Grimpes')->hideOnForm(),
             DateTimeField::new('creeLe', 'Créée le')->onlyOnDetail(),
             DateTimeField::new('modifieLe', 'Modifiée le')->onlyOnDetail(),

@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -57,9 +59,17 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Salle $salleFavorite = null;
 
+    /**
+     * @var Collection<int, Salle>
+     */
+    #[ORM\ManyToMany(targetEntity: Salle::class)]
+    #[ORM\JoinTable(name: 'utilisateur_salle_geree')]
+    private Collection $sallesGerees;
+
     public function __construct()
     {
         $this->dateInscription = new \DateTimeImmutable();
+        $this->sallesGerees = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -235,6 +245,30 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSalleFavorite(?Salle $salleFavorite): static
     {
         $this->salleFavorite = $salleFavorite;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Salle>
+     */
+    public function getSallesGerees(): Collection
+    {
+        return $this->sallesGerees;
+    }
+
+    public function addSalleGeree(Salle $salle): static
+    {
+        if (!$this->sallesGerees->contains($salle)) {
+            $this->sallesGerees->add($salle);
+        }
+
+        return $this;
+    }
+
+    public function removeSalleGeree(Salle $salle): static
+    {
+        $this->sallesGerees->removeElement($salle);
 
         return $this;
     }

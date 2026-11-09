@@ -26,7 +26,7 @@ class OuvertureCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        // Une ouverture n'est jamais supprimée : on la passe au statut "démonté".
+        // Une ouverture n'est jamais supprimée : statut "démonté"
         return $actions->disable(Action::DELETE);
     }
 
@@ -35,7 +35,6 @@ class OuvertureCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             AssociationField::new('salle'),
-            // Champs liés à un enum PHP : EasyAdmin détecte l'enum et propose ses cas
             ChoiceField::new('type'),
             TextField::new('cotation'),
             TextField::new('couleur')->hideOnIndex(),
@@ -47,7 +46,7 @@ class OuvertureCrudController extends AbstractCrudController
             ChoiceField::new('statut'),
             DateField::new('dateCreation', "Date d'ouverture"),
             DateField::new('dateDemontage', 'Date de démontage')->hideOnIndex(),
-            // "proprietes" volontairement absent (champ provisoire)
+            //! "proprietes" volontairement absent (vu que c'est un champ provisoire)
         ];
     }
 }

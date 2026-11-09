@@ -53,6 +53,7 @@ class UtilisateurCrudController extends AbstractCrudController
                 ->allowMultipleChoices()
                 ->renderExpanded(),
             DateTimeField::new('dateInscription', "Date d'inscription")->hideOnForm(),
+            AssociationField::new('sallesGerees', 'Salles gérées (staff)')->hideOnIndex(),
         ];
     }
 
@@ -81,7 +82,7 @@ class UtilisateurCrudController extends AbstractCrudController
             $utilisateur->setPassword($this->passwordHasher->hashPassword($utilisateur, $motDePasse));
         }
 
-        // On ne garde jamais le mot de passe en clair en mémoire/session
+        // On ne garde jamais le mot de passe en clair en mémoire
         $utilisateur->setPlainPassword(null);
     }
 }
