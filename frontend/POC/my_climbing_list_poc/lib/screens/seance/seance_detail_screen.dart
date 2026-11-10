@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
 import 'package:my_climbing_list_poc/screens/seance/ajout_seance_screen.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
+import 'package:my_climbing_list_poc/theme/app_theme.dart';
 import 'package:my_climbing_list_poc/viewmodels/seance/seance_detail_viewmodel.dart';
 import 'package:my_climbing_list_poc/widgets/app_header.dart';
 import 'package:my_climbing_list_poc/widgets/ligne_table.dart';
@@ -55,6 +56,7 @@ class _SeanceDetailView extends StatelessWidget {
               heroTag: null, // évite un conflit d'animation entre pages
               icon: const Icon(Icons.add),
               label: Text('Ajouter ma séance (${vm.nbSelection})'),
+              backgroundColor: AppTheme.pageAccent, 
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) =>
@@ -88,6 +90,15 @@ class _BandeauSuperieur extends StatelessWidget {
               ],
               selected: {vm.type},
               onSelectionChanged: (s) => vm.changerType(s.first),
+              style: SegmentedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black,
+                selectedForegroundColor: Colors.white,
+                selectedBackgroundColor: AppTheme.pageAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
             ),
           ),
         ),
