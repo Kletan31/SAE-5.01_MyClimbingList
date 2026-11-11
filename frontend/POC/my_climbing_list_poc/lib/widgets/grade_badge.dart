@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import '../viewmodels/home/home_viewmodel.dart' show niveauCotation;
 
-/// Rond de cotation coloré selon le niveau, avec un label optionnel dessous
-/// (ex. "Max"). Réutilisable partout où une cotation est affichée.
 class GradeBadge extends StatelessWidget {
   final String? cotation;
   final String? label;

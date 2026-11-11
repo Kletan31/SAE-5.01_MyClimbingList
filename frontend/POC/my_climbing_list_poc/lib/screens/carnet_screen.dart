@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
 import 'package:my_climbing_list_poc/viewmodels/carnet_viewmodel.dart';
-import 'package:my_climbing_list_poc/widgets/carnet_ligne_tile.dart';
+import 'package:my_climbing_list_poc/widgets/app_header.dart';
+import 'package:my_climbing_list_poc/widgets/carnet_ligne.dart';
 import 'package:provider/provider.dart';
 
 class CarnetScreen extends StatelessWidget {
@@ -20,49 +21,11 @@ class CarnetScreen extends StatelessWidget {
 
     return showHeader
         ? Scaffold(
-            appBar: const _CarnetHeader(),
+            appBar: const AppHeader(title: 'Carnet'),
             body: body,
           )
         : body;
   }
-}
-
-class _CarnetHeader extends StatelessWidget implements PreferredSizeWidget {
-  const _CarnetHeader();
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-
-  @override
-  Widget build(BuildContext context) => AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20),
-        ),
-        title: Transform(
-          alignment: Alignment.center,
-          transform: Matrix4.skewX(-0.3),
-          child: Container(
-            color: const Color(0xFFF57C00),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-            child: const Text(
-              'Carnet',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-          ),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(LucideIcons.circleUser, size: 28),
-            onPressed: () {},
-          ),
-        ],
-      );
 }
 
 class _CarnetBody extends StatelessWidget {

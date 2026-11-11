@@ -23,7 +23,7 @@ class HomeViewModel extends ChangeNotifier {
   @override
   void dispose() {
     _disposed = true;
-    _desabonner(); // sans ça, un écran fermé continuerait d'écouter
+    _desabonner(); 
     super.dispose();
   }
 
@@ -72,7 +72,7 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ---------- Weekly overview (semaine en cours, depuis lundi) ----------
+  // Aperçu de la semaine
   List<Session> get sessionsSemaine {
     final now = DateTime.now();
     final lundi = DateTime(now.year, now.month, now.day)
@@ -87,7 +87,7 @@ class HomeViewModel extends ChangeNotifier {
       cotationMax(sessionsSemaine.map((s) => s.max).whereType<String>());
 }
 
-/// Une ligne grimpée pendant une séance (jointure grimpe + ligne).
+/// Une ligne grimpée pendant une séance.
 class LigneGrimpee {
   final Ligne ligne;
   final Grimpe grimpe;

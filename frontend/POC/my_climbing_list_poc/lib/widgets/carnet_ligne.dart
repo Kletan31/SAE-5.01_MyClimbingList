@@ -57,7 +57,7 @@ class _CarnetLigneTileState extends State<CarnetLigneTile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _date(widget.date),
+                    _date(context, widget.date),
                     style: const TextStyle(
                         fontSize: 18, fontWeight: FontWeight.w700),
                   ),
@@ -115,30 +115,21 @@ class _CarnetLigneTileState extends State<CarnetLigneTile> {
                     const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
               ),
             ),
-            _DetailValue(label: 'Montée', value: widget.grimpe.montee),
+            _DetailValue(
+              label: _labels.montee,
+              value: widget.grimpe.montee,
+            ),
             const SizedBox(width: 28),
-            _DetailValue(label: 'Top', value: widget.grimpe.top),
+            _DetailValue(
+              label: _labels.top,
+              value: widget.grimpe.top,
+            ),
           ],
         ),
       );
 
-  String _date(DateTime date) =>
-      '${date.day.toString().padLeft(2, '0')} ${_months[date.month - 1]} ${date.year}';
-
-  static const _months = [
-    'Jan',
-    'Fév',
-    'Mar',
-    'Avr',
-    'Mai',
-    'Juin',
-    'Juil',
-    'Aoû',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Déc'
-  ];
+  String _date(BuildContext context, DateTime date) =>
+      MaterialLocalizations.of(context).formatMediumDate(date);
 
   Color _propertyColor(String property) {
     final value = property.toLowerCase();
@@ -148,6 +139,8 @@ class _CarnetLigneTileState extends State<CarnetLigneTile> {
     return const Color(0xFF333333);
   }
 }
+
+const _labels = (montee: 'Montée', top: 'Top');
 
 class _DetailValue extends StatelessWidget {
   final String label;
@@ -160,8 +153,7 @@ class _DetailValue extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(label, style: const TextStyle(fontSize: 12)),
-          Text('$value | ${value > 0 ? 1 : 0}',
-              style: const TextStyle(fontSize: 12)),
+          Text('$value', style: const TextStyle(fontSize: 12)),
         ],
       );
 }

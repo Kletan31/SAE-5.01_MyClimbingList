@@ -20,17 +20,17 @@ class AccountViewModel extends ChangeNotifier {
   final ApiService _api;
   AccountViewModel(this._api);
 
-  // --- état de l'écran ---
+  // état de l'écran
   bool chargement = true;
   String? erreur;
   User? user;
-  TypeLigne type = TypeLigne.voie; // le double bouton Route / Bloc
+  TypeLigne type = TypeLigne.voie; 
   int nbSeances = 0;
 
   List<LigneGrimpee> _items = [];
   Map<int, String> _nomsSalles = {};
 
-  // --- actions ---
+  // Actions
   Future<void> charger() async {
     chargement = true;
     erreur = null;
@@ -62,7 +62,7 @@ class AccountViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // --- données affichées (pour le type sélectionné) ---
+  // Données affichées
   String get nomUtilisateur => user?.nomUtilisateur ?? '-';
 
   List<LigneGrimpee> get _itemsType =>
