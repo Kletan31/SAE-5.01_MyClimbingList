@@ -64,23 +64,56 @@ class _ProjectsScreen extends StatelessWidget {
                                 ],
                               ),
                               children: [
-                                Container(
-                                  color: Colors.grey.shade100,
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 12),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Text("Un super texte")
-                                      /* trois colonnes : libellé + valeur */
-                                    ],
-                                  ),
-                                ),
+                                const _DetailProjet(Type.voie, "", "", 0),
                               ],
                             ));
                       },
                     ),
     );
   }
+}
+
+enum Type { voie, bloc }
+
+class _DetailProjet extends StatelessWidget {
+  const _DetailProjet(
+      Type type, String dateOuverture, String derniereMontee, int nbMontees);
+
+  @override
+  Widget build(BuildContext context) => Container(
+        color: Colors.grey.shade100,
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Column(
+              children: [
+                const Text("Ouvert le"),
+                const Text(
+                  "19 Sep 2026",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                const Text("Dernière montée"),
+                const Text(
+                  "12 Oct 2026",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                const Text("Moulinette"),
+                const Text(
+                  "3",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
 }
