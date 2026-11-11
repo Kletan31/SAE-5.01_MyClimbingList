@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:my_climbing_list_poc/models/grimpe_model.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
 import 'package:my_climbing_list_poc/widgets/grade_badge.dart';
+import 'package:my_climbing_list_poc/widgets/propriete_info.dart';
 
 class CarnetLigneTile extends StatefulWidget {
   final Ligne ligne;
@@ -86,13 +87,10 @@ class _CarnetLigneTileState extends State<CarnetLigneTile> {
             ),
             SizedBox(
               width: 76,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  for (final property in widget.ligne.proprietes.take(2))
-                    _Tag(label: property, color: _propertyColor(property)),
-                ],
+              child: ProprietesTags(
+                ligne: widget.ligne,
+                maxTags: 2,
+                alignment: WrapAlignment.end,
               ),
             ),
             const SizedBox(width: 4),
@@ -108,12 +106,15 @@ class _CarnetLigneTileState extends State<CarnetLigneTile> {
         child: Row(
           children: [
             Expanded(
-              child: Text(
-                'Relais : ${widget.ligne.relais ?? '-'}'
-                '${widget.ligne.relais == null ? '' : ' - ${widget.ligne.couleur}'}',
-                style:
-                    const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
-              ),
+              child: Row(children: [
+                Text(
+                  'Relais : ${widget.ligne.relais ?? '-'}',
+                  style: const TextStyle(
+                      fontSize: 12, fontStyle: FontStyle.italic),
+                ),
+                const SizedBox(width: 10),
+                CouleurLigne(couleur: widget.ligne.couleur),
+              ]),
             ),
             _DetailValue(
               label: _labels.montee,
@@ -131,13 +132,6 @@ class _CarnetLigneTileState extends State<CarnetLigneTile> {
   String _date(BuildContext context, DateTime date) =>
       MaterialLocalizations.of(context).formatMediumDate(date);
 
-  Color _propertyColor(String property) {
-    final value = property.toLowerCase();
-    if (value.contains('ré') || value.contains('top')) return Colors.red;
-    if (value.contains('bloc')) return Colors.purple;
-    if (value.contains('conti')) return Colors.blue;
-    return const Color(0xFF333333);
-  }
 }
 
 const _labels = (montee: 'Montée', top: 'Top');
@@ -155,29 +149,5 @@ class _DetailValue extends StatelessWidget {
           Text(label, style: const TextStyle(fontSize: 12)),
           Text('$value', style: const TextStyle(fontSize: 12)),
         ],
-      );
-}
-
-class _Tag extends StatelessWidget {
-  final String label;
-  final Color color;
-
-  const _Tag({required this.label, required this.color});
-
-  @override
-  Widget build(BuildContext context) => Container(
-        constraints: const BoxConstraints(maxWidth: 72),
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: Text(
-          label,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
-              color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
-        ),
       );
 }
