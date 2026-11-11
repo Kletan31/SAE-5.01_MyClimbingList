@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
 import 'package:my_climbing_list_poc/viewmodels/projects_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,10 @@ class _ProjectsScreen extends StatelessWidget {
                       itemCount: vm.grimpes.length,
                       itemBuilder: (_, index) {
                         final item = vm.grimpes[index];
+                        final premiereMontee =
+                            vm.datePremiereMontee(item.idLigne);
+                        final derniereMontee =
+                            vm.dateDerniereMontee(item.idLigne);
 
                         return Dismissible(
                             key: ValueKey(item.idGrimpe),
@@ -64,11 +69,17 @@ class _ProjectsScreen extends StatelessWidget {
                                 ],
                               ),
                               children: [
-                                const _DetailProjet(
+                                _DetailProjet(
                                   type: Type.voie,
-                                  dateOuverture: "19 Sep 2026",
-                                  derniereMontee: "12 Oct 2026",
-                                  nbMontees: 3,
+                                  dateOuverture: premiereMontee == null
+                                      ? 'Inconnue'
+                                      : DateFormat('dd MMM yyyy')
+                                          .format(premiereMontee),
+                                  derniereMontee: derniereMontee == null
+                                      ? 'Inconnue'
+                                      : DateFormat('dd MMM yyyy')
+                                          .format(derniereMontee),
+                                  nbMontees: vm.nombreMontees(item.idLigne),
                                 ),
                               ],
                             ));
@@ -121,9 +132,9 @@ class _DetailProjet extends StatelessWidget {
             Column(
               children: [
                 Text(type == Type.voie ? "Moulinette" : "Montées"),
-                const Text(
-                  "3",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                Text(
+                  "$nbMontees",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],
             ),

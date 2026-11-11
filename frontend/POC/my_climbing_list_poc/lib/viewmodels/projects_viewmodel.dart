@@ -49,4 +49,33 @@ class ProjectsViewmodel extends ChangeNotifier {
     // }
     notifyListeners();
   }
+
+  DateTime? datePremiereMontee(int idLigne) {
+    final dates = _datesMonteesPourLigne(idLigne);
+    if (dates.isEmpty) return null;
+    return dates.reduce((a, b) => a.isBefore(b) ? a : b);
+  }
+
+  DateTime? dateDerniereMontee(int idLigne) {
+    final dates = _datesMonteesPourLigne(idLigne);
+    if (dates.isEmpty) return null;
+    return dates.reduce((a, b) => a.isAfter(b) ? a : b);
+  }
+
+  int nombreMontees(int idLigne) => grimpes
+      .where((grimpe) => grimpe.idLigne == idLigne)
+      .fold(0, (total, grimpe) => total + grimpe.montee);
+
+  List<DateTime> _datesMonteesPourLigne(int idLigne) {
+    final seanceParId = {
+      for (final seance in seances) seance.idSeance: seance,
+    };
+
+    return [
+      for (final grimpe in grimpes)
+        if (grimpe.idLigne == idLigne &&
+            seanceParId.containsKey(grimpe.idSeance))
+          seanceParId[grimpe.idSeance]!.date,
+    ];
+  }
 }
