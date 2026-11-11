@@ -64,7 +64,12 @@ class _ProjectsScreen extends StatelessWidget {
                                 ],
                               ),
                               children: [
-                                const _DetailProjet(Type.voie, "", "", 0),
+                                const _DetailProjet(
+                                  type: Type.voie,
+                                  dateOuverture: "19 Sep 2026",
+                                  derniereMontee: "12 Oct 2026",
+                                  nbMontees: 3,
+                                ),
                               ],
                             ));
                       },
@@ -76,8 +81,17 @@ class _ProjectsScreen extends StatelessWidget {
 enum Type { voie, bloc }
 
 class _DetailProjet extends StatelessWidget {
-  const _DetailProjet(
-      Type type, String dateOuverture, String derniereMontee, int nbMontees);
+  final Type type;
+  final String dateOuverture;
+  final String derniereMontee;
+  final int nbMontees;
+
+  const _DetailProjet({
+    required this.type,
+    required this.dateOuverture,
+    required this.derniereMontee,
+    required this.nbMontees,
+  });
 
   @override
   Widget build(BuildContext context) => Container(
@@ -89,24 +103,24 @@ class _DetailProjet extends StatelessWidget {
             Column(
               children: [
                 const Text("Ouvert le"),
-                const Text(
-                  "19 Sep 2026",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                Text(
+                  dateOuverture,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],
             ),
             Column(
               children: [
                 const Text("Dernière montée"),
-                const Text(
-                  "12 Oct 2026",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                Text(
+                  derniereMontee,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],
             ),
             Column(
               children: [
-                const Text("Moulinette"),
+                Text(type == Type.voie ? "Moulinette" : "Montées"),
                 const Text(
                   "3",
                   style: TextStyle(fontWeight: FontWeight.bold),
