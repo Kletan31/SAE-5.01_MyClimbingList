@@ -13,6 +13,7 @@ class ProjectsViewmodel extends ChangeNotifier {
   List<Seance> seances = [];
   List<Ligne> lignes = [];
   List<Grimpe> grimpes = [];
+  TypeLigne type = TypeLigne.voie;
   bool chargement = false;
   String? erreur;
 
@@ -39,6 +40,23 @@ class ProjectsViewmodel extends ChangeNotifier {
     }
     chargement = false;
     notifyListeners();
+  }
+
+  void changerType(TypeLigne nouveauType) {
+    type = nouveauType;
+    notifyListeners();
+  }
+
+  List<Grimpe> get grimpesFiltrees {
+    final lignesParId = {for (final ligne in lignes) ligne.id: ligne};
+    return grimpes
+        .where((grimpe) => lignesParId[grimpe.idLigne]?.type == type.name)
+        .toList();
+  }
+
+  TypeLigne typeDeLigne(int idLigne) {
+    final ligne = lignes.firstWhere((ligne) => ligne.id == idLigne);
+    return TypeLigne.values.byName(ligne.type);
   }
 
   Future<void> supprimer(int id) async {

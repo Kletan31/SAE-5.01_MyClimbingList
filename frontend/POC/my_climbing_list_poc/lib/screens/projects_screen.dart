@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:my_climbing_list_poc/models/ligne_model.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
 import 'package:my_climbing_list_poc/viewmodels/projects_viewmodel.dart';
+import 'package:my_climbing_list_poc/widgets/selection_voie_bloc.dart';
 import 'package:provider/provider.dart';
 
 class ProjectsScreen extends StatelessWidget {
@@ -29,70 +31,92 @@ class _ProjectsScreen extends StatelessWidget {
               ? Center(child: Text('Erreur : ${vm.erreur}'))
               : vm.grimpes.isEmpty
                   ? const Center(child: Text('Aucun projet'))
-                  : ListView.builder(
-                      itemCount: vm.grimpes.length,
-                      itemBuilder: (_, index) {
-                        final item = vm.grimpes[index];
-                        final premiereMontee =
-                            vm.datePremiereMontee(item.idLigne);
-                        final derniereMontee =
-                            vm.dateDerniereMontee(item.idLigne);
+                  : Column(
+                      children: [
+                        SelectionVoieBloc(
+                          selected: vm.type,
+                          onChanged: vm.changerType,
+                        ),
+                        Row(
+                          children: [Text("Test"), 
+                          Text("Test 2")], 
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                        ),
+                        Expanded(
+                          child: vm.grimpesFiltrees.isEmpty
+                              ? const Center(child: Text('Aucun projet'))
+                              : ListView.builder(
+                                  itemCount: vm.grimpesFiltrees.length,
+                                  itemBuilder: (_, index) {
+                                    final item = vm.grimpesFiltrees[index];
+                                    final premiereMontee =
+                                        vm.datePremiereMontee(item.idLigne);
+                                    final derniereMontee =
+                                        vm.dateDerniereMontee(item.idLigne);
 
-                        return Dismissible(
-                            key: ValueKey(item.idGrimpe),
-                            direction: DismissDirection.endToStart,
-                            background: Container(
-                              color: Colors.red,
-                              alignment: Alignment.centerRight,
-                              padding: const EdgeInsets.only(right: 16),
-                              child: const Icon(
-                                Icons.delete,
-                                color: Colors.white,
-                              ),
-                            ),
-                            onDismissed: (_) => vm.supprimer(item.idSeance),
-                            child: ExpansionTile(
-                              key: PageStorageKey(item),
-                              shape: const Border(),
-                              collapsedShape: const Border(),
-                              tilePadding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              title: Text('Test',
-                                  style: const TextStyle(
-                                      fontStyle: FontStyle.italic)),
-                              subtitle: Text('Relais: '),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const SizedBox(width: 16),
-                                  Text("T"),
-                                ],
-                              ),
-                              children: [
-                                _DetailProjet(
-                                  type: Type.voie,
-                                  dateOuverture: premiereMontee == null
-                                      ? 'Inconnue'
-                                      : DateFormat('dd MMM yyyy')
-                                          .format(premiereMontee),
-                                  derniereMontee: derniereMontee == null
-                                      ? 'Inconnue'
-                                      : DateFormat('dd MMM yyyy')
-                                          .format(derniereMontee),
-                                  nbMontees: vm.nombreMontees(item.idLigne),
+                                    return Dismissible(
+                                        key: ValueKey(item.idGrimpe),
+                                        direction: DismissDirection.endToStart,
+                                        background: Container(
+                                          color: Colors.red,
+                                          alignment: Alignment.centerRight,
+                                          padding:
+                                              const EdgeInsets.only(right: 16),
+                                          child: const Icon(
+                                            Icons.delete,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        onDismissed: (_) =>
+                                            vm.supprimer(item.idSeance),
+                                        child: ExpansionTile(
+                                          key: PageStorageKey(item),
+                                          shape: const Border(),
+                                          collapsedShape: const Border(),
+                                          tilePadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 16),
+                                          title: Text('Test',
+                                              style: const TextStyle(
+                                                  fontStyle: FontStyle.italic)),
+                                          subtitle: Text('Relais: '),
+                                          trailing: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const SizedBox(width: 16),
+                                              Text("T"),
+                                            ],
+                                          ),
+                                          children: [
+                                            _DetailProjet(
+                                              type:
+                                                  vm.typeDeLigne(item.idLigne),
+                                              dateOuverture: premiereMontee ==
+                                                      null
+                                                  ? 'Inconnue'
+                                                  : DateFormat('dd MMM yyyy')
+                                                      .format(premiereMontee),
+                                              derniereMontee: derniereMontee ==
+                                                      null
+                                                  ? 'Inconnue'
+                                                  : DateFormat('dd MMM yyyy')
+                                                      .format(derniereMontee),
+                                              nbMontees: vm
+                                                  .nombreMontees(item.idLigne),
+                                            ),
+                                          ],
+                                        ));
+                                  },
                                 ),
-                              ],
-                            ));
-                      },
+                        ),
+                      ],
                     ),
     );
   }
 }
 
-enum Type { voie, bloc }
-
 class _DetailProjet extends StatelessWidget {
-  final Type type;
+  final TypeLigne type;
   final String dateOuverture;
   final String derniereMontee;
   final int nbMontees;
@@ -131,7 +155,7 @@ class _DetailProjet extends StatelessWidget {
             ),
             Column(
               children: [
-                Text(type == Type.voie ? "Moulinette" : "Montées"),
+                Text(type == TypeLigne.voie ? "Moulinette" : "Montées"),
                 Text(
                   "$nbMontees",
                   style: const TextStyle(fontWeight: FontWeight.bold),
