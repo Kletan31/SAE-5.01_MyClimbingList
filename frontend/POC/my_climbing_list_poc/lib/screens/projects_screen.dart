@@ -29,88 +29,103 @@ class _ProjectsScreen extends StatelessWidget {
           ? const Center(child: CircularProgressIndicator())
           : vm.erreur != null
               ? Center(child: Text('Erreur : ${vm.erreur}'))
-              : vm.grimpes.isEmpty
-                  ? const Center(child: Text('Aucun projet'))
-                  : Column(
+              : Column(
+                  spacing: 10,
+                  children: [
+                    SelectionVoieBloc(
+                      selected: vm.type,
+                      onChanged: vm.changerType,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SelectionVoieBloc(
-                          selected: vm.type,
-                          onChanged: vm.changerType,
-                        ),
-                        Row(
-                          children: [Text("Test"), 
-                          Text("Test 2")], 
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                        ),
-                        Expanded(
-                          child: vm.grimpesFiltrees.isEmpty
-                              ? const Center(child: Text('Aucun projet'))
-                              : ListView.builder(
-                                  itemCount: vm.grimpesFiltrees.length,
-                                  itemBuilder: (_, index) {
-                                    final item = vm.grimpesFiltrees[index];
-                                    final premiereMontee =
-                                        vm.datePremiereMontee(item.idLigne);
-                                    final derniereMontee =
-                                        vm.dateDerniereMontee(item.idLigne);
-
-                                    return Dismissible(
-                                        key: ValueKey(item.idGrimpe),
-                                        direction: DismissDirection.endToStart,
-                                        background: Container(
-                                          color: Colors.red,
-                                          alignment: Alignment.centerRight,
-                                          padding:
-                                              const EdgeInsets.only(right: 16),
-                                          child: const Icon(
-                                            Icons.delete,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        onDismissed: (_) =>
-                                            vm.supprimer(item.idSeance),
-                                        child: ExpansionTile(
-                                          key: PageStorageKey(item),
-                                          shape: const Border(),
-                                          collapsedShape: const Border(),
-                                          tilePadding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 16),
-                                          title: Text('Test',
-                                              style: const TextStyle(
-                                                  fontStyle: FontStyle.italic)),
-                                          subtitle: Text('Relais: '),
-                                          trailing: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              const SizedBox(width: 16),
-                                              Text("T"),
-                                            ],
-                                          ),
-                                          children: [
-                                            _DetailProjet(
-                                              type:
-                                                  vm.typeDeLigne(item.idLigne),
-                                              dateOuverture: premiereMontee ==
-                                                      null
-                                                  ? 'Inconnue'
-                                                  : DateFormat('dd MMM yyyy')
-                                                      .format(premiereMontee),
-                                              derniereMontee: derniereMontee ==
-                                                      null
-                                                  ? 'Inconnue'
-                                                  : DateFormat('dd MMM yyyy')
-                                                      .format(derniereMontee),
-                                              nbMontees: vm
-                                                  .nombreMontees(item.idLigne),
-                                            ),
-                                          ],
-                                        ));
-                                  },
-                                ),
+                        Text(vm.grimpesFiltrees.length == 1
+                            ? "${vm.grimpesFiltrees.length} ${vm.type == TypeLigne.voie ? "voie" : "bloc"} en projet"
+                            : vm.grimpesFiltrees.length > 0
+                                ? "${vm.grimpesFiltrees.length} ${vm.type == TypeLigne.voie ? "voies" : "blocs"} en projet "
+                                : "${vm.type == TypeLigne.voie ? "Aucune voie" : "Aucun bloc"} en projet "),
+                        Tooltip(
+                          triggerMode: TooltipTriggerMode.tap,
+                          constraints: const BoxConstraints(maxWidth: 250),
+                          showDuration: const Duration(seconds: 5),
+                          textAlign: TextAlign.center,
+                          child: const Icon(Icons.info_outline),
+                          richMessage: TextSpan(children: <TextSpan>[
+                            TextSpan(
+                              text: 'Voies essayées mais pas enchaînées\n',
+                            ),
+                            TextSpan(
+                              text: 'Astuce',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            TextSpan(
+                              text:
+                                  ' : glissez vers la gauche pour supprimer un projet ',
+                            ),
+                          ]),
                         ),
                       ],
                     ),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: vm.grimpesFiltrees.length,
+                        itemBuilder: (_, index) {
+                          final item = vm.grimpesFiltrees[index];
+                          final premiereMontee =
+                              vm.datePremiereMontee(item.idLigne);
+                          final derniereMontee =
+                              vm.dateDerniereMontee(item.idLigne);
+
+                          return Dismissible(
+                              key: ValueKey(item.idGrimpe),
+                              direction: DismissDirection.endToStart,
+                              background: Container(
+                                color: Colors.red,
+                                alignment: Alignment.centerRight,
+                                padding: const EdgeInsets.only(right: 16),
+                                child: const Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onDismissed: (_) => vm.supprimer(item.idSeance),
+                              child: ExpansionTile(
+                                key: PageStorageKey(item),
+                                shape: const Border(),
+                                collapsedShape: const Border(),
+                                tilePadding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                title: Text('Test',
+                                    style: const TextStyle(
+                                        fontStyle: FontStyle.italic)),
+                                subtitle: Text('Relais: '),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const SizedBox(width: 16),
+                                    Text("T"),
+                                  ],
+                                ),
+                                children: [
+                                  _DetailProjet(
+                                    type: vm.typeDeLigne(item.idLigne),
+                                    dateOuverture: premiereMontee == null
+                                        ? 'Inconnue'
+                                        : DateFormat('dd MMM yyyy')
+                                            .format(premiereMontee),
+                                    derniereMontee: derniereMontee == null
+                                        ? 'Inconnue'
+                                        : DateFormat('dd MMM yyyy')
+                                            .format(derniereMontee),
+                                    nbMontees: vm.nombreMontees(item.idLigne),
+                                  ),
+                                ],
+                              ));
+                        },
+                      ),
+                    ),
+                  ],
+                ),
     );
   }
 }
