@@ -9,6 +9,7 @@ import 'package:my_climbing_list_poc/widgets/app_header.dart';
 import 'package:my_climbing_list_poc/widgets/grade_badge.dart';
 import 'package:provider/provider.dart';
 import '../account_screen.dart';
+import 'package:my_climbing_list_poc/services/api_events.dart';
 
 const _bleu = Color(0xFF3F51A3);
 const _orange = Color(0xFFF08000);
@@ -18,8 +19,10 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
-        create: (context) =>
-            AccountViewModel(context.read<ApiService>())..charger(),
+        create: (context) => AccountViewModel(
+          context.read<ApiService>(),
+          context.read<ApiEvents>(),
+        )..charger(),
         child: const _AccountView(),
       );
 }

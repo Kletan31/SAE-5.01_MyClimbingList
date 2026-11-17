@@ -3,7 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:my_climbing_list_poc/models/grimpe_model.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
 import 'package:my_climbing_list_poc/widgets/grade_badge.dart';
-import 'package:my_climbing_list_poc/widgets/propriete_info.dart';
+import 'package:my_climbing_list_poc/widgets/tags_ligne.dart';
 
 class CarnetLigneTile extends StatefulWidget {
   final Ligne ligne;

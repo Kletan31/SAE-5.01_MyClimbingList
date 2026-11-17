@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
 import 'package:my_climbing_list_poc/models/user_model.dart';
+import 'package:my_climbing_list_poc/services/api_events.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
 import 'package:my_climbing_list_poc/viewmodels/home/home_viewmodel.dart';
 
@@ -10,7 +11,7 @@ import 'package:my_climbing_list_poc/viewmodels/home/home_viewmodel.dart';
 // puis supprimer cette constante.
 const int _userId = 1;
 
-/// Nombre de tops et de flashs sur un ensemble de lignes grimpées.
+// Nombre de tops et de flashs sur un ensemble de lignes grimpées.
 class StatsGrimpe {
   final int top, flash;
   const StatsGrimpe({this.top = 0, this.flash = 0});
@@ -18,23 +19,46 @@ class StatsGrimpe {
 
 class AccountViewModel extends ChangeNotifier {
   final ApiService _api;
-  AccountViewModel(this._api);
+  late final void Function() _desabonner;
+  bool _disposed = false;
+
+  AccountViewModel(this._api, ApiEvents events) {
+    _desabonner = events.ecouter(
+      {
+        Ressource.seance,
+        Ressource.grimpe,
+        Ressource.lignes,
+        Ressource.salles,
+        Ressource.users,
+      },
+      () => charger(silencieux: true),
+    );
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    _desabonner();
+    super.dispose();
+  }
 
   // état de l'écran
   bool chargement = true;
   String? erreur;
   User? user;
-  TypeLigne type = TypeLigne.voie; 
+  TypeLigne type = TypeLigne.voie;
   int nbSeances = 0;
 
   List<LigneGrimpee> _items = [];
   Map<int, String> _nomsSalles = {};
 
   // Actions
-  Future<void> charger() async {
-    chargement = true;
-    erreur = null;
-    notifyListeners();
+  Future<void> charger({bool silencieux = false}) async {
+    if (!silencieux) {
+      chargement = true;
+      erreur = null;
+      notifyListeners();
+    }
     try {
       user = await _api.getUser(_userId);
       final salles = await _api.getSalles();
@@ -50,9 +74,11 @@ class AccountViewModel extends ChangeNotifier {
           if (ids.contains(g.idSeance) && lignes[g.idLigne] != null)
             LigneGrimpee(ligne: lignes[g.idLigne]!, grimpe: g),
       ];
+      erreur = null;
     } catch (e) {
       erreur = e.toString();
     }
+    if (_disposed) return;
     chargement = false;
     notifyListeners();
   }
@@ -80,10 +106,10 @@ class AccountViewModel extends ChangeNotifier {
   StatsGrimpe get moulinette => const StatsGrimpe();
   StatsGrimpe get tete => _stats(_itemsType);
 
-  /// Stats affichées en mode Bloc (pas de distinction moulinette / tete)
+  // Stats affichées en mode Bloc (pas de distinction moulinette / tete)
   StatsGrimpe get bloc => _stats(_itemsType);
 
-  /// Salle où l'utilisateur a grimpé le plus de lignes de ce type
+  // Salle où l'utilisateur a grimpé le plus de lignes de ce type
   String? get salleFavorite {
     final nb = <int, int>{};
     for (final i in _itemsType) {
@@ -103,7 +129,7 @@ class AccountViewModel extends ChangeNotifier {
   String? get styleFavori =>
       _proprieteFavorite((p) => !_profils.contains(_cle(p)));
 
-  /// Cotation la plus haute parmi les lignes réussies (top)
+  // Cotation la plus haute parmi les lignes réussies (top)
   String? get cotationMaxi => cotationMax(
       _itemsType.where((i) => i.grimpe.top > 0).map((i) => i.ligne.cotation));
 

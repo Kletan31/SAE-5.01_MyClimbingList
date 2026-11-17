@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:my_climbing_list_poc/models/grimpe_model.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
+import 'package:my_climbing_list_poc/services/api_events.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
 
 const int _userId = 1;
@@ -21,7 +22,22 @@ class CarnetItem {
 
 class CarnetViewModel extends ChangeNotifier {
   final ApiService _api;
-  CarnetViewModel(this._api);
+  late final void Function() _desabonner;
+  bool _disposed = false;
+
+  CarnetViewModel(this._api, ApiEvents events) {
+    _desabonner = events.ecouter(
+      {Ressource.seance, Ressource.grimpe, Ressource.lignes, Ressource.salles},
+      () => charger(silencieux: true),
+    );
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    _desabonner();
+    super.dispose();
+  }
 
   bool chargement = true;
   String? erreur;
@@ -29,10 +45,12 @@ class CarnetViewModel extends ChangeNotifier {
   bool topActif = false;
   List<CarnetItem> _items = [];
 
-  Future<void> charger() async {
-    chargement = true;
-    erreur = null;
-    notifyListeners();
+  Future<void> charger({bool silencieux = false}) async {
+    if (!silencieux) {
+      chargement = true;
+      erreur = null;
+      notifyListeners();
+    }
     try {
       final lignes = {
         for (final ligne in await _api.getLignes()) ligne.id: ligne
@@ -55,9 +73,11 @@ class CarnetViewModel extends ChangeNotifier {
                   'Salle ${lignes[grimpe.idLigne]!.salleId}',
             ),
       ]..sort((a, b) => b.date.compareTo(a.date));
+      erreur = null;
     } catch (e) {
       erreur = e.toString();
     }
+    if (_disposed) return;
     chargement = false;
     notifyListeners();
   }

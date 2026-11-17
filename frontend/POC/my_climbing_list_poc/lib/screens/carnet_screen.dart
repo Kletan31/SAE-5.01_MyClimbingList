@@ -5,6 +5,7 @@ import 'package:my_climbing_list_poc/viewmodels/carnet_viewmodel.dart';
 import 'package:my_climbing_list_poc/widgets/app_header.dart';
 import 'package:my_climbing_list_poc/widgets/carnet_ligne.dart';
 import 'package:provider/provider.dart';
+import 'package:my_climbing_list_poc/services/api_events.dart';
 
 class CarnetScreen extends StatelessWidget {
   final bool showHeader;
@@ -14,8 +15,9 @@ class CarnetScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final body = ChangeNotifierProvider(
-      create: (context) =>
-          CarnetViewModel(context.read<ApiService>())..charger(),
+      create: (context) => CarnetViewModel(
+        context.read<ApiService>(),
+        context.read<ApiEvents>(),)..charger(),
       child: const _CarnetBody(),
     );
 
