@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
 import 'package:my_climbing_list_poc/viewmodels/projects_viewmodel.dart';
+import 'package:my_climbing_list_poc/widgets/grade_badge.dart';
 import 'package:my_climbing_list_poc/widgets/selection_voie_bloc.dart';
 import 'package:provider/provider.dart';
 
@@ -71,10 +72,14 @@ class _ProjectsScreen extends StatelessWidget {
                         itemCount: vm.grimpesFiltrees.length,
                         itemBuilder: (_, index) {
                           final item = vm.grimpesFiltrees[index];
+                          final salle = vm.salleDeLigne(item.idLigne);
                           final premiereMontee =
                               vm.datePremiereMontee(item.idLigne);
                           final derniereMontee =
                               vm.dateDerniereMontee(item.idLigne);
+                          final ligne = vm.lignes.firstWhere(
+                            (ligne) => ligne.id == item.idLigne,
+                          );
 
                           return Dismissible(
                               key: ValueKey(item.idGrimpe),
@@ -95,15 +100,45 @@ class _ProjectsScreen extends StatelessWidget {
                                 collapsedShape: const Border(),
                                 tilePadding:
                                     const EdgeInsets.symmetric(horizontal: 16),
-                                title: Text('Test',
-                                    style: const TextStyle(
-                                        fontStyle: FontStyle.italic)),
-                                subtitle: Text('Relais: '),
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
+                                title: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    const SizedBox(width: 16),
-                                    Text("T"),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            salle?.nom ?? 'Salle inconnue',
+                                            style: const TextStyle(
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                          ),
+                                          Text(
+                                            "${vm.type == TypeLigne.voie ? "Relais : ${ligne.relais}" : "Secteur : ${ligne.secteur}"} - ${ligne.couleur}",
+                                            style: const TextStyle(
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Center(
+                                        child: _BadgeTemporaire(
+                                          proprietes: ligne.proprietes,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Align(
+                                        alignment: Alignment.centerRight,
+                                        child: GradeBadge(
+                                            cotation: ligne.cotation),
+                                      ),
+                                    ),
                                   ],
                                 ),
                                 children: [
@@ -180,4 +215,39 @@ class _DetailProjet extends StatelessWidget {
           ],
         ),
       );
+}
+
+/**
+ * Classe temporaire pour afficher les propriétés sous forme de badge.
+ */
+class _BadgeTemporaire extends StatelessWidget {
+  final List<String> proprietes;
+
+  const _BadgeTemporaire({required this.proprietes});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: proprietes
+          .map(
+            (propriete) => Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 3,
+                  vertical: 1,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Text(propriete,
+                style: const TextStyle(fontSize: 12)),
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
 }

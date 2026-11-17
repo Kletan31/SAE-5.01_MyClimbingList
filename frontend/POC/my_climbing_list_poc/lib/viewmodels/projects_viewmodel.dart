@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_climbing_list_poc/models/grimpe_model.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
+import 'package:my_climbing_list_poc/models/salle_model.dart';
 import 'package:my_climbing_list_poc/models/seance_model.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
 
@@ -12,6 +13,7 @@ class ProjectsViewmodel extends ChangeNotifier {
 
   List<Seance> seances = [];
   List<Ligne> lignes = [];
+  List<Salle> salles = [];
   List<Grimpe> grimpes = [];
   TypeLigne type = TypeLigne.voie;
   bool chargement = false;
@@ -24,6 +26,7 @@ class ProjectsViewmodel extends ChangeNotifier {
     try {
       seances = await _api.getSeances(userId: user_id);
       lignes = await _api.getLignes();
+      salles = await _api.getSalles();
 
       final seanceIds = seances.map((s) => s.idSeance).toSet();
       final ligneIds = lignes.map((l) => l.id).toSet();
@@ -57,6 +60,17 @@ class ProjectsViewmodel extends ChangeNotifier {
   TypeLigne typeDeLigne(int idLigne) {
     final ligne = lignes.firstWhere((ligne) => ligne.id == idLigne);
     return TypeLigne.values.byName(ligne.type);
+  }
+
+  Salle? salleDeLigne(int idLigne) {
+    final lignesCorrespondantes = lignes.where((ligne) => ligne.id == idLigne);
+    if (lignesCorrespondantes.isEmpty) return null;
+
+    final salleId = lignesCorrespondantes.first.salleId;
+    for (final salle in salles) {
+      if (salle.id == salleId) return salle;
+    }
+    return null;
   }
 
   Future<void> supprimer(int id) async {
