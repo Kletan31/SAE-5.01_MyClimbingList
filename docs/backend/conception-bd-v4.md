@@ -67,10 +67,21 @@ Bloc ou voie d'escalade
 | statut          | VARCHAR(10)        | Non      | État                                      |
 | date_demontage  | DATE               | Oui      | Démontage                                 |
 | en_tete         | BOOLEAN            | Non      | Indique si la voie peut être fait en tête |
-| proprietes      | JSON ?             | Oui      | A voir, tableau de liste de propriété ou une autre table |
+| nom             | VARCHAR(50) ?      | Oui      | Nom de l'ouverture ?                      |
+| ouvreur         | VARCHAR(50) ?      | Oui      | Equipe qui a ouvert la voie/bloc          |
+| propriete_id    |  INT               | Non      | Id de la propriété, anciennement profil   |
+| style           | VARCH(50)          | Oui      | Style d'une ouverture                     |
 
-Réflexion à confirmer avec dump de la BD existante : faire de propriétés 2 colonnes (profil et style), ça serait utile pour les statistiques.
-en_tete en false par défaut, et tjrs faux pour un bloc.
+### Propriete
+
+Propriétés disponibles pour les ouvertures avec leur code couleur.
+
+| Attribut        | Type               | Nullable | Description                               |
+|-----------------|--------------------|----------|-------------------------------------------|
+| id              | INT PK AUTO_INCREMENT | Non   | Identifiant                               |
+| nom             | VARCHAR(50)         | Non     | Nom de la propriété                       |
+| couleur_hex        | CHAR(7)         | Non      | Couleur hexadécimale associée             |
+
 
 ### Séance
 
