@@ -186,7 +186,7 @@ class _LigneSeanceCard extends StatelessWidget {
             onMoins: () => vm.changerMontee(entree, -1),
             onPlus: () => vm.changerMontee(entree, 1),
           ),
-          const SizedBox(width: 40),
+          const Flexible(child: SizedBox(width: 40)),
           _Compteur(
             label: 'Top',
             valeur: entree.top,
