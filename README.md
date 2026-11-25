@@ -87,8 +87,8 @@ L'équipe a conscience d'un déséquilibre de charge de travail entre les membre
 |---|---|---|---|
 | Cahier des charges | Fonctionnalités de MCL cadrées à partir de l'analyse de l'existant | Livré | [docs/cahier-des-charges](./docs/cahier-des-charges) |
 | Analyse & conception | Analyse de l'existant, conception de l'application | Livré | [docs/analyse-conception.md](./docs/analyse-conception.md) |
-| Backend (API et base de données) | API Symfony et base MySQL | En cours | [back/](./backend) |
-| Application mobile | Application Flutter, disponible sur les stores | En cours | [front/](./frontend) |
+| Backend (API et base de données) | API Symfony et base MySQL | En cours | [backend/](./backend) |
+| Application mobile | Application Flutter, disponible sur les stores | En cours | [frontend/](./frontend) |
 | Documentation du code | Documentation à destination des futurs développeurs | À faire | *à venir* |
 | Documentation utilisateur | Guide d'utilisation de l'application | À faire | *à venir* |
 | Documentation administrateur | Guide d'administration (backoffice, déploiement) | À faire | *à venir* |
