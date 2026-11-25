@@ -1,9 +1,0 @@
-{% load static %}
-<script type="module">
-import { initializeLogbookFilter } from "{% static 'core/js/logbook/updateFilter.js' %}";
-
-document.addEventListener('DOMContentLoaded', () => {
-    initializeRowContainerListeners();
-    initializeLogbookFilter();
-});
-</script>
