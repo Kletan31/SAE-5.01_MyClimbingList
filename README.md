@@ -52,11 +52,15 @@ L'équipe a conscience d'un déséquilibre de charge de travail entre les membre
 
 *Dernière mise à jour : 25/11/2026*
  
-| Date | Heure de début | Heure de fin | Membres présents | Remarques |
-|---|---|---|---|---|
-| JJ/MM/AAAA | HH:MM | HH:MM | Prénoms | |
-| JJ/MM/AAAA | HH:MM | HH:MM | Prénoms | |
-| JJ/MM/AAAA | HH:MM | HH:MM | Prénoms | |
+| Date | Heure de début | Heure de fin |
+|---|---|---|
+| 15/09/2026 | 14:15 | 17:15 |
+| 17/09/2026 | 9:30 | 12:30 |
+| 21/09/2026 | 14:15 | 17:15 |
+| 08/10/2026 | 8:00 | 11:00 |
+| 16/10/2026 | 9:30 | 12:30 |
+| 10/11/2026 | 14:15 | 17:15 |
+| 16/11/2026 | 14:15 | 17:15 |
 
 ### Chiffrage du projet
 
@@ -66,7 +70,7 @@ L'équipe a conscience d'un déséquilibre de charge de travail entre les membre
  
 | Membre | Nombre de commits |
 |---|---|
-| Ethan JOUSSEIN | 0 |
+| Ethan JOUSSEIN | 42 |
 | Axel MOYANO | 0 |
 | Rayan SABOUN | 0 |
 | Eliot OLIVENCIA | 7 |
