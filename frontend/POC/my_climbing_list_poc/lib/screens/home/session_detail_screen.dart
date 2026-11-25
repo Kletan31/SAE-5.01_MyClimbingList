@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../../viewmodels/home/home_viewmodel.dart';
 import '../../viewmodels/home/session_detail_viewmodel.dart';
 import '../../widgets/app_header.dart';
-import '../../widgets/grade_badge.dart';
+import '../../widgets/session_ligne.dart';
 
 class SessionDetailScreen extends StatelessWidget {
   final Session session;
@@ -42,8 +42,12 @@ class _SessionDetailView extends StatelessWidget {
         Expanded(
           child: ListView.separated(
             itemCount: vm.lignes.length,
-            separatorBuilder: (_, __) => const Divider(height: 1),
-            itemBuilder: (_, i) => _LigneTile(vm: vm, index: i),
+            separatorBuilder: (_, __) =>
+                const Divider(height: 1, color: Color(0xFF333333)),
+            itemBuilder: (_, i) {
+              final l = vm.lignes[i];
+              return SessionLigneTile(ligne: l.ligne, grimpe: l.grimpe);
+            },
           ),
         ),
       ]),
@@ -82,36 +86,4 @@ class _Histogramme extends StatelessWidget {
           ]),
         ),
       );
-}
-
-class _LigneTile extends StatelessWidget {
-  final SessionDetailViewModel vm;
-  final int index;
-  const _LigneTile({required this.vm, required this.index});
-
-  @override
-  Widget build(BuildContext context) {
-    final l = vm.lignes[index];
-    return ListTile(
-      title: Text(vm.libelleRelais(l),
-          style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic)),
-      subtitle: Row(
-        children: [
-          Expanded(
-            child: Text(
-              '${vm.libelleProprietes(l)}\n${vm.libelleResultat(l)}',
-            ),
-          ),
-          if (l.grimpe.flash)
-            const Icon(Icons.bolt, color: Colors.yellow, size: 28),
-        ],
-      ),
-      isThreeLine: true,
-      trailing: GradeBadge(
-        cotation: vm.libelleCotation(l),
-        size: 40,
-        fontSize: 14,
-      ),
-    );
-  }
 }
