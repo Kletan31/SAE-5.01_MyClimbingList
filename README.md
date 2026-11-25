@@ -93,10 +93,10 @@ L'équipe a conscience d'un déséquilibre de charge de travail entre les membre
 | Analyse & conception | Analyse de l'existant, conception de l'application | Livré | [docs/analyse-conception.md](./docs/analyse-conception.md) |
 | Backend (API et base de données) | API Symfony et base MySQL | En cours | [backend/](./backend) |
 | Application mobile | Application Flutter, disponible sur les stores | En cours | [frontend/](./frontend) |
-| Documentation du code | Documentation à destination des futurs développeurs | À faire | *à venir* |
-| Documentation utilisateur | Guide d'utilisation de l'application | À faire | *à venir* |
-| Documentation administrateur | Guide d'administration (backoffice, déploiement) | À faire | *à venir* |
-| Cahier de recette | Cas de test versionnés et leurs résultats | À faire | [docs/cahier-de-recette](./docs/cahier-de-recette.md) |
+| Documentation du code | Documentation à destination des futurs développeurs | En cours | [docs/documentation-code](./docs/documentation-code.md) |
+| Documentation utilisateur | Guide d'utilisation de l'application | En cours | [docs/documentation-util](./docs/documentation-util.md) |
+| Documentation administrateur | Guide d'administration (backoffice, déploiement) | En cours | [docs/documentation-admin](./docs/documentation-admin.md) |
+| Cahier de recette | Cas de test versionnés et leurs résultats | En cours | [docs/cahier-de-recette](./docs/cahier-de-recette.md) |
 | Releases | Versions livrées, avec notes de release commentées | En cours | [Releases](../../releases) |
 
 ## Documentation
@@ -107,9 +107,9 @@ La documentation est versionnée dans le dossier [`docs/`](./docs) :
 - [Informations licences de développement](./docs/MCL-informations-licences-dev.pdf)
 - [Analyse & conception](./docs/analyse-conception.md)
 - [Réflexions de conception pour le Backend](./docs/backend)
-- Documentation du code : *à venir*
-- Documentation utilisateur : *à venir*
-- Documentation administrateur : *à venir*
+- [Documentation du code](./docs/documentation-code.md)
+- [Documentation utilisateur](./docs/documentation-util.md)
+- [Documentation administrateur](./docs/documentation-admin.md)
 - [Cahier de recette](./docs/cahier-de-recette.md)
 
 Le client ne nécessite pas toutes ces documentations.
