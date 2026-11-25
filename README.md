@@ -71,10 +71,10 @@ L'équipe a conscience d'un déséquilibre de charge de travail entre les membre
 | Membre | Nombre de commits |
 |---|---|
 | Ethan JOUSSEIN | 42 |
-| Axel MOYANO | 0 |
-| Rayan SABOUN | 0 |
+| Axel MOYANO | 70 |
+| Rayan SABOUN | 35 |
 | Eliot OLIVENCIA | 7 |
-| **Total** | **0** |
+| **Total** | **154** |
 
 **Temps de travail et réunions**
  
@@ -96,7 +96,7 @@ L'équipe a conscience d'un déséquilibre de charge de travail entre les membre
 | Documentation du code | Documentation à destination des futurs développeurs | À faire | *à venir* |
 | Documentation utilisateur | Guide d'utilisation de l'application | À faire | *à venir* |
 | Documentation administrateur | Guide d'administration (backoffice, déploiement) | À faire | *à venir* |
-| Cahier de recette | Cas de test versionnés et leurs résultats | À faire | *à venir* |
+| Cahier de recette | Cas de test versionnés et leurs résultats | À faire | [docs/cahier-de-recette](./docs/cahier-de-recette.md) |
 | Releases | Versions livrées, avec notes de release commentées | En cours | [Releases](../../releases) |
 
 ## Documentation
@@ -110,7 +110,7 @@ La documentation est versionnée dans le dossier [`docs/`](./docs) :
 - Documentation du code : *à venir*
 - Documentation utilisateur : *à venir*
 - Documentation administrateur : *à venir*
-- Cahier de recette : *à venir*
+- [Cahier de recette](./docs/cahier-de-recette.md)
 
 Le client ne nécessite pas toutes ces documentations.
 Nous les réalisons néanmoins, car elles font partie des attendus pédagogiques de la SAE et sont évaluées.
