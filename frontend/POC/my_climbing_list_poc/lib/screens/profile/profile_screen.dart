@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
+import 'package:my_climbing_list_poc/screens/carnet_screen.dart';
 import 'package:my_climbing_list_poc/screens/retour_screen.dart';
 import 'package:my_climbing_list_poc/screens/suivi_screen.dart';
 import 'package:my_climbing_list_poc/services/api_service.dart';
@@ -8,6 +9,7 @@ import 'package:my_climbing_list_poc/widgets/app_header.dart';
 import 'package:my_climbing_list_poc/widgets/grade_badge.dart';
 import 'package:provider/provider.dart';
 import '../account_screen.dart';
+import 'package:my_climbing_list_poc/services/api_events.dart';
 
 const _bleu = Color(0xFF3F51A3);
 const _orange = Color(0xFFF08000);
@@ -17,8 +19,10 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
-        create: (context) =>
-            AccountViewModel(context.read<ApiService>())..charger(),
+        create: (context) => AccountViewModel(
+          context.read<ApiService>(),
+          context.read<ApiEvents>(),
+        )..charger(),
         child: const _AccountView(),
       );
 }
@@ -268,7 +272,9 @@ class _BoutonCarnet extends StatelessWidget {
           ),
           // TODO: ouvrir le carnet complet (liste de toutes les séances,
           // filtrable). Aujourd'hui c'est l'onglet Home qui l'affiche.
-          onPressed: () {},
+          onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const CarnetScreen())
+            ),
           child: const Text('Mon Carnet',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
         ),
