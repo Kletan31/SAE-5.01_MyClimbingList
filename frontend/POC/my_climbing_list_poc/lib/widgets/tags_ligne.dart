@@ -1,44 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_climbing_list_poc/models/ligne_model.dart';
+import 'package:my_climbing_list_poc/theme/app_theme.dart';
 
-Color couleurLigne(String nom) {
-  var n = nom.trim().toLowerCase();
-  if (n.endsWith('e') && n != 'rose') n = n.substring(0, n.length - 1);
-  switch (n) {
-    case 'orang':
-    case 'orange':
-      return const Color(0xFFFF9800);
-    case 'vert':
-      return const Color(0xFF4CAF50);
-    case 'roug':
-    case 'rouge':
-      return const Color(0xFFE53935);
-    case 'mauv':
-    case 'mauve':
-      return const Color(0xFF9C6ADE);
-    case 'violet':
-      return const Color(0xFF7B1FA2);
-    case 'bleu':
-      return const Color(0xFF1E88E5);
-    case 'marron':
-      return const Color(0xFF795548);
-    case 'gris':
-      return const Color(0xFF9E9E9E);
-    case 'noir':
-      return Colors.black;
-    case 'blanc':
-      return Colors.white;
-    case 'jaun':
-    case 'jaune':
-      return const Color(0xFFFDD835);
-    case 'rose':
-      return const Color(0xFFEC407A);
-    default:
-      return Colors.grey;
-  }
-}
-
-// Nom de la couleur de la ligne (ex : Orange), sans pastille.
 class CouleurLigne extends StatelessWidget {
   final String couleur;
   const CouleurLigne({super.key, required this.couleur});
@@ -55,20 +18,12 @@ class TagPropriete extends StatelessWidget {
   final String label;
   const TagPropriete(this.label, {super.key});
 
-  static Color couleurPour(String p) {
-    final v = p.toLowerCase();
-    if (v.contains('ré') || v.contains('top')) return Colors.red;
-    if (v.contains('bloc')) return Colors.purple;
-    if (v.contains('conti') || v.contains('voie')) return Colors.blue;
-    return const Color(0xFF333333);
-  }
-
   @override
   Widget build(BuildContext context) => Container(
         constraints: const BoxConstraints(maxWidth: 90),
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         decoration: BoxDecoration(
-          color: couleurPour(label),
+          color: AppTheme.couleurTag(label),
           borderRadius: BorderRadius.circular(5),
         ),
         child: Text(label,
