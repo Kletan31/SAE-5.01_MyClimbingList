@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static const Color accent = Color(0xFFF57C00); // orange
   static const Color pageAccent = Color.fromARGB(255, 63, 81, 163); // accent bleu sur certains éléments
-
   static const Color tagRouge = Colors.red;
   static const Color tagViolet = Colors.purple;
   static const Color tagBleu = Colors.blue;
