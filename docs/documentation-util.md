@@ -16,6 +16,7 @@ elle se concentre sur ce qui demande une explication.
 
 ## 2. Application mobile – grimpeurs
 
+_Note : l'application mobile est en cours de transition d'un POC à une vraie implémentation de l'API et de l'authentification, la documentation arrivera ultérieurement quand les écrans seront vinalisés._
 ### 2.1 Parcours principal
 
 > **À compléter (Front)** : décrire le parcours nominal.
