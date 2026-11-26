@@ -1,6 +1,6 @@
 # Documentation du code – MyClimbingList
  
-*Dernière mise à jour : 25/11/2026 – Version : 0.1*
+*Dernière mise à jour : 25/11/2026 – Version : 0.2*
  
 Cette documentation est destinée aux développeurs qui reprendront le projet.
 Elle reste volontairement légère : le code doit s'expliquer lui-même, et nous documentons uniquement ce qu'il ne dit pas
@@ -23,7 +23,13 @@ MCL est composé de deux parties qui communiquent par une API REST en JSON :
                                                   [ Backoffice EasyAdmin ]
 ```
  
-> **À compléter (Front)** : schéma plus détaillé si besoin.
+> **Détail côté Flutter** : l'application suit une architecture en couches. Chaque écran délègue son état et sa logique à un viewmodel, qui obtient les données via le contrat `ApiService`. Aujourd'hui ce contrat est rempli par un mock ; l'implémentation HTTP viendra ensuite sans modifier les écrans ni les viewmodels.
+
+```
+Écran (screens) --> ViewModel (viewmodels) --> ApiService (contrat abstrait)
+                                                  |-- MockApiService (actuel : assets/mock/data.json)
+                                                  '-- implémentation HTTP (à venir)
+```
  
 ## 2. Backend (Symfony)
  
@@ -91,28 +97,75 @@ Voir le [cahier de recette](./cahier-de-recette.md). Lancement : `cd backend && 
  
 ## 3. Frontend (Flutter)
  
-> **À compléter (Front)**
+L'application mobile est dans le dossier `frontend/POC/my_climbing_list_poc/` ; les chemins ci-dessous sont relatifs à ce dossier.
+
+Elle est actuellement en transition entre le POC et l'application définitive : l'authentification et la connexion à l'API ne sont **pas encore implémentées**. Les données proviennent d'un mock local (voir 3.3).
+
+- Dépendances principales : `provider` (état), `intl` (formatage des dates), `lucide_icons_flutter` (icônes), `cupertino_icons`.
+- Lancement : `cd frontend/POC/my_climbing_list_poc && flutter run`.
  
 ### 3.1 Organisation du code
  
 | Dossier | Contenu |
 |---|---|
-| `front/lib/...` | |
-| | |
+| `lib/main.dart` | Point d'entrée. N'instancie pas les viewmodels |
+| `lib/models/` | Modèles de données, un par ressource (`*_model.dart` : salle, ligne, séance, grimpe, suivi, utilisateur, contest) |
+| `lib/screens/` | Écrans, regroupés en sous-dossiers par fonctionnalité (`home/`, `profile/`, `seance/`) |
+| `lib/viewmodels/` | Un viewmodel par écran : état et logique de l'écran associé |
+| `lib/services/` | `ApiService` (contrat abstrait), `MockApiService` (implémentation temporaire), `api_events.dart` |
+| `lib/repositories/` | Accès aux données par ressource (actuellement `contest_repository.dart`) |
+| `lib/widgets/` | Composants réutilisables entre écrans |
+| `lib/theme/` | Thème de l'application (`app_theme.dart`) |
+| `assets/mock/data.json` | Données du mock (clés : `salles`, `lignes`, `users`, `suivis`, `contests`) |
+| `assets/images/salles/` | Images de salles embarquées temporairement (format 1800x800), référencées par leur nom de fichier dans `data.json` |
  
 ### 3.2 Gestion de l'état et navigation
  
-> **À compléter (Front)** : solution choisie (Provider, Riverpod, Bloc, etc.) et organisation des écrans.
+Architecture **MVVM**, gestion de l'état avec **Provider**.
+
+| Couche | Dossier | Responsabilité |
+|---|---|---|
+| Modèle | `lib/models/` | Structure des données, une classe par ressource |
+| Vue | `lib/screens/`, `lib/widgets/` | Affichage et interactions uniquement, sans logique métier |
+| ViewModel | `lib/viewmodels/` | État et logique d'un écran, appel aux services |
+
+Règles à respecter :
+
+- un viewmodel pilote **un écran** (ex. `SeanceViewModel` pour `seance_screen.dart`), pas une ressource ;
+- les modèles, eux, sont par ressource ;
+- `main.dart` ne crée ni n'instancie de viewmodel ;
+- la navigation par onglets est portée par `lib/widgets/tab_navigator.dart`.
  
 ### 3.3 Communication avec l'API
  
-> **À compléter (Front)** : client HTTP utilisé, stockage du jeton, gestion de l'expiration du jeton.
+**Non implémentée pour l'instant** : il n'y a ni appel HTTP, ni authentification, ni jeton.
+
+Ce qui est en place pour préparer le branchement :
+
+- `lib/services/api_service.dart` : classe abstraite qui définit le contrat d'accès aux données. Les viewmodels ne dépendent que de ce contrat.
+- `lib/services/mock_api_service.dart` : implémentation temporaire qui lit `assets/mock/data.json`. Elle propose des opérations de lecture et d'écriture ; les modifications sont **conservées en mémoire uniquement** (rien n'est réécrit dans le fichier).
+- `lib/services/api_events.dart` : mécanisme de notification, pour recharger les écrans concernés lorsque des données sont envoyées à l'API (ex. l'accueil après l'ajout d'une séance).
+
+Reste à faire :
+
+- créer l'implémentation HTTP de `ApiService` sur les routes de la section 2.4 ;
+- choisir le client HTTP ;
+- stocker le jeton JWT de façon sécurisée et l'envoyer dans l'en-tête `Authorization: Bearer <jeton>` ;
+- gérer l'expiration du jeton (en cohérence avec le renouvellement prévu côté API).
+
+Ces points seront documentés ici une fois décidés.
  
 ### 3.4 Composants et écrans principaux
  
 | Écran / composant | Rôle | Fichier |
 |---|---|---|
-| | | |
+| `SeanceScreen` | Écran des salles | `lib/screens/seance/seance_screen.dart` |
+| `AjoutSeanceScreen` | Ajout d'une séance (« Ajouter ma séance ») : date, liste de grimpes éditables, enregistrement | `lib/screens/seance/ajout_seance_screen.dart` |
+| `HomeScreen` | Écran d'accueil | `lib/screens/home/home_screen.dart` |
+| `CarnetScreen` | Carnet de l'utilisateur | `lib/screens/carnet_screen.dart` |
+| `ContestScreen` | Contests | `lib/screens/contest_screen.dart` |
+| `ProfileScreen` | Profil de l'utilisateur | `lib/screens/profile/profile_screen.dart` |
+| `SalleImage` | Vignette d'image de salle (recadrée, avec icône de repli si l'image est introuvable) | `lib/widgets/salle_image.dart` |
  
 ## 4. Conventions de contribution
  
