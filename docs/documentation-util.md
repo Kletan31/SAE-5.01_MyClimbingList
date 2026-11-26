@@ -1,6 +1,6 @@
 # Documentation utilisateur – MyClimbingList
 
-*Dernière mise à jour : 25/11/2026 – Version : 0.1*
+*Dernière mise à jour : 26/11/2026 – Version : 0.2*
 
 Cette documentation aide les utilisateurs de MCL, l'application des salles d'escalade Altissimo.
 Elle ne détaille pas ce que l'interface rend évident (par exemple la saisie d'un email et d'un mot de passe) :
@@ -17,34 +17,36 @@ elle se concentre sur ce qui demande une explication.
 ## 2. Application mobile – grimpeurs
 
 _Note : l'application mobile est en cours de transition d'un POC à une vraie implémentation de l'API et de l'authentification, la documentation arrivera ultérieurement quand les écrans seront vinalisés._
+
+Écrans déjà réalisés :
+
+| Accueil | Séances | Projets | Profil | Carnet |
+|:-------:|:-------:|:-------:|:-------:|:-------:|
+| <img width="200" alt="home" src="https://github.com/user-attachments/assets/c6fdec7a-63c9-48c2-9673-6b5fc7fdbe7f" /> | <img width="200" alt="seances" src="https://github.com/user-attachments/assets/9e2b2a0a-49b6-4728-8f73-9a1499885796" /> | <img width="200" alt="projet" src="https://github.com/user-attachments/assets/e412204b-e927-45a9-acd9-fea08245c4d5" /> | <img width="200" alt="profil" src="https://github.com/user-attachments/assets/4f163d0c-cc0f-4570-81aa-b3312009b331" /> | <img width="200" alt="carnet" src="https://github.com/user-attachments/assets/06d36f4b-42bb-4be8-b2d4-a0d7e192eee9" /> |
+
+
 ### 2.1 Parcours principal
 
-> **À compléter (Front)** : décrire le parcours nominal.
->
-> 1. Se connecter
-> 2. Choisir une salle
-> 3. Enregistrer une séance et les voies grimpées
-> 4. Consulter son carnet et sa progression
+> **À compléter (Front)** 
 
 ### 2.2 Enregistrer une séance
 
-> **À compléter (Front)** : étapes, captures d'écran, signification des champs (type de voie, statut, etc.).
+> **À compléter (Front)**
 
 ### 2.3 Suivre sa progression
 
-> **À compléter (Front)** : où trouver les statistiques, comment les lire.
+> **À compléter (Front)**
 
 ### 2.4 Choisir les salles autorisées à consulter ses séances
 
 Dans l'application, l'utilisateur peut sélectionner les salles autorisées à consulter ses séances afin de recevoir un suivi d'entraînement personnalisé.
 Une salle non sélectionnée n'a pas accès à ses séances.
 
-> **À compléter (Front)** : où se trouve ce réglage et comment le modifier.
-> À confirmer avec l'équipe : le libellé exact dans l'application.
+> **À compléter (Front)**
 
 ### 2.5 Gérer son compte
 
-> **À compléter (Front)** : modifier son profil, changer ou réinitialiser son mot de passe, se déconnecter.
+> **À compléter (Front)**
 
 ## 3. Backoffice – staff et direction
 
@@ -62,7 +64,7 @@ Le backoffice est une interface web accessible à l'adresse `/admin` du serveur 
 
 ### 3.2 Gérer les salles et les ouvertures
 
-> À compléter : créer ou modifier une salle, ajouter une ouverture (voie ou bloc), changer son statut. Captures d'écran.
+> À compléter quand la fonctionnalité sera disponible.
 
 ### 3.3 Consulter les séances des grimpeurs
 
