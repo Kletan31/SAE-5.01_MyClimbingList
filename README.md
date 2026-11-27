@@ -30,24 +30,6 @@ Nos objectifs sont :
 
 ## Organisation du projet
 
-### Backlogs
-
-- **Backlog produit** : l'ensemble des issues du dépôt (user stories et tâches).
-- **Backlog de sprint** : le GitHub Project de l'équipe, filtrable par **milestone** pour n'afficher que le sprint en cours.
-
-### Fonctionnement du board
-
-1. **Backlog** : l'issue est créée mais pas encore planifiée dans un sprint.
-2. **Ready** : l'issue est prête à être prise (rattachée à une user story, avec un milestone, un label et des critères d'acceptation clairs).
-3. **Doing** : un membre de l'équipe s'assigne l'issue au moment où il la passe en *Doing* et commence à travailler dessus.
-4. **Done** : l'issue est terminée.
-
-Chaque tâche est rattachée à une user story, porte un label et un milestone correspondant au sprint concerné.
-
-### Répartition du travail
-
-L'équipe a conscience d'un déséquilibre de charge de travail entre les membres sur ce projet.
-
 ### Planning de télétravail
 
 *Dernière mise à jour : 25/11/2026*
@@ -83,6 +65,10 @@ L'équipe a conscience d'un déséquilibre de charge de travail entre les membre
 | Heures de créneau de travail de l'équipe | +120 h |
 | Réunions avec le client | 7 |
 
+**Chiffrage financier**
+
+Disponible dans [docs/chiffrage.md](./docs/chiffrage.md).
+
 ## Livrables attendus
 
 *Dernière mise à jour : 25/11/2026*
@@ -93,11 +79,12 @@ L'équipe a conscience d'un déséquilibre de charge de travail entre les membre
 | Analyse & conception | Analyse de l'existant, conception de l'application | Livré | [docs/analyse-conception.md](./docs/analyse-conception.md) |
 | Backend (API et base de données) | API Symfony et base MySQL | En cours | [backend/](./backend) |
 | Application mobile | Application Flutter, disponible sur les stores | En cours | [frontend/](./frontend) |
-| Documentation du code | Documentation à destination des futurs développeurs | En cours | [docs/documentation-code](./docs/documentation-code.md) |
-| Documentation utilisateur | Guide d'utilisation de l'application | En cours | [docs/documentation-util](./docs/documentation-util.md) |
-| Documentation administrateur | Guide d'administration (backoffice, déploiement) | En cours | [docs/documentation-admin](./docs/documentation-admin.md) |
-| Cahier de recette | Cas de test versionnés et leurs résultats | En cours | [docs/cahier-de-recette](./docs/cahier-de-recette.md) |
+| Documentation du code | Documentation à destination des futurs développeurs | En cours | [docs/documentation-code.md](./docs/documentation-code.md) |
+| Documentation utilisateur | Guide d'utilisation de l'application | En cours | [docs/documentation-util.md](./docs/documentation-util.md) |
+| Documentation administrateur | Guide d'administration (backoffice, déploiement) | En cours | [docs/documentation-admin.md](./docs/documentation-admin.md) |
+| Cahier de recette | Cas de test versionnés et leurs résultats | En cours | [docs/cahier-de-recette.md](./docs/cahier-de-recette.md) |
 | Releases | Versions livrées, avec notes de release commentées | En cours | [Releases](../../releases) |
+| Chiffrage | Coût du projet s'il était réalisé par une équipe de professionnel | Livré | [docs/chiffrage.md](./docs/chiffrage.md) |
 
 ## Documentation
 
@@ -111,6 +98,7 @@ La documentation est versionnée dans le dossier [`docs/`](./docs) :
 - [Documentation utilisateur](./docs/documentation-util.md)
 - [Documentation administrateur](./docs/documentation-admin.md)
 - [Cahier de recette](./docs/cahier-de-recette.md)
+- [Chiffrage financier](./docs/chiffrage.md)
 
 Le client ne nécessite pas toutes ces documentations.
 Nous les réalisons néanmoins, car elles font partie des attendus pédagogiques de la SAE et sont évaluées.
